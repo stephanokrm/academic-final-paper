@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: Academic
+        psr4_prefix: Academic
+        src_path: app
