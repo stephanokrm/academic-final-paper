@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="col s12 m4 offset-m4 l2 offset-l5">
+    <div class="row center">
+        <div class="col s12 m12 l12">
+            <img class="academic-logo-login" src="{{ asset('/images/academic-logo.svg') }}">
+        </div>
+    </div>
+    <div class="row center">
+        <div class="col s12 m12 l12">
+            <h2>Academic</h2>
+        </div>
+    </div>
     {!! Form::open(['method' => 'POST', 'route' => 'auth.ldap', 'class' => 'form-horizontal']) !!}
     <div class="row">
         <div class="col s12 m12 l12">
@@ -19,7 +29,7 @@
     </div>
     <div class="row center">
         <div class="col s12 m12 l12">
-        	<button type="submit" class="btn light-blue">Entrar</button> 
+            <button type="submit" class="btn light-blue">Entrar</button> 
         </div>
     </div>
     {!! Form::close() !!}

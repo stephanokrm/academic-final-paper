@@ -36,3 +36,25 @@ input:focus, textarea:focus {
     border-bottom: 1px solid #03a9f4 !important;
     box-shadow: 0 1px 0 0 #03a9f4 !important;
 }
+
+nav {
+	box-shadow: none;
+}
+
+nav ul a {
+    font-size: 1.1rem;
+}
+
+.dropdown-content {
+    margin-top: 64px;
+}
+
+.academic-logo-login {
+	margin-top: 10%;
+	height: 200px;
+}
+
+.academic-logo-home {
+    margin-top: 5%;
+    height: 300px;
+}
