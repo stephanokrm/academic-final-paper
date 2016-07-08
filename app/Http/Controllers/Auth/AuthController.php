@@ -1,11 +1,19 @@
-<?php namespace Academic\Http\Controllers\Auth;
+<?php 
+
+namespace Academic\Http\Controllers\Auth;
 
 use Academic\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+
+use Academic\Services\AuthService;
 
 class AuthController extends Controller {
+
+	private $service;
+	protected $username = 'username';
 
 	/*
 	|--------------------------------------------------------------------------
@@ -18,7 +26,7 @@ class AuthController extends Controller {
 	|
 	*/
 
-	use AuthenticatesAndRegistersUsers;
+	// use AuthenticatesAndRegistersUsers;
 
 	/**
 	 * Create a new authentication controller instance.
@@ -27,12 +35,24 @@ class AuthController extends Controller {
 	 * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
 	 * @return void
 	 */
-	public function __construct(Guard $auth, Registrar $registrar)
+	public function __construct(Guard $auth, Registrar $registrar, AuthService $service)
 	{
-		$this->auth = $auth;
-		$this->registrar = $registrar;
+		$this->middleware('guest', ['except' => 'logout']);
+		$this->service = $service;
+	}
 
-		$this->middleware('guest', ['except' => 'getLogout']);
+	public function index() {
+		return view('auth.login');
+	}
+
+	public function login(Request $request) {
+		$this->service->login($request);
+		return redirect()->route('home.index')->withMessage('Login efetuado com sucesso.');
+	}
+
+	public function logout() {
+		$this->service->logout();
+		return redirect()->route('auth.index');
 	}
 
 }

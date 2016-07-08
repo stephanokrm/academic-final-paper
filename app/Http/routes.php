@@ -11,11 +11,14 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', 'WelcomeController@index', function() {
+	return redirect()->route('home.index');
+});
 
-Route::get('home', 'HomeController@index');
+Route::get('login', ['as' => 'auth.index', 'uses' => 'Auth\AuthController@index']);
+Route::post('logar', ['as' => 'auth.ldap', 'uses' => 'Auth\AuthController@login']);
+Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@logout']);
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('home', ['as' => 'home.index', 'uses' => 'HomeController@index']);
+});

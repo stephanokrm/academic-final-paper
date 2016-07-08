@@ -39,7 +39,7 @@ return [
 	|
 	*/
 
-	'timezone' => 'UTC',
+	'timezone' => 'America/Sao_Paulo',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
 	|
 	*/
 
-	'locale' => 'en',
+	'locale' => 'pt-br',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -145,6 +145,13 @@ return [
 		'Academic\Providers\EventServiceProvider',
 		'Academic\Providers\RouteServiceProvider',
 
+
+		/*
+		 *
+		 */
+		'Collective\Html\HtmlServiceProvider',
+		'Dsdevbe\LdapConnector\LdapConnectorServiceProvider',
+
 	],
 
 	/*
@@ -192,6 +199,9 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+
+		'Form' => 'Collective\Html\FormFacade',
+      	'Html' => 'Collective\Html\HtmlFacade',
 
 	],
 
