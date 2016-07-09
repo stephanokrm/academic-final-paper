@@ -1,6 +1,16 @@
-<?php namespace Academic\Http\Controllers;
+<?php 
+namespace Academic\Http\Controllers;
+
+use Academic\Services\GoogleService;
+
+use Session;
 
 class HomeController extends Controller {
+
+	public function __construct() {
+		$service = new GoogleService();
+        $client = $service->getClient();
+	}
 
 	/*
 	|--------------------------------------------------------------------------
@@ -12,16 +22,6 @@ class HomeController extends Controller {
 	| controller as you wish. It is just here to get your app started!
 	|
 	*/
-
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		$this->middleware('auth');
-	}
 
 	/**
 	 * Show the application dashboard to the user.

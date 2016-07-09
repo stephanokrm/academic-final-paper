@@ -27,6 +27,10 @@ class Kernel extends HttpKernel {
 		'auth' => 'Academic\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'Academic\Http\Middleware\RedirectIfAuthenticated',
+		'google' => 'Academic\Http\Middleware\Google',
+		'validation' => 'Academic\Http\Middleware\Validation',
+		'validation.form' => 'Academic\Http\Middleware\FormValidation',
+		'validation.google' => 'Academic\Http\Middleware\GoogleValidation',
 	];
 
 }

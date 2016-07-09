@@ -151,6 +151,7 @@ return [
 		 */
 		'Collective\Html\HtmlServiceProvider',
 		'Dsdevbe\LdapConnector\LdapConnectorServiceProvider',
+		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
 
 	],
 
@@ -202,6 +203,7 @@ return [
 
 		'Form' => 'Collective\Html\FormFacade',
       	'Html' => 'Collective\Html\HtmlFacade',
+      	'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
 
 	],
 
