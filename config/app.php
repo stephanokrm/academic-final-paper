@@ -152,6 +152,7 @@ return [
 		'Collective\Html\HtmlServiceProvider',
 		'Dsdevbe\LdapConnector\LdapConnectorServiceProvider',
 		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
+		'Lord\Laroute\LarouteServiceProvider',
 
 	],
 

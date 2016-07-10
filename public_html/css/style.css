@@ -37,6 +37,14 @@ input:focus, textarea:focus {
     box-shadow: 0 1px 0 0 #03a9f4 !important;
 }
 
+a {
+    color: black;
+}
+
+hr {
+    border: 1px solid #dadada;
+}
+
 nav {
 	box-shadow: none;
 }
@@ -45,8 +53,40 @@ nav ul a {
     font-size: 1.1rem;
 }
 
+button:focus {
+    background-color: transparent;
+}
+
+.calendars-checkbox[type="checkbox"]+label {
+    height: 17px;
+}
+
+.calendars-checkbox[type="checkbox"].filled-in:checked+label:after {
+    border: 2px solid #03a9f4;
+    background-color: #03a9f4;
+}
+
 .dropdown-content {
     margin-top: 64px;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+    color: #03a9f4;
+}
+
+.calendars-list .collection .collection-item {
+    font-size: 1.1rem;
+    line-height: 4rem;
+}
+
+.secondary-content i {
+    line-height: 4rem;
+    margin-right: 10px;
+    color: black;
+}
+
+.secondary-content i:hover {
+    color: #03a9f4;
 }
 
 .academic-logo-login {
@@ -57,4 +97,375 @@ nav ul a {
 .academic-logo-home {
     margin-top: 5%;
     height: 300px;
+}
+
+.first-row {
+    margin-top: 5%;
+}
+
+.first-row-events {
+    margin-top: 0.6%;
+}
+
+.no-margin-right {
+    margin-right: 0 !important;
+}
+
+@media only screen and (min-width : 768px) {
+    #events-colletion {
+        padding-right: 0 !important;
+    }
+
+    #events-calendar {
+        padding-left: 0 !important;
+    }
+}
+
+.events-list .collection {
+     border: none; 
+     border-radius: 0; 
+     margin-top: 0;
+}
+
+.events-list .collection-item {
+     border: none;
+}
+
+.events-list .collection.with-header .collection-header {
+    padding: 20px 20px;
+    background-color: #03a9f4;
+    font-size: 17px;
+    border: none;
+}
+
+.modal-header {
+    padding: 50px 0 50px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.modal {
+    width: 35%;
+}
+
+.modal.bottom-sheet {
+    max-height: 100%;
+}
+
+.modal .event-modal-footer {
+    height: 60px;
+}
+
+/* ---------------- FULLCALENDAR ------------------*/
+.fc-toolbar {
+    background-color: #03a9f4;
+    margin-bottom: 0;
+}
+
+.fc-left {
+    margin-top: 15px;
+    margin-left: 15px;
+}
+
+.fc-right {
+    margin-top: 15px;
+    margin-right: 15px;
+}
+
+.fc-content {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+.fc-widget-header {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.fc-day-grid-event {
+    margin: 0;
+    border-radius: 0;
+}
+
+.fc-time-grid-container, .fc-divider, .fc-axis {
+    display: none;
+}
+
+.fc button {
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    outline: 0;
+    padding: 0 2rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    background-color: white;
+    color: black;
+}
+
+.fc-state-default.fc-corner-left {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.fc-state-default.fc-corner-right {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.fc-state-default {
+    background-image: none;
+    background-repeat: no-repeat;
+    background-color: #40c4ff;
+    border: none;
+}
+
+.fc-unthemed .fc-today {
+    background: #b3e5fc;
+}
+
+.fc-agenda-view .fc-day-grid .fc-row {
+    min-height: 300px;
+}
+
+.fc-basic-view .fc-body .fc-row {
+    min-height: 100px;
+}
+
+#calendar h2 {
+    color: white;
+    margin-top: 18px;
+    margin-bottom: 12px;
+    font-size: 1.8rem;
+}
+
+
+
+
+/* -----------COLORS FROM EVENT ------------- */
+.default-event {
+    background-color: #9fe1e7 !important;
+}
+
+.light-blue-event {
+    background-color: #a4bdfc !important;
+}
+
+.light-green-event {
+    background-color: #7ae7bf !important;
+}
+
+.light-pink-event {
+    background-color: #dbadff !important;
+}
+
+.light-red-event {
+    background-color: #ff887c !important;
+}
+
+.yellow-event {
+    background-color: #fbd75b !important;
+}
+
+.light-orange-event {
+    background-color: #ffb878 !important;
+}
+
+.water-blue-event {
+    background-color: #46d6db !important;
+}
+
+.grey-event {
+    background-color: #e1e1e1 !important;
+}
+
+.blue-event {
+    background-color: #5484ed !important;
+}
+
+.green-event {
+    background-color: #51b749 !important;
+}
+
+.red-event {
+    background-color: #dc2127 !important;
+}
+
+
+.light-blue-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #a4bdfc !important;
+}
+
+.light-blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #a4bdfc !important;
+}
+
+.light-blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #a4bdfc !important;
+}
+
+.light-blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #a4bdfc !important;
+}
+
+.light-green-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #7ae7bf !important;
+}
+
+.light-green-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #7ae7bf !important;
+}
+
+.light-green-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #7ae7bf !important;
+}
+
+.light-green-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #7ae7bf !important;
+}
+
+.light-pink-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #dbadff !important;
+}
+
+.light-pink-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #dbadff !important;
+}
+
+.light-pink-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #dbadff !important;
+}
+
+.light-pink-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #dbadff !important;
+}
+
+.light-red-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #ff887c !important;
+}
+
+.light-red-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #ff887c !important;
+}
+
+.light-red-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #ff887c !important;
+}
+
+.light-red-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #ff887c !important;
+}
+
+.yellow-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #fbd75b !important;
+}
+
+.yellow-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #fbd75b !important;
+}
+
+.yellow-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #fbd75b !important;
+}
+
+.yellow-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #fbd75b !important;
+}
+
+.light-orange-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #ffb878 !important;
+}
+
+.light-orange-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #ffb878 !important;
+}
+
+.light-orange-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #ffb878 !important;
+}
+
+.light-orange-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #ffb878 !important;
+}
+
+.water-blue-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #46d6db !important;
+}
+
+.water-blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #46d6db !important;
+}
+
+.water-blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #46d6db !important;
+}
+
+.water-blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #46d6db !important;
+}
+
+.grey-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #e1e1e1 !important;
+}
+
+.grey-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #e1e1e1 !important;
+}
+
+.grey-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #e1e1e1 !important;
+}
+
+.grey-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #e1e1e1 !important;
+}
+
+.blue-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #5484ed !important;
+}
+
+.blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #5484ed !important;
+}
+
+.blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #5484ed !important;
+}
+
+.blue-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #5484ed !important;
+}
+
+.green-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #51b749 !important;
+}
+
+.green-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #51b749 !important;
+}
+
+.green-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #51b749 !important;
+}
+
+.green-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #51b749 !important;
+}
+
+.red-event[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+    border: 2px solid #dc2127 !important;
+}
+
+.red-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #dc2127 !important;
+}
+
+.red-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #dc2127 !important;
+}
+
+.red-event[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #dc2127 !important;
 }

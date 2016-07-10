@@ -37,7 +37,6 @@ class GoogleService {
             $client->refreshToken($client->getRefreshToken());
             Session::put('credentials', $client->getAccessToken());
         }
-
         return $client;
     }
 

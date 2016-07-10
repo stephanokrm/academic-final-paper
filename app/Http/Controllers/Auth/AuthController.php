@@ -2,7 +2,6 @@
 
 namespace Academic\Http\Controllers\Auth;
 
-
 use Illuminate\Http\Request;
 //
 use Academic\Http\Controllers\Controller;
