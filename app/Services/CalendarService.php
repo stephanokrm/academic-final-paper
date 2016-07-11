@@ -10,13 +10,16 @@ use Google_Service_Calendar_AclRule;
 use Google_Service_Calendar_AclRuleScope;
 //
 use Academic\Validations\CalendarValidation;
-use Academic\Services\AclService;
 use Academic\User;
+use Academic\GoogleEmail;
+
+use Session;
 
 class CalendarService {
 
     private $calendarService;
     private $students;
+    private $googleEmails;
 
     public function __construct(Google_Service_Calendar $calendarService) {
         $this->calendarService = $calendarService;
@@ -39,15 +42,9 @@ class CalendarService {
     }
 
     public function deleteCalendar($id) {
-        $service = new AclService($this->calendarService);
         $calendar = $this->getCalendar($id);
-        $students = $service->listAssociatedStudentsByAcl($id);
-
-        $emails = [];
-        foreach ($students as $student) {
-            $emails[] = $student->googleEmail->email;
-        }
-        $this->disassociateAttendees($calendar, $emails);
+        $this->listAssociatedStudentsByAcl($id);
+        $this->disassociateAttendees($calendar, $this->googleEmails);
         $this->calendarService->calendars->delete($id);
     }
 
@@ -56,8 +53,24 @@ class CalendarService {
     }
 
     public function listAssociatedStudentsByAcl($id) {
-        $service = new AclService($this->calendarService);
-        $this->students = $service->listAssociatedStudentsByAcl($id);
+        $user = Session::get('user');
+        $googleEmail = new GoogleEmail();
+        $list = $this->calendarService->acl->listAcl($id);
+
+        foreach ($list->getItems() as $acl) {
+            $emails[] = $acl->getScope()->getValue();
+        }
+
+        $eloquents = $googleEmail->whereIn('email', $emails)->where('email', '!=', $user->googleEmail->email)->get();
+
+        $students = [];
+
+        foreach ($eloquents as $eloquent) {
+            $this->googleEmails[] = $eloquent->email;
+            $students[] = $eloquent->user;
+        }
+
+        $this->students = $students;
         return $this->students;
     }
 
@@ -102,6 +115,7 @@ class CalendarService {
         }
 
         $student = new User();
+        //$googleEmail = new GoogleEmail();
         return $student->getNotAssociatedStudentsFromForthYear($enrollments);
     }
 

@@ -22,3 +22,9 @@ Breadcrumbs::register('events.index', function($breadcrumbs) {
     $breadcrumbs->parent('calendars');
     $breadcrumbs->push('Eventos', route('events.index'));
 });
+
+// Início > Usuário
+Breadcrumbs::register('users.show', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Usuário', route('users.show'));
+}); 

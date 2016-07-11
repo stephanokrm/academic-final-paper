@@ -100,8 +100,14 @@ class EventService {
 
     public function listEvents($idCalendar) {
         $googleEvents = $this->calendarService->events->listEvents($idCalendar);
-        foreach ($googleEvents as $googleEvent) {
-            $events[] = $this->transformGoogleEventToModel($googleEvent);
+        $events = [];
+        $googleEvents = $googleEvents->getItems();
+        if(empty($googleEvents)) {
+            return $events;
+        } else {
+            foreach ($googleEvents as $googleEvent) {
+                $events[] = $this->transformGoogleEventToModel($googleEvent);
+            }
         }
         return $events;
     }

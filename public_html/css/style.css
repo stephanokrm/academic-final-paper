@@ -121,6 +121,10 @@ button:focus {
     }
 }
 
+.calendars-list .material-icons {
+    line-height: 2.5;
+}
+
 .events-list .collection {
      border: none; 
      border-radius: 0; 
@@ -153,6 +157,50 @@ button:focus {
 
 .modal .event-modal-footer {
     height: 60px;
+}
+
+.fa-google {
+    font-size: 2rem;
+    margin-right: 13px;
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+.help-block {
+    color: #f44336;
+}
+
+[type="checkbox"]:checked+label:before {
+    border-right: 2px solid #03a9f4;
+    border-bottom: 2px solid #03a9f4;
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #03a9f4;
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #03a9f4;
+}
+
+.square[type="radio"]:not(:checked)+label:before, .square[type="radio"]:not(:checked)+label:after, .square[type="radio"]:checked+label:before, .square[type="radio"]:checked+label:after, .square[type="radio"].with-gap:checked+label:before, .square[type="radio"].with-gap:checked+label:after {
+    border-radius: 0;
+    margin-top: 10px;
+}
+
+[type="radio"]+label:before, [type="radio"]+label:after {
+    width: 20px;
+    height: 20px;
+}
+
+.remove[type="checkbox"]:checked+label:before {
+    border-right: 2px solid #f44336;
+    border-bottom: 2px solid #f44336;
+}
+
+.remove_all[type="checkbox"]:checked+label:before {
+    border-right: 2px solid #f44336;
+    border-bottom: 2px solid #f44336;
 }
 
 /* ---------------- FULLCALENDAR ------------------*/

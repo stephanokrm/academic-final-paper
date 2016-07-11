@@ -63,6 +63,13 @@ Editar Calendário
                 <span class="help-block">{{ $errors->first('attendees') }}</span>
                 @endif
             </div>
+            @else
+            <div class="col s12 m6 l6">
+                <div class="card-panel light-blue">
+                    <span class="white-text"><i class="material-icons left">error</i> Todas pessoas estão vinculadas a este calendário.
+                    </span>
+                </div>
+            </div>
             @endif
             @if(count($associated) > 0)
             <div class="col s12 m6 l6">

@@ -14,7 +14,7 @@
     <body>
         @if (Session::has('user'))
         <ul id='user-dropdown' class='dropdown-content'>
-            <li><a href="#!"><i class="material-icons left">portrait</i> Perfil</a></li>
+            <li><a href="{{ route('users.show') }}"><i class="material-icons left">portrait</i> Perfil</a></li>
             @if(Session::has('credentials'))
             <li><a href="{{ route('google.logout') }}"><i class="material-icons left">open_in_new</i> Sair do Google</a></li>
             @endif

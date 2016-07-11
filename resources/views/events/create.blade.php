@@ -30,14 +30,14 @@ Adicionar Evento
         <div class="row">
             <div class="col s12 m3 l3 date_col">
                 <label for="begin-date">Data de Inicio</label>
-                <input id="begin-date" type="date" class="datepicker date" name="begin_date" value="{{ old('begin_date') }}">
+                <input id="begin-date" type="date" class="datepicker" placeholder="__/__/____" name="begin_date" value="{{ old('begin_date') }}">
                 @if($errors->has('begin_date'))
                 <span class="help-block">{{ $errors->first('begin_date') }}</span>
                 @endif
             </div>
             <div class="col s12 m3 l3 hide_time">
                 <label for="begin-time">Hora de Inicio</label>
-                <input id="begin-time" type="text" class="validate time" name="begin_time" value="{{ old('begin_time') }}">
+                <input id="begin-time" type="text" class="validate time" placeholder="__:__" name="begin_time" value="{{ old('begin_time') }}">
                 @if($errors->has('begin_time'))
                 <span class="help-block">{{ $errors->first('begin_time') }}</span>
                 @endif
@@ -46,14 +46,14 @@ Adicionar Evento
         <div class="row">
             <div class="col s12 m3 l3 date_col">
                 <label for="end-date">Data de Término</label>
-                <input id="end-date" type="date" class="datepicker date" name="end_date" value="{{ old('end_date') }}">
+                <input id="end-date" type="date" class="datepicker date" placeholder="__/__/____" name="end_date" value="{{ old('end_date') }}">
                 @if($errors->has('end_date'))
                 <span class="help-block">{{ $errors->first('end_date') }}</span>
                 @endif
             </div>
             <div class="col s12 m3 l3 hide_time">
                 <label for="end-time">Hora de Término</label>
-                <input id="end-time" type="text" class="validate time" name="end_time" value="{{ old('end_time') }}">
+                <input id="end-time" type="text" class="validate time" placeholder="__:__" name="end_time" value="{{ old('end_time') }}">
                 @if($errors->has('end_time'))
                 <span class="help-block">{{ $errors->first('end_time') }}</span>
                 @endif

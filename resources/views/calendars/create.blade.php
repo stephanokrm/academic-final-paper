@@ -97,7 +97,7 @@ Adicionar Calendário
 </div>
 @endsection
 
-@section('scripts')
-<script type="text/javascript" src="{{ asset('/js/calendar/create.js') }}"></script>
+@section('js')
+<script type="text/javascript" src="{{ asset('/js/calendars/create.js') }}"></script>
 @endsection
 
