@@ -6,7 +6,6 @@ use Academic\Services\GoogleService;
 use Academic\Services\CalendarService;
 use Academic\Http\Controllers\Controller;
 use Academic\User;
-use Academic\Student;
 //
 use Illuminate\Http\Request;
 use Crypt;
@@ -40,18 +39,14 @@ class CalendarController extends Controller {
      * @return Response
      */
     public function create() {
-        // $user = new User();
-        $students = Session::get('user')->student->classe->students;
+        $students = Session::get('user')->student->team->students;
 
         $students = $students->filter(function($student) {
-            if ($student->id_aluno != Session::get('user')->id_usuario) {
+            if ($student->user_id != Session::get('user')->id) {
                 return $student;
             }
         });
 
-        dd($students);
-
-        // $students = $student->getStudentsFromForthYear();
         return view('calendars.create')->withStudents($students);
     }
 

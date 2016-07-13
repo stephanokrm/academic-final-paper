@@ -8,7 +8,7 @@ use Session;
 use Google_Client;
 use Google_Service_Calendar;
 //
-use Academic\GoogleEmail;
+// use Academic\GoogleEmail;
 
 class GoogleService {
 
@@ -28,7 +28,7 @@ class GoogleService {
             if (isset($_GET['code'])) {
                 $accessToken = $client->authenticate($_GET['code']);
                 Session::put('credentials', $accessToken);
-                $this->associateGoogleEmail($client);
+                // $this->associateGoogleEmail($client);
             } else {
                 $authUrl = $client->createAuthUrl();
                 Session::put('authUrl', $authUrl);
@@ -44,18 +44,18 @@ class GoogleService {
         return $client;
     }
 
-    private function associateGoogleEmail(Google_Client $client) {
-        $email = $client->verifyIdToken()->getAttributes()['payload']['email'];
-        $user = Session::get('user');
+    // private function associateGoogleEmail(Google_Client $client) {
+    //     $email = $client->verifyIdToken()->getAttributes()['payload']['email'];
+    //     $user = Session::get('user');
 
-        if (!isset($user->googleEmail->email)) {
-            $googleEmail = new GoogleEmail();
-            $googleEmail->email = $email;
-            $googleEmail->active = 'true';
-            $user->googleEmail()->associate($googleEmail);
-            $user->save();
-        }
-    }
+    //     if (!isset($user->googleEmail->email)) {
+    //         $googleEmail = new GoogleEmail();
+    //         $googleEmail->email = $email;
+    //         $googleEmail->active = 'true';
+    //         $user->googleEmail()->associate($googleEmail);
+    //         $user->save();
+    //     }
+    // }
 
     public function logout() {
         Session::forget('credentials');

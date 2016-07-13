@@ -39,17 +39,15 @@ Adicionar Calendário
                             </td>
                         </tr>
                         @foreach($students as $student)
-                        @if(isset($student->googleEmail->email))
                         <tr>
-                            <td>{{ ucwords($student->nome_completo) }}</td>
+                            <td>{{ ucwords($student->user->name) }}</td>
                             <td>
                                 <p>
-                                    {!! Form::checkbox('attendees[]', $student->googleEmail->email, old('attendees[]'), ['class' => 'invite', 'id' => 'invite_' . $student->matricula]) !!}
-                                    <label for="invite_{{ $student->matricula }}"></label>
+                                    {!! Form::checkbox('attendees[]', $student->user->emailGoogle->email, old('attendees[]'), ['class' => 'invite', 'id' => 'invite_' . $student->user->registration]) !!}
+                                    <label for="invite_{{ $student->user->registration }}"></label>
                                 </p>
                             </td>
                         </tr>
-                        @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -84,8 +82,16 @@ Adicionar Calendário
                 @endif
             </div>
         </div>
+        @else
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <div class="card-panel light-blue">
+                    <span class="white-text"><i class="material-icons left">error</i> Nenhuma pessoa para ser vinculada.
+                    </span>
+                </div>
+            </div>
+        </div>
         @endif
-
         <div class="row">
             <div class="col s12 m6 l6">
                 <button type="submit" class="waves-effect waves-light btn light-blue right">Concluir</button>

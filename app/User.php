@@ -13,6 +13,10 @@ class User extends Model {
         return $this->where('registration', $registration)->exists();
     } 
 
+    public function student() {
+        return $this->hasOne('Academic\Student');
+    }
+
     public function getUser($registration) {
         return $this->where('registration', $registration)->first();
     }
