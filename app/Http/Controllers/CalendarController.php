@@ -5,10 +5,13 @@ namespace Academic\Http\Controllers;
 use Academic\Services\GoogleService;
 use Academic\Services\CalendarService;
 use Academic\Http\Controllers\Controller;
+use Academic\User;
+use Academic\Student;
+//
 use Illuminate\Http\Request;
 use Crypt;
-use Academic\User;
-
+use Session;
+//
 use Google_Service_Calendar;
 
 class CalendarController extends Controller {
@@ -37,8 +40,18 @@ class CalendarController extends Controller {
      * @return Response
      */
     public function create() {
-        $student = new User();
-        $students = $student->getStudentsFromForthYear();
+        // $user = new User();
+        $students = Session::get('user')->student->classe->students;
+
+        $students = $students->filter(function($student) {
+            if ($student->id_aluno != Session::get('user')->id_usuario) {
+                return $student;
+            }
+        });
+
+        dd($students);
+
+        // $students = $student->getStudentsFromForthYear();
         return view('calendars.create')->withStudents($students);
     }
 
@@ -104,7 +117,17 @@ class CalendarController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id) {
+    // public function destroy($id) {
+    //     $calendarId = Crypt::decrypt($id);
+    //     $service = new CalendarService($this->calendarService);
+    //     $service->deleteCalendar($calendarId);
+    //     return redirect()
+    //                     ->route('calendars.index')
+    //                     ->withMessage('Calendário excluído com sucesso.');
+    // }
+
+    public function destroy(Request $request) {
+        dd($request);
         $calendarId = Crypt::decrypt($id);
         $service = new CalendarService($this->calendarService);
         $service->deleteCalendar($calendarId);

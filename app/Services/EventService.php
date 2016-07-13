@@ -11,7 +11,7 @@ use Google_Service_Calendar_EventDateTime;
 use Google_Service_Calendar_EventReminders;
 //
 use Academic\Validations\EventValidation;
-use Academic\Models\Event;
+use Academic\Models\EventModel;
 
 class EventService {
 
@@ -113,7 +113,7 @@ class EventService {
     }
 
     public function transformGoogleEventToModel(Google_Service_Calendar_Event $googleEvent) {
-        $event = new Event();
+        $event = new EventModel();
         $event->setId($googleEvent->getId());
         $event->setSummary($googleEvent->getSummary());
         $event->setDescription($googleEvent->getDescription());

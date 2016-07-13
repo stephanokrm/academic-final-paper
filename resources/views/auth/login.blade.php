@@ -16,7 +16,7 @@ Login
             <h2>Academic</h2>
         </div>
     </div>
-    {!! Form::open(['method' => 'POST', 'route' => 'auth.ldap', 'class' => 'form-horizontal']) !!}
+    {!! Form::open(['method' => 'POST', 'route' => 'auth.ldap']) !!}
     <div class="row">
         <div class="col s12 m12 l12">
             {!! Form::label('username', 'Matrícula') !!}

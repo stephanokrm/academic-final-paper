@@ -1,55 +1,41 @@
-<?php
+<?php namespace Academic;
 
-namespace Academic;
-
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Session;
+use Carbon\Carbon;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends Model {
 
-    use Authenticatable,
-        CanResetPassword;
+	protected $fillable = ['name', 'birth_date', 'email', 'registration'];
+    protected $dates = ['birth_date'];
+    protected $with = ['emailGoogle'];
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'usuario';
-    protected $primaryKey = 'id_usuario';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['nome_completo', 'email', 'matricula', 'usuario'];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = ['password', 'remember_token'];
+    public function exists($registration) {
+        return $this->where('registration', $registration)->exists();
+    } 
 
     public function getUser($registration) {
-        return $this->where('matricula', $registration)->first();
+        return $this->where('registration', $registration)->first();
     }
 
-    public function getStudentsFromForthYear() {
-        return $this->whereBetween('matricula', [2060070, 2060092])->where('matricula', '!=', Session::get('user')->matricula)->get();
+	public function calendars() {
+        return $this->belongsToMany('Academic\Calendar');
     }
 
-    public function getNotAssociatedStudentsFromForthYear($enrollments) {
-        return $this->whereBetween('matricula', [2060070, 2060092])->whereNotIn('matricula', $enrollments)->where('matricula', '!=', Session::get('user')->matricula)->get();
+    public function emailGoogle() {
+        return $this->hasOne('Academic\Email');
     }
 
-    public function googleEmail() {
-        return $this->hasOne('Academic\GoogleEmail');
+    public function roles() {
+        return $this->belongsToMany('Academic\Role');
+    }
+
+    public function age() {
+        return $this->birth_date->diffInYears(Carbon::now()); 
+    }
+
+    public function getBirthDate()
+    {
+        return $this->birth_date->format('d/m/Y');
     }
 
 }

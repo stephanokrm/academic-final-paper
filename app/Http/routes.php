@@ -10,7 +10,7 @@
   | and give it the controller to call when that URI is requested.
   |
  */
-Route::group(['middleware' => 'validation'], function() {
+Route::group(['middleware' => ['validation']], function() { 
 
     Route::get('/', function() {
         return redirect()->route('home.index');
@@ -19,11 +19,19 @@ Route::group(['middleware' => 'validation'], function() {
     Route::get('login', ['as' => 'auth.index', 'uses' => 'Auth\AuthController@index']);
     Route::post('logar', ['as' => 'auth.ldap', 'uses' => 'Auth\AuthController@login']);
     Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@logout']);
+    Route::get('registro', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@register']);
+
+    Route::get('usuarios/criar', ['as' => 'users.create', 'uses' => 'UserController@create']);
+    Route::post('usuarios', ['as' => 'users.store', 'uses' => 'UserController@store']);
+    Route::get('usuarios/{id}/editar', ['as' => 'users.edit', 'uses' => 'UserController@edit']);
+    Route::patch('usuarios/{id}', ['as' => 'users.update', 'uses' => 'UserController@update']);
 
     Route::group(['middleware' => 'auth'], function() {
         Route::get('home', ['as' => 'home.index', 'uses' => 'HomeController@index']);
 
+        Route::get('usuarios', ['as' => 'users.index', 'uses' => 'UserController@index']);
         Route::get('usuarios/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
+        Route::delete('usuarios/{id}', ['as' => 'users.destroy', 'uses' => 'UserController@destroy']);
 
         Route::group(['middleware' => 'google'], function() {
             Route::get('google/sair', ['as' => 'google.logout', 'uses' => 'GoogleController@logout']);
@@ -34,7 +42,9 @@ Route::group(['middleware' => 'validation'], function() {
             Route::get('calendarios/{id}', ['as' => 'calendars.show', 'uses' => 'CalendarController@show']);
             Route::get('calendarios/{id}/editar', ['as' => 'calendars.edit', 'uses' => 'CalendarController@edit']);
             Route::patch('calendarios/{id}', ['as' => 'calendars.update', 'uses' => 'CalendarController@update']);
-            Route::delete('calendarios/{id}', ['as' => 'calendars.destroy', 'uses' => 'CalendarController@destroy']);
+            //Route::delete('calendarios/{id}', ['as' => 'calendars.destroy', 'uses' => 'CalendarController@destroy']);
+            Route::post('calendarios/deletar', ['as' => 'calendars.destroy', 'uses' => 'CalendarController@destroy']);
+
 
             Route::get('calendarios/{id}/eventos', ['as' => 'events.index', 'uses' => 'EventController@index']);
             Route::get('calendarios/{id}/eventos/criar', ['as' => 'events.create', 'uses' => 'EventController@create']);

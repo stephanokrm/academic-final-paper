@@ -12,7 +12,7 @@
         <link type="text/css" rel="stylesheet" href="{{ asset('/css/style.css') }}" rel="stylesheet">
     </head>
     <body>
-        @if (Session::has('user'))
+        @if (Session::has('user') && !isset($showNav))
         <ul id='user-dropdown' class='dropdown-content'>
             <li><a href="{{ route('users.show') }}"><i class="material-icons left">portrait</i> Perfil</a></li>
             @if(Session::has('credentials'))
@@ -35,10 +35,10 @@
                                     @if(!Session::has('credentials'))
                                     <li><a href="{{ Session::get('authUrl') }}">Entrar no Google</a></li>
                                     @endif
-                                    <li><a class='dropdown-button' href='#' data-activates='user-dropdown'>{{ Session::get('user')->nome_completo }}<i class="material-icons right">arrow_drop_down</i></a></li>
+                                    <li><a class='dropdown-button' href='#' data-activates='user-dropdown'>{{ Session::get('user')->name }}<i class="material-icons right">arrow_drop_down</i></a></li>
                                 </ul>
                                 <ul class="side-nav" id="mobile-demo">
-                                    <li><a href="#!">{{ Session::get('user')->nome_completo }}</a></li>
+                                    <li><a href="#!">{{ Session::get('user')->name }}</a></li>
                                     <li class="divider"></li>
                                     <li><a href="{{ route('home.index') }}"><i class="material-icons left">home</i> Início</a></li>
                                     <li><a href="#!"><i class="material-icons left">portrait</i> Perfil</a></li>
@@ -55,6 +55,22 @@
                 </div>
             </nav>
         </div>
+        <nav class="second-navbar light-blue lighten-5 hide">
+            <div class="nav-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col s12 m8 offset-m2 l8 offset-l2">
+                            <div class="count left black-text"></div>
+                            <div class="delete right">
+                                <a href="#" class="delete-action">
+                                    <i class="material-icons black-text">delete</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
         @yield('breadcrumb')
         @endif
         @if(Session::has('message'))

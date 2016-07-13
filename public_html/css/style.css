@@ -74,7 +74,7 @@ button:focus {
     color: #03a9f4;
 }
 
-.calendars-list .collection .collection-item {
+/*.calendars-list .collection .collection-item {
     font-size: 1.1rem;
     line-height: 4rem;
 }
@@ -87,10 +87,10 @@ button:focus {
 
 .secondary-content i:hover {
     color: #03a9f4;
-}
+}*/
 
 .academic-logo-login {
-	margin-top: 10%;
+	margin-top: 7%;
 	height: 200px;
 }
 
@@ -121,9 +121,9 @@ button:focus {
     }
 }
 
-.calendars-list .material-icons {
+/*.calendars-list .material-icons {
     line-height: 2.5;
-}
+}*/
 
 .events-list .collection {
      border: none; 
@@ -201,6 +201,14 @@ button:focus {
 .remove_all[type="checkbox"]:checked+label:before {
     border-right: 2px solid #f44336;
     border-bottom: 2px solid #f44336;
+}
+
+.delete-calendar[type="checkbox"]+label {
+    height: 15px;
+}
+
+.collapsible-header i {
+    margin-right: 0; 
 }
 
 /* ---------------- FULLCALENDAR ------------------*/

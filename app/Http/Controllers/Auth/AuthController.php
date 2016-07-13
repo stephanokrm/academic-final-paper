@@ -34,7 +34,7 @@ class AuthController extends Controller {
      * @return void
      */
     public function __construct(AuthService $service) {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest', ['except' => ['logout', 'register']]);
         $this->service = $service;
     }
 
@@ -43,8 +43,8 @@ class AuthController extends Controller {
     }
 
     public function login(Request $request) {
-        $this->service->login($request);
-        return redirect()->route('home.index')->withMessage('Login efetuado com sucesso.');
+        $user = $this->service->login($request);
+        return isset($user) ? redirect()->route('auth.register') : redirect()->route('home.index')->withMessage('Login efetuado com sucesso.');
     }
 
     public function logout() {
@@ -54,4 +54,7 @@ class AuthController extends Controller {
         return redirect()->route('auth.index');
     }
 
+    public function register() {
+        return view('auth.register');
+    }
 }

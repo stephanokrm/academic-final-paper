@@ -20,7 +20,7 @@ class Google {
             return $next($request);
         }
 
-        return Redirect::route('home.index')->withMessage('Conta Google necessária.');
+        return Redirect::back()->withMessage('Conta Google necessária.');
     }
 
 }

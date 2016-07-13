@@ -2,8 +2,13 @@
 
 use Academic\Http\Requests;
 use Academic\Http\Controllers\Controller;
+use Academic\User;
+use Academic\Email;
+use Academic\Validations\RegisterValidation;
 
 use Illuminate\Http\Request;
+
+use Session;
 
 class UserController extends Controller {
 
@@ -65,9 +70,22 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request, $id)
 	{
-		//
+		$validation = new RegisterValidation();
+		$validation->validate($request);
+
+		$user = Session::get('user');
+		$user->birth_date = $request->birth_date;
+		$user->save();
+
+		$email = new Email();
+		$email->email = $request->email;
+		$email->user()->associate($user);
+		$email->save();
+
+		Session::put('user', $user);
+		return redirect()->route('home.index')->withMessage('Registro efetuado com sucesso.');
 	}
 
 	/**

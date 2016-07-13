@@ -2,7 +2,7 @@
 
 namespace Academic\Models;
 
-class Event {
+class EventModel {
 
     private $id;
     private $summary;
