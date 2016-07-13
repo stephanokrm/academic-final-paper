@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeacherTeamTable extends Migration {
+class CreateDisciplineTeacherTeamTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,8 +12,11 @@ class CreateTeacherTeamTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('teacher_team', function(Blueprint $table)
+		Schema::create('discipline_teacher_team', function(Blueprint $table)
 		{
+			$table->integer('discipline_id')->unsigned();
+			$table->foreign('discipline_id')->references('id')->on('disciplines');
+			$table->index('discipline_id');
 			$table->integer('team_id')->unsigned();
 			$table->foreign('team_id')->references('id')->on('teams');
 			$table->index('team_id');

@@ -8,6 +8,10 @@ class Teacher extends Model {
         return $this->belongsToMany('Academic\Team');
     }
 
+    public function disciplines() {
+        return $this->belongsToMany('Academic\Discipline');
+    }
+
     public function user() {
     	return $this->belongsTo('Academic\User');
     }

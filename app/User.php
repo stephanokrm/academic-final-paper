@@ -38,4 +38,10 @@ class User extends Model {
         return $this->birth_date->format('d/m/Y');
     }
 
+    public function setBirthDateAttribute($value)
+    {
+        $date = Carbon::createFromFormat('d/m/Y', $value);
+        $this->attributes['birth_date'] = $date->format('Y-m-d');
+    }
+
 }

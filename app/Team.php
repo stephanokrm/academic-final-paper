@@ -10,6 +10,10 @@ class Team extends Model {
         return $this->belongsToMany('Academic\Teacher');
     }
 
+    public function disciplines() {
+        return $this->belongsToMany('Academic\Discipline');
+    }
+
     public function students() {
     	return $this->hasMany('Academic\Student');
     }
