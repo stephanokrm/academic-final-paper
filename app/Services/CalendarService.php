@@ -11,9 +11,8 @@ use Google_Service_Calendar_AclRuleScope;
 //
 use Academic\Validations\CalendarValidation;
 use Academic\User;
-use Academic\GoogleEmail;
-
-use Session;
+use Academic\Email;
+use Academic\Calendar;
 
 class CalendarService {
 
@@ -27,51 +26,19 @@ class CalendarService {
 
     public function insertCalendar(Request $request) {
         $this->validateCalendar($request);
+
         $googleCalendar = $this->fillGoogleCalendar($request);
         $insertedCalendar = $this->calendarService->calendars->insert($googleCalendar);
+
+        $email = new Email();
+        $emails = $email->getEmails($request->attendees);
+
+        $calendar = new Calendar();
+        $calendar->calendar = $insertedCalendar->getId();
+        $calendar->save();
+        $calendar->emails()->saveMany($emails->all());
+
         $this->associateAttendees($insertedCalendar, $request);
-    }
-
-    public function updateCalendar(Request $request, $id) {
-        $this->validateCalendar($request);
-        $googleCalendar = $this->getCalendar($id);
-        $googleCalendar = $this->fillGoogleCalendar($request, $googleCalendar);
-        $this->disassociateAttendees($googleCalendar, $request->disassociate);
-        $this->associateAttendees($googleCalendar, $request);
-        $this->calendarService->calendars->update($googleCalendar->getId(), $googleCalendar);
-    }
-
-    public function deleteCalendar($id) {
-        $calendar = $this->getCalendar($id);
-        $this->listAssociatedStudentsByAcl($id);
-        $this->disassociateAttendees($calendar, $this->googleEmails);
-        $this->calendarService->calendars->delete($id);
-    }
-
-    public function getCalendar($id) {
-        return $this->calendarService->calendars->get($id);
-    }
-
-    public function listAssociatedStudentsByAcl($id) {
-        $user = Session::get('user');
-        $googleEmail = new GoogleEmail();
-        $list = $this->calendarService->acl->listAcl($id);
-
-        foreach ($list->getItems() as $acl) {
-            $emails[] = $acl->getScope()->getValue();
-        }
-
-        $eloquents = $googleEmail->whereIn('email', $emails)->where('email', '!=', $user->googleEmail->email)->get();
-
-        $students = [];
-
-        foreach ($eloquents as $eloquent) {
-            $this->googleEmails[] = $eloquent->email;
-            $students[] = $eloquent->user;
-        }
-
-        $this->students = $students;
-        return $this->students;
     }
 
     private function associateAttendees(Google_Service_Calendar_Calendar $calendar, Request $request) {
@@ -92,13 +59,73 @@ class CalendarService {
         }
     }
 
-    private function disassociateAttendees(Google_Service_Calendar_Calendar $calendar, $attendees) {
-        if (!empty($attendees)) {
-            $calendarId = $calendar->getId();
-            foreach ($attendees as $attendee) {
-                $this->calendarService->acl->delete($calendarId, 'user:' . $attendee);
+    public function updateCalendar(Request $request, $id) {
+        $this->validateCalendar($request);
+        $googleCalendar = $this->getCalendar($id);
+        $googleCalendar = $this->fillGoogleCalendar($request, $googleCalendar);
+        //$this->disassociateAttendees($googleCalendar, $request->disassociate);
+        $this->associateAttendees($googleCalendar, $request);
+        $this->calendarService->calendars->update($googleCalendar->getId(), $googleCalendar);
+    }
+
+    public function deleteCalendar(Request $request) {
+        $calendar = new Calendar();
+        foreach ($request->calendars as $id) {
+            $calendarEloquent = $calendar->getCalendar($id);
+            if (is_object($calendarEloquent)) {
+                $calendars[] = $calendarEloquent;
             }
         }
+
+        foreach ($calendars as $calendar) {
+            $id = $calendar->calendar;
+            foreach ($calendar->emails as $email) {
+                $this->disassociateAttendee($id, $email->email);
+            }
+            $calendar->emails()->sync([], true);
+            $calendar->delete();
+            $this->calendarService->calendars->delete($id);
+        }
+
+
+//        dd($calendars);
+//        $this->listAssociatedStudentsByAcl($id);
+//        $this->disassociateAttendees($calendar, $this->googleEmails);
+//        $this->calendarService->calendars->delete($id);;
+    }
+
+//    public function deleteCalendar($id) {
+//        $calendar = $this->getCalendar($id);
+//        $this->listAssociatedStudentsByAcl($id);
+//        $this->disassociateAttendees($calendar, $this->googleEmails);
+//        $this->calendarService->calendars->delete($id);
+//    }
+
+    public function getCalendar($id) {
+        return $this->calendarService->calendars->get($id);
+    }
+
+    // public function listAssociatedStudentsByAcl($id) {
+    //     $user = Session::get('user');
+    //     $googleEmail = new GoogleEmail();
+    //     $list = $this->calendarService->acl->listAcl($id);
+    //     foreach ($list->getItems() as $acl) {
+    //         $emails[] = $acl->getScope()->getValue();
+    //     }
+    //     $eloquents = $googleEmail->whereIn('email', $emails)->where('email', '!=', $user->googleEmail->email)->get();
+    //     $students = [];
+    //     foreach ($eloquents as $eloquent) {
+    //         $this->googleEmails[] = $eloquent->email;
+    //         $students[] = $eloquent->user;
+    //     }
+    //     $this->students = $students;
+    //     return $this->students;
+    // }
+
+
+
+    private function disassociateAttendee($id, $email) {
+        $this->calendarService->acl->delete($id, 'user:' . $email);
     }
 
     private function validateCalendar(Request $request) {

@@ -10,7 +10,7 @@
   | and give it the controller to call when that URI is requested.
   |
  */
-Route::group(['middleware' => ['validation']], function() { 
+Route::group(['middleware' => ['validation']], function() {
 
     Route::get('/', function() {
         return redirect()->route('home.index');

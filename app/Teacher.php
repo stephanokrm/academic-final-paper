@@ -1,10 +1,12 @@
-<?php namespace Academic;
+<?php
+
+namespace Academic;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends Model {
 
-	public function teams() {
+    public function teams() {
         return $this->belongsToMany('Academic\Team');
     }
 
@@ -13,7 +15,7 @@ class Teacher extends Model {
     }
 
     public function user() {
-    	return $this->belongsTo('Academic\User');
+        return $this->belongsTo('Academic\User');
     }
 
 }

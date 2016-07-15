@@ -1,12 +1,14 @@
-<?php namespace Academic;
+<?php
+
+namespace Academic;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model {
 
-	protected $fillable = ['role'];
+    protected $fillable = ['role'];
 
-	public function users() {
+    public function users() {
         return $this->belongsToMany('Academic\User');
     }
 

@@ -122,10 +122,8 @@ class CalendarController extends Controller {
     // }
 
     public function destroy(Request $request) {
-        dd($request);
-        $calendarId = Crypt::decrypt($id);
         $service = new CalendarService($this->calendarService);
-        $service->deleteCalendar($calendarId);
+        $service->deleteCalendar($request);
         return redirect()
                         ->route('calendars.index')
                         ->withMessage('Calendário excluído com sucesso.');

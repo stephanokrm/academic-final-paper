@@ -2,6 +2,7 @@
 
 $(document).ready(function () {
     $(".button-collapse").sideNav();
+    $('select').material_select();
 
     if ($('#message').length) {
         Materialize.toast($('#message').data('message'), 4000);

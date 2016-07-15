@@ -7,8 +7,6 @@ use Session;
 //
 use Google_Client;
 use Google_Service_Calendar;
-//
-// use Academic\GoogleEmail;
 
 class GoogleService {
 
@@ -18,7 +16,7 @@ class GoogleService {
         $client->setClientId('853157239818-rsl4k0s23joipal9li62p32s02uk65de.apps.googleusercontent.com');
         $client->setClientSecret('uCN_zH8cN5d6cRKk7Im2dX2o');
         $client->setRedirectUri('http://webacademico.canoas.ifrs.edu.br/~academic/index.php/home');
-        $client->setScopes(['email', Google_Service_Calendar::CALENDAR]);
+        $client->setScopes(['profile', 'email', Google_Service_Calendar::CALENDAR]);
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -28,7 +26,6 @@ class GoogleService {
             if (isset($_GET['code'])) {
                 $accessToken = $client->authenticate($_GET['code']);
                 Session::put('credentials', $accessToken);
-                // $this->associateGoogleEmail($client);
             } else {
                 $authUrl = $client->createAuthUrl();
                 Session::put('authUrl', $authUrl);
@@ -43,19 +40,6 @@ class GoogleService {
         }
         return $client;
     }
-
-    // private function associateGoogleEmail(Google_Client $client) {
-    //     $email = $client->verifyIdToken()->getAttributes()['payload']['email'];
-    //     $user = Session::get('user');
-
-    //     if (!isset($user->googleEmail->email)) {
-    //         $googleEmail = new GoogleEmail();
-    //         $googleEmail->email = $email;
-    //         $googleEmail->active = 'true';
-    //         $user->googleEmail()->associate($googleEmail);
-    //         $user->save();
-    //     }
-    // }
 
     public function logout() {
         Session::forget('credentials');
@@ -76,4 +60,5 @@ class GoogleService {
                 return $message;
         }
     }
+
 }

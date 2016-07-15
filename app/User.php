@@ -1,17 +1,18 @@
-<?php namespace Academic;
+<?php
+
+namespace Academic;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class User extends Model {
 
-	protected $fillable = ['name', 'birth_date', 'email', 'registration'];
+    protected $fillable = ['name', 'birth_date', 'email', 'registration'];
     protected $dates = ['birth_date'];
-    protected $with = ['emailGoogle'];
 
     public function exists($registration) {
         return $this->where('registration', $registration)->exists();
-    } 
+    }
 
     public function student() {
         return $this->hasOne('Academic\Student');
@@ -19,10 +20,6 @@ class User extends Model {
 
     public function getUser($registration) {
         return $this->where('registration', $registration)->first();
-    }
-
-	public function calendars() {
-        return $this->belongsToMany('Academic\Calendar');
     }
 
     public function emailGoogle() {
@@ -34,16 +31,14 @@ class User extends Model {
     }
 
     public function age() {
-        return $this->birth_date->diffInYears(Carbon::now()); 
+        return $this->birth_date->diffInYears(Carbon::now());
     }
 
-    public function getBirthDate()
-    {
+    public function getBirthDate() {
         return $this->birth_date->format('d/m/Y');
     }
 
-    public function setBirthDateAttribute($value)
-    {
+    public function setBirthDateAttribute($value) {
         $date = Carbon::createFromFormat('d/m/Y', $value);
         $this->attributes['birth_date'] = $date->format('Y-m-d');
     }

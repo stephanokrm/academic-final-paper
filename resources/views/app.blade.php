@@ -6,15 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0""/>
         <title>Academic - @yield('title')</title>
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="{{ asset('/materialize/css/materialize.min.css') }}" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="{{ asset('/materialize/css/materialize.min.css') }}">
         <link type="text/css" rel="stylesheet" href="{{ asset('/font-awesome/css/font-awesome.min.css') }}" media="screen,projection"/>
         @yield('css')
-        <link type="text/css" rel="stylesheet" href="{{ asset('/css/style.css') }}" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="{{ asset('/css/style.css') }}">
     </head>
     <body>
         @if (Session::has('user') && !isset($showNav))
-        <ul id='user-dropdown' class='dropdown-content'>
-            <li><a href="{{ route('users.show') }}"><i class="material-icons left">portrait</i> Perfil</a></li>
+        <ul id='user-dropdown' class='dropdown-content navbar-dropdown'>
+            <li><a href="{{ route('users.show', Session::get('user')->id) }}"><i class="material-icons left">portrait</i> Perfil</a></li>
             @if(Session::has('credentials'))
             <li><a href="{{ route('google.logout') }}"><i class="material-icons left">open_in_new</i> Sair do Google</a></li>
             @endif
@@ -41,7 +41,7 @@
                                     <li><a href="#!">{{ Session::get('user')->name }}</a></li>
                                     <li class="divider"></li>
                                     <li><a href="{{ route('home.index') }}"><i class="material-icons left">home</i> Início</a></li>
-                                    <li><a href="#!"><i class="material-icons left">portrait</i> Perfil</a></li>
+                                    <li><a href="{{ route('users.show', Session::get('user')->id) }}"><i class="material-icons left">portrait</i> Perfil</a></li>
                                     @if(Session::has('credentials'))
                                     <li><a href="{{ route('google.logout') }}"><i class="material-icons left">open_in_new</i> Sair do Google</a></li>
                                     @else

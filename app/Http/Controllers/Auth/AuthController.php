@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Academic\Http\Controllers\Controller;
 use Academic\Services\AuthService;
 use Academic\Services\GoogleService;
+use Academic\Team;
 
 class AuthController extends Controller {
 
@@ -43,7 +44,6 @@ class AuthController extends Controller {
     }
 
     public function login(Request $request) {
-
         $user = $this->service->login($request);
         return isset($user) ? redirect()->route('auth.register') : redirect()->route('home.index')->withMessage('Login efetuado com sucesso.');
     }
@@ -56,6 +56,8 @@ class AuthController extends Controller {
     }
 
     public function register() {
-        return view('auth.register');
+        $teams = Team::all();
+        return view('auth.register')->withTeams($teams);
     }
+
 }

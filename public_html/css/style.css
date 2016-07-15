@@ -67,7 +67,15 @@ button:focus {
 }
 
 .dropdown-content {
-    margin-top: 64px;
+    margin-top: 51px;
+}
+
+.caret {
+    margin-right: 10px;
+}
+
+.navbar-dropdown {
+    margin-top: 64px !important;
 }
 
 .dropdown-content li>a, .dropdown-content li>span {

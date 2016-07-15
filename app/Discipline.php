@@ -1,12 +1,14 @@
-<?php namespace Academic;
+<?php
+
+namespace Academic;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Discipline extends Model {
 
-	protected $fillable = ['name'];
+    protected $fillable = ['name'];
 
-	public function teams() {
+    public function teams() {
         return $this->belongsToMany('Academic\Team');
     }
 

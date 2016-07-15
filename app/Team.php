@@ -1,12 +1,14 @@
-<?php namespace Academic;
+<?php
+
+namespace Academic;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model {
 
-	protected $fillable = ['year', 'description', 'school_year'];
+    protected $fillable = ['year', 'description', 'school_year'];
 
-	public function teachers() {
+    public function teachers() {
         return $this->belongsToMany('Academic\Teacher');
     }
 
@@ -15,11 +17,11 @@ class Team extends Model {
     }
 
     public function students() {
-    	return $this->hasMany('Academic\Student');
+        return $this->hasMany('Academic\Student');
     }
 
     public function course() {
-    	return $this->belongsTo('Academic\Course');
+        return $this->belongsTo('Academic\Course');
     }
 
 }
