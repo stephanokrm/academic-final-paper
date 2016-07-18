@@ -10,6 +10,7 @@
         <link type="text/css" rel="stylesheet" href="{{ asset('/font-awesome/css/font-awesome.min.css') }}" media="screen,projection"/>
         @yield('css')
         <link type="text/css" rel="stylesheet" href="{{ asset('/css/style.css') }}">
+        
     </head>
     <body>
         @if (Session::has('user') && !isset($showNav))

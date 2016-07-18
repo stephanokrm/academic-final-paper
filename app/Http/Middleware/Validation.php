@@ -25,22 +25,18 @@ class Validation {
         try {
             return $next($request);
         } catch (Google_Auth_Exception $exception) {
-            dd($exception);
             $service = new GoogleService();
             $service->logout();
             return Redirect::route('home')->withMessage('Sua sessão Google expirou.');
         } catch (Google_Exception $exception) {
-            dd($exception);
             $service = new GoogleService();
             $message = isset($exception->getErrors()[0]['message']) ? $exception->getErrors()[0]['message'] : $exception->getMessage();
             $message = $service->translateMessage($message);
             return Redirect::back()->withMessage($message)->withInput();
         } catch (FormValidationException $exception) {
-            dd($exception);
             return Redirect::back()->withErrors($exception->getErrors())->withInput();
         } catch (Exception $exception) {
-            dd($exception);
-            return Redirect::back()->withMessage('Ocorreu um erro inesperado.')->withInput();
+            //return Redirect::back()->withMessage('Ocorreu um erro inesperado.')->withInput();
         }
     }
 

@@ -10,15 +10,12 @@ use Google_Service_Calendar_AclRule;
 use Google_Service_Calendar_AclRuleScope;
 //
 use Academic\Validations\CalendarValidation;
-use Academic\User;
 use Academic\Email;
 use Academic\Calendar;
 
 class CalendarService {
 
     private $calendarService;
-    private $students;
-    private $googleEmails;
 
     public function __construct(Google_Service_Calendar $calendarService) {
         $this->calendarService = $calendarService;
@@ -30,8 +27,10 @@ class CalendarService {
         $googleCalendar = $this->fillGoogleCalendar($request);
         $insertedCalendar = $this->calendarService->calendars->insert($googleCalendar);
 
+        $attendees = $request->attendees;
+
         $email = new Email();
-        $emails = $email->getEmails($request->attendees);
+        $emails = $email->getEmails($attendees);
 
         $calendar = new Calendar();
         $calendar->calendar = $insertedCalendar->getId();
@@ -63,7 +62,29 @@ class CalendarService {
         $this->validateCalendar($request);
         $googleCalendar = $this->getCalendar($id);
         $googleCalendar = $this->fillGoogleCalendar($request, $googleCalendar);
-        //$this->disassociateAttendees($googleCalendar, $request->disassociate);
+
+        $attendees = $request->attendees;
+        $disassociate = $request->disassociate;
+
+        $email = new Email();
+        $addEmails = $email->getEmails($attendees);
+        $removeEmails = $email->getEmails($disassociate);
+
+        foreach ($removeEmails as $email) {
+            $this->disassociateAttendee($id, $email->email);
+        }
+
+        $calendar = new Calendar();
+        $calendar = $calendar->getCalendar($id);
+
+        foreach ($removeEmails as $removeEmail) {
+            $calendar->emails()->detach($removeEmail->id);
+        }
+
+        foreach ($addEmails as $addEmail) {
+            $calendar->emails()->attach($addEmail->id);
+        }
+
         $this->associateAttendees($googleCalendar, $request);
         $this->calendarService->calendars->update($googleCalendar->getId(), $googleCalendar);
     }
@@ -86,43 +107,11 @@ class CalendarService {
             $calendar->delete();
             $this->calendarService->calendars->delete($id);
         }
-
-
-//        dd($calendars);
-//        $this->listAssociatedStudentsByAcl($id);
-//        $this->disassociateAttendees($calendar, $this->googleEmails);
-//        $this->calendarService->calendars->delete($id);;
     }
-
-//    public function deleteCalendar($id) {
-//        $calendar = $this->getCalendar($id);
-//        $this->listAssociatedStudentsByAcl($id);
-//        $this->disassociateAttendees($calendar, $this->googleEmails);
-//        $this->calendarService->calendars->delete($id);
-//    }
 
     public function getCalendar($id) {
         return $this->calendarService->calendars->get($id);
     }
-
-    // public function listAssociatedStudentsByAcl($id) {
-    //     $user = Session::get('user');
-    //     $googleEmail = new GoogleEmail();
-    //     $list = $this->calendarService->acl->listAcl($id);
-    //     foreach ($list->getItems() as $acl) {
-    //         $emails[] = $acl->getScope()->getValue();
-    //     }
-    //     $eloquents = $googleEmail->whereIn('email', $emails)->where('email', '!=', $user->googleEmail->email)->get();
-    //     $students = [];
-    //     foreach ($eloquents as $eloquent) {
-    //         $this->googleEmails[] = $eloquent->email;
-    //         $students[] = $eloquent->user;
-    //     }
-    //     $this->students = $students;
-    //     return $this->students;
-    // }
-
-
 
     private function disassociateAttendee($id, $email) {
         $this->calendarService->acl->delete($id, 'user:' . $email);
@@ -131,19 +120,6 @@ class CalendarService {
     private function validateCalendar(Request $request) {
         $validation = new CalendarValidation();
         $validation->validate($request);
-    }
-
-    public function getNotAssociatedStudentsFromForthYear() {
-
-        $enrollments = [];
-
-        foreach ($this->students as $student) {
-            $enrollments[] = $student->matricula;
-        }
-
-        $student = new User();
-        //$googleEmail = new GoogleEmail();
-        return $student->getNotAssociatedStudentsFromForthYear($enrollments);
     }
 
     private function fillGoogleCalendar(Request $request, Google_Service_Calendar_Calendar $googleCalendar = null) {

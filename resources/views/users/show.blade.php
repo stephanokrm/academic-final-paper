@@ -22,6 +22,8 @@ Usuário
             <li class="collection-item"><i class="material-icons left small">security</i> {{ $user->registration }}</li>
             <li class="collection-item"><i class="material-icons left small">mail</i> {{ $user->email }}</li>
             <li class="collection-item"><i class="fa fa-google fa-2x" aria-hidden="true"></i> {{ $user->emailGoogle->email }}</li>
+            <li class="collection-item"><i class="material-icons left small">import_contacts</i> {{ $user->student->team->year }}º Ano</li>
+            <li class="collection-item"><i class="material-icons left small">school</i> {{ $user->student->team->course->name }}</li>
         </ul>
     </div>
 </div>

@@ -13,6 +13,7 @@ Eventos
 @endsection
 
 @section('content')
+@if(count($events) > 0)
 <div id="event" class="modal">
     <div class="modal-header center">
         <h4 class="truncate"></h4>
@@ -47,7 +48,6 @@ Eventos
 </div>
 <div class="row first-row-events events-list">
     <div class="col s12 m3 l2" id="events-colletion">
-        @if(count($events) > 0)
         <ul class="collection with-header">
             <li class="collection-header white-text center">Próximos Eventos</li>
             @foreach($events as $event)
@@ -62,13 +62,7 @@ Eventos
             </li>
             @endforeach
         </ul>
-        @else
-        <br>
-        <br>
-        <div class="row center">
-            <span class="card-title">Você não possui nenhum evento nesse calendário</span>
-        </div>
-        @endif
+
     </div>
     <div class="col s12 m9 l10" id="events-calendar">
         <div class="row">
@@ -76,7 +70,14 @@ Eventos
         </div>
     </div>
 </div>
-
+@else
+<div class="row first-row">
+    <div class="center">
+        <i class="material-icons extra-large grey-text text-lighten-2">event</i>
+        <h4 class="grey-text text-lighten-2">Os eventos criados aparecem aqui.</h4>
+    </div>
+</div>
+@endif
 <div class="fixed-action-btn horizontal">
     <a class="btn-floating btn-large red waves-effect waves-light" href="{{ route('events.create', Crypt::encrypt($calendar)) }}">
         <i class="large material-icons">add</i>

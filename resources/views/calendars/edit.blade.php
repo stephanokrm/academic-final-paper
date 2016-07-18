@@ -24,7 +24,7 @@ Editar Calendário
         </div>
 
         <div class="row">
-            @if(count($students) > 0)
+            @if(count($disassociated) > 0)
             <div class="col s12 m6 l6">
                 <table class="bordered">
                     <thead>
@@ -43,18 +43,16 @@ Editar Calendário
                                 </p>
                             </td>
                         </tr>
-                        @foreach($students as $student)
-                        @if(isset($student->googleEmail->email))
+                        @foreach($disassociated as $disassociate)
                         <tr>
-                            <td>{{ ucwords($student->nome_completo) }}</td>
+                            <td>{{ $disassociate->name }}</td>
                             <td>
                                 <p>
-                                    {!! Form::checkbox('attendees[]', $student->googleEmail->email, old('attendees[]'), ['class' => 'invite', 'id' => 'invite_' . $student->matricula]) !!}
-                                    <label for="invite_{{ $student->matricula }}"></label>
+                                    {!! Form::checkbox('attendees[]', $disassociate->email, old('attendees[]'), ['class' => 'invite', 'id' => 'invite_' . $disassociate->registration]) !!}
+                                    <label for="invite_{{ $disassociate->registration }}"></label>
                                 </p>
                             </td>
                         </tr>
-                        @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -92,11 +90,11 @@ Editar Calendário
                         </tr>
                         @foreach($associated as $associate)
                         <tr>
-                            <td>{{ ucwords($associate->nome_completo) }}</td>
+                            <td>{{ $associate->user->name }}</td>
                             <td>
                                 <p>
-                                    {!! Form::checkbox('disassociate[]', $associate->googleEmail->email, old('disassociate[]'), ['class' => 'remove', 'id' => 'remove_' . $associate->matricula]) !!}
-                                    <label for="remove_{{ $associate->matricula }}"></label>
+                                    {!! Form::checkbox('disassociate[]', $associate->user->emailGoogle->email, old('disassociate[]'), ['class' => 'remove', 'id' => 'remove_' . $associate->user->registration]) !!}
+                                    <label for="remove_{{ $associate->user->registration }}"></label>
                                 </p>
                             </td>
                         </tr>
@@ -119,6 +117,7 @@ Editar Calendário
                 <span class="help left">Somente alunos que já entraram no sistema irão aparecer aqui.</span>
             </div>
         </div>
+        @if(count($disassociated) > 0)
         <div class="row">
             <div class="col s12 m6 l6">
                 <label>Permissão</label>
@@ -139,6 +138,7 @@ Editar Calendário
                 @endif
             </div>
         </div>
+        @endif
 
         <div class="row">
             <div class="col s12 m12 l12">

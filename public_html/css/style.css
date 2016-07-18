@@ -46,7 +46,7 @@ hr {
 }
 
 nav {
-	box-shadow: none;
+    box-shadow: none;
 }
 
 nav ul a {
@@ -70,6 +70,10 @@ button:focus {
     margin-top: 51px;
 }
 
+.more-vert {
+    margin-top: 45px;
+}
+
 .caret {
     margin-right: 10px;
 }
@@ -82,24 +86,17 @@ button:focus {
     color: #03a9f4;
 }
 
-/*.calendars-list .collection .collection-item {
-    font-size: 1.1rem;
-    line-height: 4rem;
+i.extra-large {
+    font-size: 9rem;
 }
 
-.secondary-content i {
-    line-height: 4rem;
-    margin-right: 10px;
-    color: black;
+.waves-effect.waves-blue .waves-ripple {
+    background-color: rgba(3, 169, 244, 0.65);
 }
-
-.secondary-content i:hover {
-    color: #03a9f4;
-}*/
 
 .academic-logo-login {
-	margin-top: 7%;
-	height: 200px;
+    margin-top: 7%;
+    height: 200px;
 }
 
 .academic-logo-home {
@@ -108,7 +105,7 @@ button:focus {
 }
 
 .first-row {
-    margin-top: 5%;
+    margin-top: 10%;
 }
 
 .first-row-events {
@@ -119,28 +116,14 @@ button:focus {
     margin-right: 0 !important;
 }
 
-@media only screen and (min-width : 768px) {
-    #events-colletion {
-        padding-right: 0 !important;
-    }
-
-    #events-calendar {
-        padding-left: 0 !important;
-    }
-}
-
-/*.calendars-list .material-icons {
-    line-height: 2.5;
-}*/
-
 .events-list .collection {
-     border: none; 
-     border-radius: 0; 
-     margin-top: 0;
+    border: none; 
+    border-radius: 0; 
+    margin-top: 0;
 }
 
 .events-list .collection-item {
-     border: none;
+    border: none;
 }
 
 .events-list .collection.with-header .collection-header {
@@ -217,6 +200,22 @@ button:focus {
 
 .collapsible-header i {
     margin-right: 0; 
+}
+
+.selected-collapsible-header {
+    background-color: #e3f2fd !important;
+}
+
+/* ---------------- MOBILE ------------------------*/
+
+@media only screen and (min-width : 768px) {
+    #events-colletion {
+        padding-right: 0 !important;
+    }
+
+    #events-calendar {
+        padding-left: 0 !important;
+    }
 }
 
 /* ---------------- FULLCALENDAR ------------------*/

@@ -5,11 +5,13 @@ namespace Academic\Http\Controllers;
 use Academic\Services\GoogleService;
 use Academic\Services\CalendarService;
 use Academic\Http\Controllers\Controller;
-use Academic\User;
+use Academic\Calendar;
+use Academic\Email;
+use Academic\Student;
 //
 use Illuminate\Http\Request;
+//
 use Crypt;
-use Session;
 //
 use Google_Service_Calendar;
 
@@ -29,8 +31,18 @@ class CalendarController extends Controller {
      * @return Response
      */
     public function index() {
+        $googleCalendars = [];
+        $calendar = new Calendar();
         $calendars = $this->calendarService->calendarList->listCalendarList();
-        return view('calendars.index')->withCalendars($calendars);
+        if (!empty($calendars)) {
+            foreach ($calendars as $googleCalendar) {
+                if ($calendar->exists($googleCalendar->getId())) {
+                    $googleCalendars[] = $googleCalendar;
+                }
+            }
+        }
+
+        return view('calendars.index')->withCalendars($googleCalendars);
     }
 
     /**
@@ -39,14 +51,8 @@ class CalendarController extends Controller {
      * @return Response
      */
     public function create() {
-        $students = Session::get('user')->student->team->students;
-
-        $students = $students->filter(function($student) {
-            if ($student->user_id != Session::get('user')->id) {
-                return $student;
-            }
-        });
-
+        $student = new Student();
+        $students = $student->getStudentsByTeamExceptLoggedStudent();
         return view('calendars.create')->withStudents($students);
     }
 
@@ -81,14 +87,21 @@ class CalendarController extends Controller {
      */
     public function edit($id) {
         $calendarId = Crypt::decrypt($id);
+
+        $calendar = new Calendar();
+        $calendar = $calendar->getCalendar($calendarId);
+        $associated = $calendar->emails;
+        $associatedEmails = $calendar->getAssociatedEmails();
+
+        $email = new Email();
+        $disassociated = $email->getDisassociated($associatedEmails);
+
         $service = new CalendarService($this->calendarService);
-        $calendar = $service->getCalendar($calendarId);
-        $associated = $service->listAssociatedStudentsByAcl($calendarId);
-        $students = $service->getNotAssociatedStudentsFromForthYear();
+        $googleCalendar = $service->getCalendar($calendarId);
         return view('calendars.edit')
-                        ->withCalendar($calendar)
+                        ->withCalendar($googleCalendar)
                         ->withAssociated($associated)
-                        ->withStudents($students);
+                        ->withDisassociated($disassociated);
     }
 
     /**

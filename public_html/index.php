@@ -1,6 +1,4 @@
 <?php
-
-error_reporting(696969);
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
