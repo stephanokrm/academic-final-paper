@@ -33,6 +33,17 @@ Route::group(['middleware' => ['validation']], function() {
         Route::get('usuarios/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
         Route::delete('usuarios/{id}', ['as' => 'users.destroy', 'uses' => 'UserController@destroy']);
 
+        Route::get('atividades', ['as' => 'activities.index', 'uses' => 'ActivityController@index']);
+        Route::get('atividades/{id}', ['as' => 'activities.show', 'uses' => 'ActivityController@show']);
+
+        Route::group(['middleware' => 'teacher'], function() {
+            Route::get('atividades/criar', ['as' => 'users.create', 'uses' => 'ActivityController@create']);
+            Route::post('atividades', ['as' => 'users.store', 'uses' => 'ActivityController@store']);
+            Route::get('atividades/{id}/editar', ['as' => 'users.edit', 'uses' => 'ActivityController@edit']);
+            Route::patch('atividades/{id}', ['as' => 'users.update', 'uses' => 'ActivityController@update']);
+            Route::delete('atividades/{id}', ['as' => 'activities.destroy', 'uses' => 'ActivityController@destroy']);
+        });
+
         Route::group(['middleware' => 'google'], function() {
             Route::get('google/sair', ['as' => 'google.logout', 'uses' => 'GoogleController@logout']);
 
@@ -42,9 +53,7 @@ Route::group(['middleware' => ['validation']], function() {
             Route::get('calendarios/{id}', ['as' => 'calendars.show', 'uses' => 'CalendarController@show']);
             Route::get('calendarios/{id}/editar', ['as' => 'calendars.edit', 'uses' => 'CalendarController@edit']);
             Route::patch('calendarios/{id}', ['as' => 'calendars.update', 'uses' => 'CalendarController@update']);
-            //Route::delete('calendarios/{id}', ['as' => 'calendars.destroy', 'uses' => 'CalendarController@destroy']);
             Route::post('calendarios/deletar', ['as' => 'calendars.destroy', 'uses' => 'CalendarController@destroy']);
-
 
             Route::get('calendarios/{id}/eventos', ['as' => 'events.index', 'uses' => 'EventController@index']);
             Route::get('calendarios/{id}/eventos/criar', ['as' => 'events.create', 'uses' => 'EventController@create']);

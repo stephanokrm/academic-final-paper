@@ -12,4 +12,8 @@ class Event extends Model {
         return $this->belongsTo('Academic\Calendar');
     }
 
+    public function activities() {
+        return $this->hasMany('Academic\Activity');
+    }
+
 }

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Academic\Services\EventService;
 use Academic\Services\GoogleService;
 use Academic\Http\Controllers\Controller;
-
+//
 use Google_Service_Calendar;
 
 class EventController extends Controller {

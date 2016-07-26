@@ -10,7 +10,7 @@
         <link type="text/css" rel="stylesheet" href="{{ asset('/font-awesome/css/font-awesome.min.css') }}" media="screen,projection"/>
         @yield('css')
         <link type="text/css" rel="stylesheet" href="{{ asset('/css/style.css') }}">
-        
+
     </head>
     <body>
         @if (Session::has('user') && !isset($showNav))
@@ -33,6 +33,7 @@
                                 <ul class="right hide-on-med-and-down">
                                     <li><a href="{{ route('home.index') }}">Início</a></li>
                                     <li><a href="{{ route('calendars.index') }}">Calendários</a></li>
+                                    <li><a href="">Atividades</a></li>
                                     @if(!Session::has('credentials'))
                                     <li><a href="{{ Session::get('authUrl') }}">Entrar no Google</a></li>
                                     @endif

@@ -25,6 +25,7 @@ $(document).ready(function () {
         close: 'Fechar',
         format: 'dd/mm/yyyy'
     });
+
 });
 
 function responsiveModal(id) {

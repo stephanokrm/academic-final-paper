@@ -43,4 +43,10 @@ class User extends Model {
         $this->attributes['birth_date'] = $date->format('Y-m-d');
     }
 
+    public function hasRole($id) {
+        return !$this->roles->filter(function($role) use ($id) {
+                    return $role->id == $id;
+                })->isEmpty();
+    }
+
 }
