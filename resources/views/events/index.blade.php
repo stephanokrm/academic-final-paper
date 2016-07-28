@@ -51,7 +51,7 @@ Eventos
         <ul class="collection with-header">
             <li class="collection-header white-text center">Próximos Eventos</li>
             @foreach($events as $event)
-            <li class="collection-item" data-idcalendar="{{ Crypt::encrypt($calendar) }}" data-id="{{ $event->getId() }}" data-color="{{ $event->getColorId() }}" data-summary="{{ $event->getSummary() }}" data-start="{{ $event->getOriginalBeginDate() }}" data-end="{{ $event->getOriginalEndDate() }}">
+            <li class="collection-item" data-idcalendar="{{ Input::route('id') }}" data-id="{{ $event->getId() }}" data-color="{{ $event->getColorId() }}" data-summary="{{ $event->getSummary() }}" data-start="{{ $event->getOriginalBeginDate() }}" data-end="{{ $event->getOriginalEndDate() }}">
                 @if($event->hasDescription())
                 <div class="data-description" data-description="{{ $event->getDescription() }}"></div>
                 @endif
@@ -79,7 +79,7 @@ Eventos
 </div>
 @endif
 <div class="fixed-action-btn horizontal">
-    <a class="btn-floating btn-large red waves-effect waves-light" href="{{ route('events.create', Crypt::encrypt($calendar)) }}">
+    <a class="btn-floating btn-large red waves-effect waves-light" href="{{ route('events.create', Input::route('id')) }}">
         <i class="large material-icons">add</i>
     </a>
 </div>

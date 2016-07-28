@@ -27,22 +27,11 @@ Route::group(['middleware' => ['validation']], function() {
     Route::patch('usuarios/{id}', ['as' => 'users.update', 'uses' => 'UserController@update']);
 
     Route::group(['middleware' => 'auth'], function() {
-        Route::get('home', ['as' => 'home.index', 'uses' => 'HomeController@index']);
+        Route::get('/home', ['as' => 'home.index', 'uses' => 'HomeController@index']);
 
         Route::get('usuarios', ['as' => 'users.index', 'uses' => 'UserController@index']);
         Route::get('usuarios/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
         Route::delete('usuarios/{id}', ['as' => 'users.destroy', 'uses' => 'UserController@destroy']);
-
-        Route::get('atividades', ['as' => 'activities.index', 'uses' => 'ActivityController@index']);
-        Route::get('atividades/{id}', ['as' => 'activities.show', 'uses' => 'ActivityController@show']);
-
-        Route::group(['middleware' => 'teacher'], function() {
-            Route::get('atividades/criar', ['as' => 'users.create', 'uses' => 'ActivityController@create']);
-            Route::post('atividades', ['as' => 'users.store', 'uses' => 'ActivityController@store']);
-            Route::get('atividades/{id}/editar', ['as' => 'users.edit', 'uses' => 'ActivityController@edit']);
-            Route::patch('atividades/{id}', ['as' => 'users.update', 'uses' => 'ActivityController@update']);
-            Route::delete('atividades/{id}', ['as' => 'activities.destroy', 'uses' => 'ActivityController@destroy']);
-        });
 
         Route::group(['middleware' => 'google'], function() {
             Route::get('google/sair', ['as' => 'google.logout', 'uses' => 'GoogleController@logout']);
@@ -62,6 +51,17 @@ Route::group(['middleware' => ['validation']], function() {
             Route::get('calendarios/{calendar}/eventos/{id}/editar', ['as' => 'events.edit', 'uses' => 'EventController@edit']);
             Route::patch('calendarios/{calendar}/eventos/{id}', ['as' => 'events.update', 'uses' => 'EventController@update']);
             Route::delete('eventos/{id}', ['as' => 'events.destroy', 'uses' => 'EventController@destroy']);
+
+            Route::get('turmas/{id}/atividades', ['as' => 'activities.index', 'uses' => 'ActivityController@index']);
+            Route::get('atividades/{id}', ['as' => 'activities.show', 'uses' => 'ActivityController@show']);
+
+            Route::group(['middleware' => 'teacher'], function() {
+                Route::get('turmas/{id}/atividades/criar', ['as' => 'activities.create', 'uses' => 'ActivityController@create']);
+                Route::post('atividades', ['as' => 'activities.store', 'uses' => 'ActivityController@store']);
+                Route::get('atividades/{id}/editar', ['as' => 'activities.edit', 'uses' => 'ActivityController@edit']);
+                Route::patch('atividades/{id}', ['as' => 'activities.update', 'uses' => 'ActivityController@update']);
+                Route::post('atividades/deletar', ['as' => 'activities.destroy', 'uses' => 'ActivityController@destroy']);
+            });
         });
     });
 });

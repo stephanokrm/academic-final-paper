@@ -10,7 +10,6 @@
         <link type="text/css" rel="stylesheet" href="{{ asset('/font-awesome/css/font-awesome.min.css') }}" media="screen,projection"/>
         @yield('css')
         <link type="text/css" rel="stylesheet" href="{{ asset('/css/style.css') }}">
-
     </head>
     <body>
         @if (Session::has('user') && !isset($showNav))
@@ -33,7 +32,9 @@
                                 <ul class="right hide-on-med-and-down">
                                     <li><a href="{{ route('home.index') }}">Início</a></li>
                                     <li><a href="{{ route('calendars.index') }}">Calendários</a></li>
-                                    <li><a href="">Atividades</a></li>
+                                    @if(Session::get('user')->hasRole(2)) 
+                                    <li><a href="{{ route('activities.index', Session::get('user')->getTeamFromUser()) }}">Atividades</a></li>
+                                    @endif
                                     @if(!Session::has('credentials'))
                                     <li><a href="{{ Session::get('authUrl') }}">Entrar no Google</a></li>
                                     @endif
@@ -44,6 +45,9 @@
                                     <li class="divider"></li>
                                     <li><a href="{{ route('home.index') }}"><i class="material-icons left">home</i> Início</a></li>
                                     <li><a href="{{ route('users.show', Session::get('user')->id) }}"><i class="material-icons left">portrait</i> Perfil</a></li>
+                                    @if(Session::get('user')->hasRole(2)) 
+                                    <li><a href="{{ route('activities.index', Session::get('user')->getTeamFromUser()) }}"><i class="material-icons left">import_contacts</i> Atividades</a></li>
+                                    @endif
                                     @if(Session::has('credentials'))
                                     <li><a href="{{ route('google.logout') }}"><i class="material-icons left">open_in_new</i> Sair do Google</a></li>
                                     @else

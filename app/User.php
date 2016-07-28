@@ -49,4 +49,8 @@ class User extends Model {
                 })->isEmpty();
     }
 
+    public function getTeamFromUser() {
+        return $this->student->team_id;
+    }
+
 }

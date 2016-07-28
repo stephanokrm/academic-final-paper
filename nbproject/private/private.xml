@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Stephano/Documents/Academic%20Production%202.0/resources/views/app.blade.php</file>
+            <file>file:/C:/Users/Stephano/Documents/Academic%20Production%202.0/resources/views/activities/index.blade.php</file>
+            <file>file:/C:/Users/Stephano/Documents/Academic%20Production%202.0/app/Services/AuthService.php</file>
+            <file>file:/C:/Users/Stephano/Documents/Academic%20Production%202.0/resources/views/calendars/index.blade.php</file>
+            <file>file:/C:/Users/Stephano/Documents/Academic%20Production%202.0/app/Http/Controllers/ActivityController.php</file>
         </group>
     </open-files>
 </project-private>

@@ -27,4 +27,10 @@ Breadcrumbs::register('events.index', function($breadcrumbs) {
 Breadcrumbs::register('users.show', function($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Usuário', route('users.show'));
-}); 
+});
+
+// Início > Atividades
+Breadcrumbs::register('activities.index', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Atividades', route('activities.index'));
+});

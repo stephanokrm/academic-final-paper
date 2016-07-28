@@ -3,6 +3,8 @@
 namespace Academic\Http\Controllers;
 
 use Academic\Http\Controllers\Controller;
+use Academic\Services\AcitivityService;
+use Academic\Services\GoogleService;
 use Illuminate\Http\Request;
 use Google_Service_Calendar;
 
@@ -21,8 +23,10 @@ class ActivityController extends Controller {
      *
      * @return Response
      */
-    public function index() {
-        //
+    public function index($id) {
+        $service = new AcitivityService();
+        $activities = $service->getActivitiesFromTeam($id);
+        return view('activities.index')->withActivities($activities);
     }
 
     /**
@@ -31,7 +35,7 @@ class ActivityController extends Controller {
      * @return Response
      */
     public function create() {
-        //
+        die('AQUI');
     }
 
     /**

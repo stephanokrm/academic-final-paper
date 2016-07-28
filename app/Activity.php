@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model {
 
-    protected $fillable = ['title', 'weight', 'total_score', 'date'];
+    protected $fillable = ['weight', 'total_score'];
 
     public function event() {
         return $this->belongsTo('Academic\Event');
+    }
+    
+    public function team() {
+        return $this->belongsTo('Academic\Team');
     }
 
 }

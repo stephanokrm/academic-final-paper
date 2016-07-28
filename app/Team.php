@@ -24,4 +24,8 @@ class Team extends Model {
         return $this->belongsTo('Academic\Course');
     }
 
+    public function activities() {
+        return $this->hasMany('Academic\Activity');
+    }
+
 }
