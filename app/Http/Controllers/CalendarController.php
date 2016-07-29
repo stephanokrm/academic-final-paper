@@ -26,17 +26,8 @@ class CalendarController extends Controller {
     }
 
     public function index() {
-        $googleCalendars = [];
-        $calendar = new Calendar();
-        $calendars = $this->calendarService->calendarList->listCalendarList();
-        if (!empty($calendars)) {
-            foreach ($calendars as $googleCalendar) {
-                if ($calendar->exists($googleCalendar->getId())) {
-                    $googleCalendars[] = $googleCalendar;
-                }
-            }
-        }
-
+        $service = new CalendarService($this->calendarService);
+        $googleCalendars = $service->listCalendars();
         return view('calendars.index')->withCalendars($googleCalendars);
     }
 

@@ -21,6 +21,20 @@ class CalendarService {
         $this->calendarService = $calendarService;
     }
 
+    public function listCalendars() {
+        $googleCalendars = [];
+        $calendar = new Calendar();
+        $calendars = $this->calendarService->calendarList->listCalendarList();
+        if (!empty($calendars)) {
+            foreach ($calendars as $googleCalendar) {
+                if ($calendar->exists($googleCalendar->getId())) {
+                    $googleCalendars[] = $googleCalendar;
+                }
+            }
+        }
+        return $googleCalendars;
+    }
+
     public function insertCalendar(Request $request) {
         $this->validateCalendar($request);
 

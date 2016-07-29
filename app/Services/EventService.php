@@ -102,7 +102,7 @@ class EventService {
         $googleEvents = $this->calendarService->events->listEvents($idCalendar);
         $events = [];
         $googleEvents = $googleEvents->getItems();
-        if(empty($googleEvents)) {
+        if (empty($googleEvents)) {
             return $events;
         } else {
             foreach ($googleEvents as $googleEvent) {

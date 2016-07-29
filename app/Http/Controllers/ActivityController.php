@@ -4,8 +4,11 @@ namespace Academic\Http\Controllers;
 
 use Academic\Http\Controllers\Controller;
 use Academic\Services\AcitivityService;
+use Academic\Services\CalendarService;
 use Academic\Services\GoogleService;
+//
 use Illuminate\Http\Request;
+//
 use Google_Service_Calendar;
 
 class ActivityController extends Controller {
@@ -35,7 +38,12 @@ class ActivityController extends Controller {
      * @return Response
      */
     public function create() {
-        die('AQUI');
+        $service = new CalendarService($this->calendarService);
+        $googleCalendars = $service->listCalendars();
+        $colors = $this->calendarService->colors->get();
+        return view('activities.create')
+                        ->withCalendars($googleCalendars)
+                        ->withColors($colors);
     }
 
     /**
