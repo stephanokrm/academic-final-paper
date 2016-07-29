@@ -6,6 +6,12 @@ use Academic\Http\Controllers\Controller;
 use Academic\Services\AcitivityService;
 use Academic\Services\CalendarService;
 use Academic\Services\GoogleService;
+use Academic\Services\EventService;
+use Academic\Calendar;
+use Academic\Activity;
+use Academic\Event;
+use Academic\Team;
+use Academic\Models\ActivityModel;
 //
 use Illuminate\Http\Request;
 //
@@ -27,9 +33,27 @@ class ActivityController extends Controller {
      * @return Response
      */
     public function index($id) {
+        $eventService = new EventService($this->calendarService);
         $service = new AcitivityService();
         $activities = $service->getActivitiesFromTeam($id);
-        return view('activities.index')->withActivities($activities);
+        $activitiesModel = [];
+        foreach ($activities as $activity) {
+            $calendarId = $activity->event->calendar->calendar;
+            $eventId = $activity->event->event;
+            $googleEvent = $eventService->getEvent($calendarId, $eventId);
+            $event = $eventService->transformGoogleEventToModel($googleEvent);
+
+            $activityModel = new ActivityModel();
+            $activityModel->setId($activity->id);
+            $activityModel->setSummary($event->getSummary());
+            $activityModel->setDate($event->getBeginDate());
+            $activityModel->setColorId($event->getColorId());
+            $activityModel->setWeight($activity->weight);
+            $activityModel->setTotalScore($activity->total_score);
+            $activitiesModel[] = $activityModel;
+        }
+
+        return view('activities.index')->withActivities($activitiesModel);
     }
 
     /**
@@ -51,8 +75,35 @@ class ActivityController extends Controller {
      *
      * @return Response
      */
-    public function store(Request $request) {
-        //
+    public function store(Request $request, $teamId) {
+        $team = Team::findOrFail($teamId);
+        $students = $team->students;
+
+        $calendar = new Calendar();
+        $calendar = $calendar->getCalendar($request->calendar_id);
+
+        $request->merge(['all_day' => 'Y', 'begin_date' => $request->date, 'end_date' => $request->date]);
+        $service = new EventService($this->calendarService);
+        $insertedEvent = $service->insertEvent($request);
+
+        $event = new Event();
+        $event->event = $insertedEvent->getId();
+        $event->calendar()->associate($calendar);
+        $event->save();
+
+        $acitivity = new Activity();
+        $acitivity->fill($request->all());
+        $acitivity->event()->associate($event);
+        $acitivity->team()->associate($team);
+        $acitivity->save();
+
+        foreach ($students as $student) {
+            $acitivity->students()->attach($student->id, ['done' => '0', 'returned' => '0']);
+        }
+
+        return redirect()
+                        ->route('activities.index', $teamId)
+                        ->withMessage('Atividade criada com sucesso.');
     }
 
     /**

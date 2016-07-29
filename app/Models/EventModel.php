@@ -25,10 +25,6 @@ class EventModel {
     private $country = null;
     private $colorId;
 
-    public function __construct() {
-        //
-    }
-
     function getBeginDateTime() {
         return $this->beginDateTime;
     }

@@ -8,10 +8,6 @@ Calendários
 {!! Breadcrumbs::render('calendars') !!}
 @endsection
 
-@section('css')
-<link type="text/css" rel="stylesheet" href="{{ asset('/css/calendars/index-mobile.css') }}">
-@endsection
-
 @section('content')
 <div class="col s12 m8 offset-m2 l8 offset-l2" id="no-side-margin">
     <div class="row first-row calendars-list">
@@ -22,32 +18,45 @@ Calendários
         </div>
         @else
         {!! Form::open([ 'method'  => 'post', 'route' => 'calendars.destroy', 'class' => 'form-delete']) !!}
-        <ul class="collection">
-            @foreach ($calendars as $calendar)
-            <li class="collection-item">
-                <div class="row">
-                    <div class="col s2 m2 l1" id="no-side-margin">
-                        <input type="checkbox" name="calendars[]" value="{{ $calendar->getId() }}" class="filled-in delete-calendar" id="delete_{{ $calendar->getId() }}" />
-                        <label for="delete_{{ $calendar->getId() }}"></label>
-                    </div>
-                    <div class="col s4 m5 l6 truncate calendar-summary" id="no-side-margin">
-                        {{ $calendar->getSummary() }}
-                    </div>
-                    <div class="col s6 m5 l5" id="no-side-margin">
+        <table class="bordered highlight responsive-table">
+            <thead>
+                <tr>
+                    <th width="10%">
+                        <div class="center">
+                            {!! Form::checkbox('select_all', null, old('select_all'), ['class' => 'filled-in', 'id' => 'select_all']) !!}
+                            <label for="select_all"></label>
+                        </div>
+                    </th>
+                    <th width="78%">Calendário</th>
+                    <th width="12%">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($calendars as $calendar)
+                <tr>
+                    <td>
+                        <div class="center">
+                            <input type="checkbox" name="calendars[]" value="{{ $calendar->getId() }}" class="filled-in delete-calendar" id="delete_{{ $calendar->getId() }}" />
+                            <label for="delete_{{ $calendar->getId() }}"></label>
+                        </div>
+                    </td>
+                    <td>{{ $calendar->getSummary() }}</td>
+                    <td>
                         <a href="#">
-                            <i class="material-icons right waves-effect waves-blue">more_vert</i>
+                            <i class="material-icons waves-effect waves-blue">more_vert</i>
                         </a>
                         <a href="{{ route('events.index', Crypt::encrypt($calendar->getId())) }}">
-                            <i class="material-icons right waves-effect waves-blue">arrow_forward</i>
+                            <i class="material-icons waves-effect waves-blue">arrow_forward</i>
                         </a>
                         <a href="{{ route('calendars.edit', Crypt::encrypt($calendar->getId())) }}">
-                            <i class="material-icons right waves-effect waves-blue">mode_edit</i>
+                            <i class="material-icons waves-effect waves-blue">mode_edit</i>
                         </a>
-                    </div>
-                </div>
-            </li>
-            @endforeach
-        </ul>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
         {!! Form::close() !!} 
         @endif
     </div>

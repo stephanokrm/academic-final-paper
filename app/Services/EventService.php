@@ -24,7 +24,7 @@ class EventService {
     public function insertEvent(Request $request) {
         $this->validate($request);
         $googleEvent = $this->fillGoogleEvent($request);
-        $this->calendarService->events->insert($request->calendar_id, $googleEvent);
+        return $this->calendarService->events->insert($request->calendar_id, $googleEvent);
     }
 
     public function updateEvent(Request $request, $calendarId, $eventId) {

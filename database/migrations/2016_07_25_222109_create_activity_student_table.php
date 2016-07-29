@@ -13,6 +13,8 @@ class CreateActivityStudentTable extends Migration {
     public function up() {
         Schema::create('activity_student', function(Blueprint $table) {
             $table->double('grade')->nullable();
+            $table->boolean('done');
+            $table->boolean('returned');
             $table->integer('activity_id')->unsigned();
             $table->foreign('activity_id')->references('id')->on('activities');
             $table->index('activity_id');

@@ -8,14 +8,10 @@ Atividades
 {!! Breadcrumbs::render('activities.index') !!}
 @endsection
 
-@section('css')
-<link type="text/css" rel="stylesheet" href="{{ asset('/css/calendars/index-mobile.css') }}">
-@endsection
-
 @section('content')
 <div class="col s12 m8 offset-m2 l8 offset-l2" id="no-side-margin">
     <div class="row first-row calendars-list">
-        @if($activities->count() == 0)
+        @if(count($activities) == 0)
         <div class="center">
             <i class="material-icons extra-large grey-text text-lighten-2">import_contacts</i>
             <h4 class="grey-text text-lighten-2">As atividades criados pelo professor aparecem aqui.</h4>
@@ -24,34 +20,51 @@ Atividades
         @if(Session::get('user')->hasRole(2))
         {!! Form::open(['method' => 'post', 'route' => 'activities.destroy', 'class' => 'form-delete']) !!}
         @endif
-        <ul class="collection">
-            @foreach($activities as $activity)
-            <li class="collection-item">
-                <div class="row">
+        <table class="bordered highlight responsive-table">
+            <thead>
+                <tr>
                     @if(Session::get('user')->hasRole(2))
-                    <div class="col s2 m2 l1" id="no-side-margin">
-                        <input type="checkbox" name="activities[]" value="{{ $activity->getId() }}" class="filled-in delete-activity" id="delete_{{ $activity->getId() }}" />
-                        <label for="delete_{{ $activity->getId() }}"></label>
-                    </div>
+                    <th width="10%">
+                        <div class="center">
+                            {!! Form::checkbox('select_all', null, old('select_all'), ['class' => 'filled-in', 'id' => 'select_all']) !!}
+                            <label for="select_all"></label>
+                        </div>
+                    </th>
                     @endif
-                    <div class="col s4 m5 l6 truncate calendar-summary" id="no-side-margin">
-                        {{ $activity->getTitle() }}
-                    </div>
-                    <div class="col s6 m5 l5" id="no-side-margin">
-                        <a href="#">
-                            <i class="material-icons right waves-effect waves-blue">more_vert</i>
+                    <th width="40%">Atividade</th>
+                    <th width="38%">Data</th>
+                    <th width="12%">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach($activities as $activity)
+                <tr>
+                    @if(Session::get('user')->hasRole(2))
+                    <td>
+                        <div class="center">
+                            <input type="checkbox" name="activities[]" value="{{ $activity->getId() }}" class="filled-in delete-activity" id="delete_{{ $activity->getId() }}" />
+                            <label for="delete_{{ $activity->getId() }}"></label>
+                        </div>
+                    </td>
+                    @endif
+                    <td>{{ $activity->getSummary() }}</td>
+                    <td>{{ $activity->getDate() }}</td>
+                    <td>
+                        <a href="{{ route('activities.edit', $activity->getId()) }}">
+                            <i class="material-icons waves-effect waves-blue">mode_edit</i>
                         </a>
                         <a href="{{ route('activities.show', $activity->getId()) }}">
-                            <i class="material-icons right waves-effect waves-blue">arrow_forward</i>
+                            <i class="material-icons waves-effect waves-blue">arrow_forward</i>
                         </a>
-                        <a href="{{ route('activities.edit', $activity->getId()) }}">
-                            <i class="material-icons right waves-effect waves-blue">mode_edit</i>
+                        <a href="#">
+                            <i class="material-icons waves-effect waves-blue">more_vert</i>
                         </a>
-                    </div>
-                </div>
-            </li>
-            @endforeach
-        </ul>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
         @if(Session::get('user')->hasRole(2))
         {!! Form::close() !!}
         @endif

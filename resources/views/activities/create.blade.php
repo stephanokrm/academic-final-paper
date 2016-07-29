@@ -8,25 +8,24 @@ Adicionar Atividade
 <br><br>
 <div class="row">
     <div class="col s12 m8 offset-m4 l8 offset-l4">
-        {!! Form::open(['route' => 'activities.store']) !!}
+        {!! Form::open(['route' => ['activities.store', Input::route('id')]]) !!}
         <div class="row">
             <div class="col s12 m6 l6">
                 @if(empty($calendars))
                 <div class="center">
                     Nenhum calendário cadastrado
                     <br><br>
+                    <a class="waves-effect waves-light btn light-blue" href="{{ route('calendars.create') }}">Criar Calendário</a>
                 </div>
                 @else
                 <label>Calendário</label>
-                <select>
+                <select name="calendar_id">
                     <option value="" disabled selected>Selecione</option>
                     @foreach($calendars as $calendar)
                     <option value="{{ $calendar->getId() }}">{{ $calendar->getSummary() }}</option>
                     @endforeach
                 </select>
-                <br>
                 @endif
-                <a class="waves-effect waves-light btn light-blue" href="{{ route('calendars.create') }}">Criar Calendário</a>
             </div>
         </div>
         <div class="row">

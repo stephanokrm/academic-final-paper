@@ -57,7 +57,7 @@ Route::group(['middleware' => ['validation']], function() {
 
             Route::group(['middleware' => 'teacher'], function() {
                 Route::get('turmas/{id}/atividades/criar', ['as' => 'activities.create', 'uses' => 'ActivityController@create']);
-                Route::post('atividades', ['as' => 'activities.store', 'uses' => 'ActivityController@store']);
+                Route::post('turmas/{id}/atividades', ['as' => 'activities.store', 'uses' => 'ActivityController@store']);
                 Route::get('atividades/{id}/editar', ['as' => 'activities.edit', 'uses' => 'ActivityController@edit']);
                 Route::patch('atividades/{id}', ['as' => 'activities.update', 'uses' => 'ActivityController@update']);
                 Route::post('atividades/deletar', ['as' => 'activities.destroy', 'uses' => 'ActivityController@destroy']);
