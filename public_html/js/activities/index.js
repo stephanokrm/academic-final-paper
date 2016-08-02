@@ -1,12 +1,12 @@
 $(document).ready(function () {
 
     $("#select_all").click(function () {
-        $('.activity-item').prop('checked', this.checked);
+        $('.checkbox-activity').prop('checked', this.checked);
         $("input[type='checkbox']").trigger('change');
 
     });
 
-    $(".activity-item").click(function () {
+    $(".checkbox-activity").click(function () {
         if (!$(this).prop('checked')) {
             $('#select_all').prop('checked', this.checked);
         }
@@ -17,7 +17,7 @@ $(document).ready(function () {
     });
 
     $("input[type='checkbox']").change(function () {
-        var count = $(".activity-item:checked").length;
+        var count = $(".checkbox-activity:checked").length;
         if (count > 0) {
             $('.main-navbar').addClass('hide');
             $('.second-navbar').removeClass('hide');

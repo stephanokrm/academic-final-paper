@@ -70,7 +70,7 @@ Eventos
 <div class="row first-row">
     <div class="center">
         <i class="material-icons extra-large grey-text text-lighten-2">event</i>
-        <h4 class="grey-text text-lighten-2">Os eventos criados aparecem aqui.</h4>
+        <h4 class="grey-text text-lighten-2">Os eventos criados aparecem aqui</h4>
     </div>
 </div>
 @endif

@@ -134,25 +134,8 @@ table tbody tr {
     background-color: white;
 }
 
-table tbody tr td i {
-    padding-right: 10px;
-}
-
 table [type="checkbox"]+label{
     height: 15px;
-}
-
-button:focus {
-    background-color: transparent;
-}
-
-.calendars-checkbox[type="checkbox"]+label {
-    height: 17px;
-}
-
-.calendars-checkbox[type="checkbox"].filled-in:checked+label:after {
-    border: 2px solid #03a9f4;
-    background-color: #03a9f4;
 }
 
 .dropdown-content {
@@ -191,18 +174,6 @@ i.extra-large {
 .academic-logo-home {
     margin-top: 5%;
     height: 300px;
-}
-
-.first-row {
-    margin-top: 10%;
-}
-
-.first-row-events {
-    margin-top: 0.6%;
-}
-
-.no-margin-right {
-    margin-right: 0 !important;
 }
 
 .events-list .collection {
@@ -268,16 +239,8 @@ i.extra-large {
     height: 20px;
 }
 
-.delete-calendar[type="checkbox"]+label {
-    height: 15px;
-}
-
 .selected-td {
     background-color: #e3f2fd !important;
-}
-
-#no-side-margin {
-    padding: 0 0;
 }
 
 /* ---------------- MOBILE ------------------------*/

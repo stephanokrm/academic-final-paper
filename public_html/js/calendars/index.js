@@ -3,12 +3,12 @@
 $(document).ready(function () {
 
     $("#select_all").click(function () {
-        $('.calendar-item').prop('checked', this.checked);
+        $('.checkbox-calendar').prop('checked', this.checked);
         $("input[type='checkbox']").trigger('change');
 
     });
 
-    $(".calendar-item").click(function () {
+    $(".checkbox-calendar").click(function () {
         if (!$(this).prop('checked')) {
             $('#select_all').prop('checked', this.checked);
         }
@@ -21,7 +21,7 @@ $(document).ready(function () {
 
 
     $("input[type='checkbox']").change(function () {
-        var count = $(".calendar-item:checked").length;
+        var count = $(".checkbox-calendar:checked").length;
         if (count > 0) {
             $('.main-navbar').addClass('hide');
             $('.second-navbar').removeClass('hide');
