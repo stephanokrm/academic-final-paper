@@ -4,13 +4,9 @@
 Calendários
 @endsection
 
-@section('breadcrumb')
-{!! Breadcrumbs::render('calendars') !!}
-@endsection
-
 @section('content')
 <div class="col s12 m8 offset-m2 l8 offset-l2" id="no-side-margin">
-    <div class="row first-row calendars-list">
+    <div class="row">
         @if(empty($calendars))
         <div class="center">
             <i class="material-icons extra-large grey-text text-lighten-2">event_note</i>
@@ -18,16 +14,16 @@ Calendários
         </div>
         @else
         {!! Form::open([ 'method'  => 'post', 'route' => 'calendars.destroy', 'class' => 'form-delete']) !!}
-        <table class="bordered highlight responsive-table">
+        <table class="bordered highlight">
             <thead>
                 <tr>
-                    <th width="10%">
+                    <th width="15%">
                         <div class="center">
-                            {!! Form::checkbox('select_all', null, old('select_all'), ['class' => 'filled-in', 'id' => 'select_all']) !!}
+                            {!! Form::checkbox(null, null, null, ['class' => 'filled-in', 'id' => 'select_all']) !!}
                             <label for="select_all"></label>
                         </div>
                     </th>
-                    <th width="78%">Calendário</th>
+                    <th width="73%">Calendário</th>
                     <th width="12%">Ações</th>
                 </tr>
             </thead>
@@ -37,20 +33,20 @@ Calendários
                 <tr>
                     <td>
                         <div class="center">
-                            <input type="checkbox" name="calendars[]" value="{{ $calendar->getId() }}" class="filled-in delete-calendar" id="delete_{{ $calendar->getId() }}" />
+                            <input type="checkbox" name="calendars[]" value="{{ $calendar->getId() }}" class="filled-in delete-calendar calendar-item" id="delete_{{ $calendar->getId() }}" />
                             <label for="delete_{{ $calendar->getId() }}"></label>
                         </div>
                     </td>
                     <td>{{ $calendar->getSummary() }}</td>
                     <td>
-                        <a href="#">
-                            <i class="material-icons waves-effect waves-blue">more_vert</i>
+                        <a href="{{ route('calendars.edit', Crypt::encrypt($calendar->getId())) }}">
+                            <i class="material-icons waves-effect waves-blue">mode_edit</i>
                         </a>
                         <a href="{{ route('events.index', Crypt::encrypt($calendar->getId())) }}">
                             <i class="material-icons waves-effect waves-blue">arrow_forward</i>
                         </a>
-                        <a href="{{ route('calendars.edit', Crypt::encrypt($calendar->getId())) }}">
-                            <i class="material-icons waves-effect waves-blue">mode_edit</i>
+                        <a href="#">
+                            <i class="material-icons waves-effect waves-blue">more_vert</i>
                         </a>
                     </td>
                 </tr>

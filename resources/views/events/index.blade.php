@@ -4,10 +4,6 @@
 Eventos
 @endsection
 
-@section('breadcrumb')
-{!! Breadcrumbs::render('events.index') !!}
-@endsection
-
 @section('css')
 <link type="text/css" rel="stylesheet" href="{{ asset('/fullcalendar/fullcalendar.min.css') }}" media="screen,projection"/>
 @endsection

@@ -1,12 +1,12 @@
 @extends('app')
 
 @section('title')
-Adicionar Atividade
+Editar Atividade
 @endsection
 
 @section('content')
 <div class="col s12 m8 offset-m4 l8 offset-l4">
-    {!! Form::open(['route' => ['activities.store', Input::route('id')]]) !!}
+    {!! Form::open(['method'  => 'patch', 'route' => ['activities.update', Input::route('id')]]) !!}
     <div class="row">
         <div class="col s12 m6 l6">
             @if(empty($calendars))
@@ -20,7 +20,7 @@ Adicionar Atividade
             <select name="calendar_id">
                 <option value="" disabled selected>Selecione</option>
                 @foreach($calendars as $calendar)
-                <option value="{{ $calendar->getId() }}" {{ $calendar->getId() == old('calendar_id') ? 'selected' : '' }}>{{ $calendar->getSummary() }}</option>
+                <option value="{{ $calendar->getId() }}" {{ $calendar->getId() == $activity->getCalendarId() ? 'selected' : '' }}>{{ $calendar->getSummary() }}</option>
                 @endforeach
             </select>
             @if($errors->has('calendar_id'))
@@ -32,7 +32,7 @@ Adicionar Atividade
     <div class="row">
         <div class="col s12 m6 l6">
             <label for="summary">Título</label>
-            <input id="summary" type="text" class="validate" name="summary" value="{{ old('summary') }}">
+            <input id="summary" type="text" class="validate" name="summary" value="{{ $activity->getSummary() }}">
             @if($errors->has('summary'))
             <span class="help-block">{{ $errors->first('summary') }}</span>
             @endif
@@ -41,14 +41,14 @@ Adicionar Atividade
     <div class="row">
         <div class="col s12 m3 l3">
             <label for="weight">Peso</label>
-            <input id="weight" type="text" class="validate" name="weight" value="{{ old('weight') }}">
+            <input id="weight" type="text" class="validate" name="weight" value="{{ $activity->getWeight() }}">
             @if($errors->has('weight'))
             <span class="help-block">{{ $errors->first('weight') }}</span>
             @endif
         </div>
         <div class="col s12 m3 l3">
             <label for="total_score">Nota Máxima</label>
-            <input id="total_score" type="text" class="validate" name="total_score" value="{{ old('total_score') }}">
+            <input id="total_score" type="text" class="validate" name="total_score" value="{{ $activity->getTotalScore() }}">
             @if($errors->has('total_score'))
             <span class="help-block">{{ $errors->first('total_score') }}</span>
             @endif
@@ -57,7 +57,7 @@ Adicionar Atividade
     <div class="row">
         <div class="col s12 m3 l3">
             <label for="date">Data</label>
-            <input id="date" type="date" class="datepicker" placeholder="__/__/____" name="date" value="{{ old('date') }}">
+            <input id="date" type="date" class="datepicker" placeholder="__/__/____" name="date" value="{{ $activity->getDate() }}">
             @if($errors->has('date'))
             <span class="help-block">{{ $errors->first('date') }}</span>
             @endif
@@ -66,7 +66,7 @@ Adicionar Atividade
     <div class="row">
         <div class="col s12 m6 l6">
             <label for="description">Descrição</label>
-            <textarea length="500" id="description" name="description">{{ old('description') }}</textarea>
+            <textarea length="500" id="description" name="description">{{ $activity->getDescription() }}</textarea>
             @if($errors->has('description'))
             <span class="help-block">{{ $errors->first('description') }}</span>
             @endif
@@ -76,7 +76,7 @@ Adicionar Atividade
         <div class="col s12 m6 l6">
             <label for="description">Cor da Atividade</label><br>
             @foreach ($colors->getEvent() as $id => $color)
-            {!! Form::radio('color', $id, old('color'), ['id' => 'color_' . $id, 'class' => 'square']) !!}
+            {!! Form::radio('color', $id, $activity->getColorId() == $id ? true : false, ['id' => 'color_' . $id, 'class' => 'square']) !!}
             <label for="color_{{ $id }}"></label>
             @endforeach
             @if($errors->has('color'))
@@ -98,7 +98,7 @@ Adicionar Atividade
 @endsection
 
 @section('js')
-<script type="text/javascript" src="{{ asset('/js/activities/create.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/activities/edit.js') }}"></script>
 @endsection
 
 

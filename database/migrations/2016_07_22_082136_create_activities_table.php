@@ -18,11 +18,11 @@ class CreateActivitiesTable extends Migration {
             $table->double('total_score');
 
             $table->integer('event_id')->unsigned();
-            $table->foreign('event_id')->references('id')->on('events');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->index('event_id');
 
             $table->integer('team_id')->unsigned();
-            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
             $table->index('team_id');
 
             $table->timestamps();

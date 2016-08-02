@@ -1,4 +1,4 @@
-@extends('app')
+@extends('app', ['showNav' => 'true'])
 
 @section('title')
 Login

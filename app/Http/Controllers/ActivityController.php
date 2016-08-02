@@ -7,6 +7,7 @@ use Academic\Services\AcitivityService;
 use Academic\Services\CalendarService;
 use Academic\Services\GoogleService;
 use Academic\Services\EventService;
+use Academic\Validations\ActivityValidation;
 use Academic\Calendar;
 use Academic\Activity;
 use Academic\Event;
@@ -27,11 +28,6 @@ class ActivityController extends Controller {
         $this->calendarService = new Google_Service_Calendar($client);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index($id) {
         $eventService = new EventService($this->calendarService);
         $service = new AcitivityService();
@@ -56,11 +52,6 @@ class ActivityController extends Controller {
         return view('activities.index')->withActivities($activitiesModel);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create() {
         $service = new CalendarService($this->calendarService);
         $googleCalendars = $service->listCalendars();
@@ -70,21 +61,19 @@ class ActivityController extends Controller {
                         ->withColors($colors);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
     public function store(Request $request, $teamId) {
+        $validation = new ActivityValidation();
+        $validation->validate($request);
+
+        $request->merge(['all_day' => 'Y', 'begin_date' => $request->date, 'end_date' => $request->date]);
+        $service = new EventService($this->calendarService);
+        $insertedEvent = $service->insertEvent($request);
+
         $team = Team::findOrFail($teamId);
         $students = $team->students;
 
         $calendar = new Calendar();
         $calendar = $calendar->getCalendar($request->calendar_id);
-
-        $request->merge(['all_day' => 'Y', 'begin_date' => $request->date, 'end_date' => $request->date]);
-        $service = new EventService($this->calendarService);
-        $insertedEvent = $service->insertEvent($request);
 
         $event = new Event();
         $event->event = $insertedEvent->getId();
@@ -106,42 +95,44 @@ class ActivityController extends Controller {
                         ->withMessage('Atividade criada com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function show($id) {
-        //
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function edit($id) {
-        //
+        $eventService = new EventService($this->calendarService);
+        $service = new AcitivityService();
+        $activity = Activity::findOrFail($id);
+
+        $calendarId = $activity->event->calendar->calendar;
+        $eventId = $activity->event->event;
+        $googleEvent = $eventService->getEvent($calendarId, $eventId);
+        $event = $eventService->transformGoogleEventToModel($googleEvent);
+
+        $activityModel = new ActivityModel();
+        $activityModel->setId($activity->id);
+        $activityModel->setSummary($event->getSummary());
+        $activityModel->setDate($event->getBeginDate());
+        $activityModel->setColorId($event->getColorId());
+        $activityModel->setDescription($event->getDescription());
+        $activityModel->setWeight($activity->weight);
+        $activityModel->setTotalScore($activity->total_score);
+        $activityModel->setCalendarId($calendarId);
+
+        $service = new CalendarService($this->calendarService);
+        $googleCalendars = $service->listCalendars();
+        $colors = $this->calendarService->colors->get();
+
+        return view('activities.edit')
+                        ->withActivity($activityModel)
+                        ->withCalendars($googleCalendars)
+                        ->withColors($colors);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function update(Request $request, $id) {
-        //
+        abort(501);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function destroy($id) {
         //
     }

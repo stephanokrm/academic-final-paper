@@ -5,33 +5,31 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateUsersTable extends Migration {
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('users', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->index('id');
-			$table->string('name');
-			$table->date('birth_date')->nullable();
-			$table->string('email')->unique();
-			$table->string('registration')->unique();
-			$table->timestamps();
-		});
-	}
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up() {
+        Schema::create('users', function(Blueprint $table) {
+            $table->increments('id');
+            $table->index('id');
+            $table->string('name');
+            $table->date('birth_date')->nullable();
+            $table->string('email')->unique();
+            $table->string('registration')->unique();
+            $table->boolean('active');
+            $table->timestamps();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('users');
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down() {
+        Schema::drop('users');
+    }
 
 }

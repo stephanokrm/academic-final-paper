@@ -16,7 +16,7 @@ class CreateEmailsTable extends Migration {
             $table->index('id');
             $table->string('email')->unique();
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->index('user_id');
             $table->timestamps();
         });

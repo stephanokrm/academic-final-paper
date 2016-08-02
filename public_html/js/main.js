@@ -26,6 +26,10 @@ $(document).ready(function () {
         format: 'dd/mm/yyyy'
     });
 
+    $('.close-sidenav').click(function () {
+        $('.button-collapse').sideNav('hide');
+    });
+
 });
 
 function responsiveModal(id) {

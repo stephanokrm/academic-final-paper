@@ -16,7 +16,7 @@ class CreateEventsTable extends Migration {
             $table->index('id');
             $table->string('event')->unique();
             $table->integer('calendar_id')->unsigned();
-            $table->foreign('calendar_id')->references('id')->on('calendars');
+            $table->foreign('calendar_id')->references('id')->on('calendars')->onDelete('cascade');
             $table->index('calendar_id');
             $table->timestamps();
         });

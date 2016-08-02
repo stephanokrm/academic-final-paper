@@ -73,6 +73,7 @@ class UserController extends Controller {
 
         $user = Session::get('user');
         $user->birth_date = $request->birth_date;
+        $user->active = '1';
         $user->save();
 
         $team = Team::findOrFail($request->team);

@@ -11,6 +11,15 @@ class ActivityModel {
     private $description;
     private $date;
     private $colorId;
+    private $calendarId;
+
+    public function getCalendarId() {
+        return $this->calendarId;
+    }
+
+    public function setCalendarId($calendarId) {
+        $this->calendarId = $calendarId;
+    }
 
     public function getId() {
         return $this->id;

@@ -5,7 +5,6 @@ Registro
 @endsection
 
 @section('content')
-
 <div class="row center">
     <div class="col s12 m12 l12">
         <img class="academic-logo-login" src="{{ asset('/images/academic-logo.svg') }}">

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class User extends Model {
 
-    protected $fillable = ['name', 'birth_date', 'email', 'registration'];
+    protected $fillable = ['name', 'birth_date', 'email', 'registration', 'active'];
     protected $dates = ['birth_date'];
 
     public function exists($registration) {

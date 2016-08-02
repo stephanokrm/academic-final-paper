@@ -16,10 +16,10 @@ class CreateActivityStudentTable extends Migration {
             $table->boolean('done');
             $table->boolean('returned');
             $table->integer('activity_id')->unsigned();
-            $table->foreign('activity_id')->references('id')->on('activities');
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
             $table->index('activity_id');
             $table->integer('student_id')->unsigned();
-            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->index('student_id');
         });
     }

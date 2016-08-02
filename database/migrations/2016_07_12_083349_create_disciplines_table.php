@@ -5,30 +5,27 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateDisciplinesTable extends Migration {
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('disciplines', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->index('id');
-			$table->string('name');
-			$table->timestamps();
-		});
-	}
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up() {
+        Schema::create('disciplines', function(Blueprint $table) {
+            $table->increments('id');
+            $table->index('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('disciplines');
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down() {
+        Schema::drop('disciplines');
+    }
 
 }

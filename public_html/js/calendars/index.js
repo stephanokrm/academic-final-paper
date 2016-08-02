@@ -1,4 +1,18 @@
+/* global Materialize */
+
 $(document).ready(function () {
+
+    $("#select_all").click(function () {
+        $('.calendar-item').prop('checked', this.checked);
+        $("input[type='checkbox']").trigger('change');
+
+    });
+
+    $(".calendar-item").click(function () {
+        if (!$(this).prop('checked')) {
+            $('#select_all').prop('checked', this.checked);
+        }
+    });
 
 
     $('.delete-action').click(function () {
@@ -7,7 +21,7 @@ $(document).ready(function () {
 
 
     $("input[type='checkbox']").change(function () {
-        var count = $("input[type='checkbox']:checked").length;
+        var count = $(".calendar-item:checked").length;
         if (count > 0) {
             $('.main-navbar').addClass('hide');
             $('.second-navbar').removeClass('hide');
@@ -22,13 +36,12 @@ $(document).ready(function () {
             $('.main-navbar').removeClass('hide');
         }
     });
-//
+
     $("input[type='checkbox']").change(function () {
-        ;
         if ($(this).prop('checked')) {
-            $(this).parent('div').parent('div').parent('li').addClass('selected-collapsible-header');
+            $(this).parent('div').parent('td').parent('tr').addClass('selected-td');
         } else {
-            $(this).parent('div').parent('div').parent('li').removeClass('selected-collapsible-header');
+            $(this).parent('div').parent('td').parent('tr').removeClass('selected-td');
         }
     });
 

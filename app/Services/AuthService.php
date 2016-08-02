@@ -30,10 +30,14 @@ class AuthService {
         if ($user->exists($registration)) {
             $user = $user->getUser($registration);
             Session::put('user', $user);
+            if ($user->active == '0') {
+                return $user;
+            }
         } else {
             $user->name = Auth::user()->getFirstname() . ' ' . Auth::user()->getLastname();
             $user->registration = $registration;
             $user->email = Auth::user()->getEmail();
+            $user->active = '0';
             $user->save();
             Session::put('user', $user);
             return $user;

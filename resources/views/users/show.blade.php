@@ -4,12 +4,8 @@
 Usuário
 @endsection
 
-@section('breadcrumb')
-{!! Breadcrumbs::render('users.show') !!}
-@endsection
-
 @section('content')
-<div class="row center first-row">;
+<div class="row center">;
     <div class="col s12 m4 offset-m4 l4 offset-l4">
         <i class="material-icons large">photo</i> 
     </div>
