@@ -26,8 +26,8 @@
                                     </a>
                                     <ul class="right hide-on-med-and-down">
                                         <li><a href="{{ URL::current() }}"><i class="material-icons">refresh</i></a></li>
-                                        <li><a href=""><i class="material-icons">notifications</i></a></li>
-                                        <li><a href="" class="profile-img"><img class="circle" src="{{ asset('/images/perfil.jpg') }}"></a></li>
+                                        <li><a><i class="material-icons">notifications</i></a></li>
+                                        <li><a class="profile-img"><img class="circle" src="{{ asset(Session::get('user')->google->profile_image) }}"></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -58,9 +58,9 @@
                 <li>
                     <div class="userView">
                         <img class="background" src="{{ asset('/images/office.jpg') }}">
-                        <a href="#!user"><img class="circle" src="{{ asset('/images/perfil.jpg') }}"></a>
+                        <a href="#!user"><img class="circle" src="{{ asset(Session::get('user')->google->profile_image) }}"></a>
                         <a href="#!name"><span class="white-text name">{{ Session::get('user')->name }}</span></a>
-                        <a href="#!email"><span class="white-text email">{{ Session::get('user')->emailGoogle->email }}</span></a>
+                        <a href="#!email"><span class="white-text email">{{ Session::get('user')->google->email }}</span></a>
                     </div>
                 </li>
                 <li><a href="{{ route('home.index') }}"><i class="material-icons">home</i>Início</a></li>

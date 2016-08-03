@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Calendar extends Model {
 
     protected $fillable = ['calendar'];
-    protected $with = ['emails'];
+    protected $with = ['googles'];
 
-    public function emails() {
-        return $this->belongsToMany('Academic\Email');
+    public function googles() {
+        return $this->belongsToMany('Academic\Google');
     }
 
     public function events() {
@@ -28,8 +28,8 @@ class Calendar extends Model {
     public function getAssociatedEmails() {
         return $this->where('calendars.calendar', '=', $this->calendar)
                         ->join('calendar_email', 'calendar_email.calendar_id', '=', 'calendars.id')
-                        ->join('emails', 'emails.id', '=', 'calendar_email.email_id')
-                        ->select('emails.email')
+                        ->join('googles', 'googles.id', '=', 'calendar_email.email_id')
+                        ->select('googles.email')
                         ->get()
                         ->lists('email');
     }

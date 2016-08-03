@@ -10,7 +10,7 @@ use Google_Service_Calendar_AclRule;
 use Google_Service_Calendar_AclRuleScope;
 //
 use Academic\Validations\CalendarValidation;
-use Academic\Email;
+use Academic\Google;
 use Academic\Calendar;
 
 class CalendarService {
@@ -43,13 +43,13 @@ class CalendarService {
 
         $attendees = $request->attendees;
 
-        $email = new Email();
+        $email = new Google();
         $emails = $email->getEmails($attendees);
 
         $calendar = new Calendar();
         $calendar->calendar = $insertedCalendar->getId();
         $calendar->save();
-        $calendar->emails()->saveMany($emails->all());
+        $calendar->googles()->saveMany($emails->all());
 
         $this->associateAttendees($insertedCalendar, $request);
     }
@@ -80,7 +80,7 @@ class CalendarService {
         $attendees = $request->attendees;
         $disassociate = $request->disassociate;
 
-        $email = new Email();
+        $email = new Google();
         $addEmails = $email->getEmails($attendees);
         $removeEmails = $email->getEmails($disassociate);
 

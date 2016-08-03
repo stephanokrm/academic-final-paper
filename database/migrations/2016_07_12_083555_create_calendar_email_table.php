@@ -11,13 +11,13 @@ class CreateCalendarEmailTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('calendar_email', function(Blueprint $table) {
+        Schema::create('calendar_google', function(Blueprint $table) {
             $table->integer('calendar_id')->unsigned();
             $table->foreign('calendar_id')->references('id')->on('calendars')->onDelete('cascade');
             $table->index('calendar_id');
-            $table->integer('email_id')->unsigned();
-            $table->foreign('email_id')->references('id')->on('emails')->onDelete('cascade');
-            $table->index('email_id');
+            $table->integer('google_id')->unsigned();
+            $table->foreign('google_id')->references('id')->on('googles')->onDelete('cascade');
+            $table->index('google_id');
         });
     }
 

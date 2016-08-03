@@ -78,7 +78,7 @@ Editar Calendário
                     <tr>
                         <td>
                             <div class="center">
-                                {!! Form::checkbox('disassociate[]', $associate->user->emailGoogle->email, old('disassociate[]'), ['class' => 'associate remove filled-in', 'id' => 'remove_' . $associate->user->registration]) !!}
+                                {!! Form::checkbox('disassociate[]', $associate->user->google->email, old('disassociate[]'), ['class' => 'associate remove filled-in', 'id' => 'remove_' . $associate->user->registration]) !!}
                                 <label for="remove_{{ $associate->user->registration }}"></label>
                             </div>
                         </td>

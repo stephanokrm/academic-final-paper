@@ -3,7 +3,7 @@
 namespace Academic\Http\Controllers;
 
 use Academic\Http\Controllers\Controller;
-use Academic\Email;
+use Academic\Google;
 use Academic\Team;
 use Academic\Student;
 use Academic\User;
@@ -83,12 +83,14 @@ class UserController extends Controller {
         $student->team()->associate($team);
         $student->save();
 
-        $email = new Email();
-        $email->email = $request->email;
-        $email->user()->associate($user);
-        $email->save();
+        $google = new Google();
+        $google->email = $request->email;
+        $google->profile_image = '/images/user.svg';
+        $google->user()->associate($user);
+        $google->save();
 
         Session::put('user', $user);
+
         return redirect()->route('home.index')->withMessage('Registro efetuado com sucesso.');
     }
 

@@ -5,9 +5,9 @@ namespace Academic;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 
-class Email extends Model {
+class Google extends Model {
 
-    protected $fillable = ['email'];
+    protected $fillable = ['email', 'profile_image'];
 
     public function user() {
         return $this->belongsTo('Academic\User');
@@ -23,13 +23,13 @@ class Email extends Model {
 
     public function getDisassociated($emails) {
         $teamId = Session::get('user')->student->team_id;
-        $userEmail = Session::get('user')->emailGoogle->email;
-        return $this->whereNotIn('emails.email', $emails)
-                        ->where('emails.email', '!=', $userEmail)
+        $userEmail = Session::get('user')->google->email;
+        return $this->whereNotIn('googles.email', $emails)
+                        ->where('googles.email', '!=', $userEmail)
                         ->where('students.team_id', $teamId)
-                        ->join('users', 'users.id', '=', 'emails.user_id')
+                        ->join('users', 'users.id', '=', 'googles.user_id')
                         ->join('students', 'students.user_id', '=', 'users.id')
-                        ->select('emails.email', 'users.name', 'users.registration')
+                        ->select('googles.email', 'users.name', 'users.registration')
                         ->get();
     }
 

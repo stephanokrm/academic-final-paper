@@ -36,7 +36,7 @@ Adicionar Calendário
                     <tr>
                         <td>
                             <div class="center">
-                                {!! Form::checkbox('attendees[]', $student->user->emailGoogle->email, old('attendees[]'), ['class' => 'invite filled-in', 'id' => 'invite_' . $student->user->registration]) !!}
+                                {!! Form::checkbox('attendees[]', $student->user->google->email, old('attendees[]'), ['class' => 'invite filled-in', 'id' => 'invite_' . $student->user->registration]) !!}
                                 <label for="invite_{{ $student->user->registration }}"></label>
                             </div>
                         </td>

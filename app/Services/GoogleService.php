@@ -7,6 +7,7 @@ use Session;
 //
 use Google_Client;
 use Google_Service_Calendar;
+use Google_Service_Plus;
 
 class GoogleService {
 
@@ -16,7 +17,15 @@ class GoogleService {
         $client->setClientId('853157239818-rsl4k0s23joipal9li62p32s02uk65de.apps.googleusercontent.com');
         $client->setClientSecret('uCN_zH8cN5d6cRKk7Im2dX2o');
         $client->setRedirectUri('http://webacademico.canoas.ifrs.edu.br/~academic/index.php/home');
-        $client->setScopes(['profile', 'email', Google_Service_Calendar::CALENDAR]);
+        $client->setScopes([
+            'profile',
+            'email',
+            Google_Service_Calendar::CALENDAR,
+            'https://www.googleapis.com/auth/plus.login',
+            'https://www.googleapis.com/auth/plus.me',
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/userinfo.profile'
+        ]);
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -25,6 +34,7 @@ class GoogleService {
         } else {
             if (isset($_GET['code'])) {
                 $accessToken = $client->authenticate($_GET['code']);
+
                 Session::put('credentials', $accessToken);
             } else {
                 $authUrl = $client->createAuthUrl();
@@ -38,6 +48,16 @@ class GoogleService {
             $client->refreshToken($client->getRefreshToken());
             Session::put('credentials', $client->getAccessToken());
         }
+
+        $googlePlusService = new Google_Service_Plus($client);
+        $person = $googlePlusService->people->get('me');
+        $profileImage = $person->getImage()->getUrl();
+
+        $user = Session::get('user');
+        $google = $user->google;
+        $google->profile_image = $profileImage;
+        $google->save();
+
         return $client;
     }
 

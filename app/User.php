@@ -22,8 +22,8 @@ class User extends Model {
         return $this->where('registration', $registration)->first();
     }
 
-    public function emailGoogle() {
-        return $this->hasOne('Academic\Email');
+    public function google() {
+        return $this->hasOne('Academic\Google');
     }
 
     public function roles() {

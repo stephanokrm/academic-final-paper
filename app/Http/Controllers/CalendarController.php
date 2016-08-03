@@ -6,7 +6,7 @@ use Academic\Services\GoogleService;
 use Academic\Services\CalendarService;
 use Academic\Http\Controllers\Controller;
 use Academic\Calendar;
-use Academic\Email;
+use Academic\Google;
 use Academic\Student;
 //
 use Illuminate\Http\Request;
@@ -53,7 +53,7 @@ class CalendarController extends Controller {
         $associated = $calendar->emails;
         $associatedEmails = $calendar->getAssociatedEmails();
 
-        $email = new Email();
+        $email = new Google();
         $disassociated = $email->getDisassociated($associatedEmails);
 
         $service = new CalendarService($this->calendarService);
