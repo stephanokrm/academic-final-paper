@@ -3,13 +3,14 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0""/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}"/>
         <title>Academic - @yield('title')</title>
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="{{ asset('/materialize/css/materialize.min.css') }}">
-        <link type="text/css" rel="stylesheet" href="{{ asset('/font-awesome/css/font-awesome.min.css') }}" media="screen,projection"/>
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <link type="text/css" rel="stylesheet" href="{{ asset('/materialize/css/materialize.min.css') }}"/>
+        <link type="text/css" rel="stylesheet" href="{{ asset('/font-awesome/css/font-awesome.min.css') }}" media="screen"/>
         @yield('css')
-        <link type="text/css" rel="stylesheet" href="{{ asset('/css/style.css') }}">
+        <link type="text/css" rel="stylesheet" property="" href="{{ asset('/css/style.css') }}"/>
     </head>
     <body>
         @if(Session::has('user') && !isset($showNav))
@@ -27,7 +28,7 @@
                                     <ul class="right hide-on-med-and-down">
                                         <li><a href="{{ URL::current() }}"><i class="material-icons">refresh</i></a></li>
                                         <li><a><i class="material-icons">notifications</i></a></li>
-                                        <li><a class="profile-img"><img class="circle" src="{{ asset(Session::get('user')->google->profile_image) }}"></a></li>
+                                        <li><a class="profile-img"><img alt="Imagem de Perfil" class="circle" src="{{ asset(Session::get('user')->google->profile_image) }}"></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -57,16 +58,16 @@
                 <li class="close-sidenav"><a href="#!" class="close-sidenav"><i class="material-icons close-sidenav">arrow_back</i>Fechar</a></li>
                 <li>
                     <div class="userView">
-                        <img class="background" src="{{ asset('/images/office.jpg') }}">
-                        <a href="#!user"><img class="circle" src="{{ asset(Session::get('user')->google->profile_image) }}"></a>
-                        <a href="#!name"><span class="white-text name">{{ Session::get('user')->name }}</span></a>
-                        <a href="#!email"><span class="white-text email">{{ Session::get('user')->google->email }}</span></a>
+                        <img alt="Imagem de Capa" class="background" src="{{ asset('/images/office.jpg') }}">
+                        <a><img alt="Imagem de Perfil" class="circle" src="{{ asset(Session::get('user')->google->profile_image) }}"></a>
+                        <a><span class="white-text name">{{ Session::get('user')->name }}</span></a>
+                        <a><span class="white-text email">{{ Session::get('user')->google->email }}</span></a>
                     </div>
                 </li>
                 <li><a href="{{ route('home.index') }}"><i class="material-icons">home</i>Início</a></li>
                 <li><div class="divider"></div></li>
-                @if(Session::get('user')->hasRole(2)) 
-                <li><a><i class="material-icons">group</i>Turmas</a></li>
+                @if(Session::get('user')->isTeacher()) 
+                <li><a href=""><i class="material-icons">group</i>Turmas</a></li>
                 @else
                 <li><a href="{{ route('activities.index', Session::get('user')->getTeamFromUser()) }}"><i class="material-icons">import_contacts</i>Atividades</a></li>
                 @endif
@@ -80,7 +81,6 @@
                 <li><a href="{{ route('auth.logout') }}"><i class="material-icons">clear</i>Sair</a></li>
             </ul>
         </header>
-
         @endif
         @if(Session::has('message'))
         <div id="message" data-message="{{ Session::get('message') }}"></div>
@@ -92,11 +92,10 @@
                 </div>
             </div>
         </main>
-        <script src="{{ asset('/js/jquery-3.1.0.min.js') }}"></script>
-        <script src="{{ asset('/materialize/js/materialize.min.js') }}"></script>
-        <script src="{{ asset('/js/main.js') }}"></script>
-        <script src="{{ asset('/js/jquery.mask.min.js') }}"></script>
-
+        <script type="text/javascript" src="{{ asset('/js/jquery-3.1.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/materialize/js/materialize.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/main.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/jquery.mask.min.js') }}"></script>
         @yield('js')
     </body>
 </html>

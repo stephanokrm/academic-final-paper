@@ -12,14 +12,14 @@ Registro
 </div>
 <div class="row center">
     <div class="col s12 m12 l12">
-        <h3>Bem-vindo, {{ Session::get('user')->name }}!</h3>
+        <h3>Bem-vindo, {{ $user->name }}!</h3>
     </div>
     <div class="col s12 m12 l12">
         <h5>Esta é sua primeira vez no sistema, por favor preencha os campos abaixo.</h5>
     </div>
 </div>
 <br>
-{!! Form::open(['method' => 'patch', 'route' => ['users.update', Session::get('user')->id]]) !!}
+{!! Form::open(['method' => 'patch', 'route' => ['users.update', $user->id]]) !!}
 <div class="row">
     <div class="col s12 m4 offset-m4 l4 offset-l4">
         <label for="birth-date">Data de Nascimento</label>

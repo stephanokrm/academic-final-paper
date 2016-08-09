@@ -9,6 +9,7 @@ class User extends Model {
 
     protected $fillable = ['name', 'birth_date', 'email', 'registration', 'active'];
     protected $dates = ['birth_date'];
+    protected $with = ['teacher'];
 
     public function exists($registration) {
         return $this->where('registration', $registration)->exists();
@@ -16,6 +17,10 @@ class User extends Model {
 
     public function student() {
         return $this->hasOne('Academic\Student');
+    }
+
+    public function teacher() {
+        return $this->hasOne('Academic\Teacher');
     }
 
     public function getUser($registration) {
@@ -47,6 +52,10 @@ class User extends Model {
         return !$this->roles->filter(function($role) use ($id) {
                     return $role->id == $id;
                 })->isEmpty();
+    }
+
+    public function isTeacher() {
+        return count($this->teacher) > 0;
     }
 
     public function getTeamFromUser() {

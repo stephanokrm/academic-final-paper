@@ -40,7 +40,7 @@ Adicionar Calendário
                                 <label for="invite_{{ $student->user->registration }}"></label>
                             </div>
                         </td>
-                        <td>{{ ucwords($student->user->name) }}</td>
+                        <td>{{ $student->user->name }}</td>
                     </tr>
                     @endforeach
                 </tbody>

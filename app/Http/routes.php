@@ -19,7 +19,6 @@ Route::group(['middleware' => ['validation']], function() {
     Route::get('login', ['as' => 'auth.index', 'uses' => 'Auth\AuthController@index']);
     Route::post('logar', ['as' => 'auth.ldap', 'uses' => 'Auth\AuthController@login']);
     Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@logout']);
-    Route::get('registro', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@register']);
 
     Route::get('usuarios/criar', ['as' => 'users.create', 'uses' => 'UserController@create']);
     Route::post('usuarios', ['as' => 'users.store', 'uses' => 'UserController@store']);

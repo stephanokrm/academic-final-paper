@@ -17,6 +17,8 @@ use Academic\Models\ActivityModel;
 use Illuminate\Http\Request;
 //
 use Google_Service_Calendar;
+//
+use Session;
 
 class ActivityController extends Controller {
 
@@ -49,7 +51,9 @@ class ActivityController extends Controller {
             $activitiesModel[] = $activityModel;
         }
 
-        return view('activities.index')->withActivities($activitiesModel);
+        $user = Session::get('user');
+
+        return view('activities.index')->withActivities($activitiesModel)->withUser($user);
     }
 
     public function create() {
@@ -96,7 +100,7 @@ class ActivityController extends Controller {
     }
 
     public function show($id) {
-        
+        abort(501);
     }
 
     public function edit($id) {
@@ -134,7 +138,7 @@ class ActivityController extends Controller {
     }
 
     public function destroy($id) {
-        //
+        abort(501);
     }
 
 }

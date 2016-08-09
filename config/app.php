@@ -133,7 +133,6 @@ return [
          */
         'Collective\Html\HtmlServiceProvider',
         'Dsdevbe\LdapConnector\LdapConnectorServiceProvider',
-        'DaveJamesMiller\Breadcrumbs\ServiceProvider',
         'Lord\Laroute\LarouteServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
     ],
@@ -183,6 +182,5 @@ return [
         'View' => 'Illuminate\Support\Facades\View',
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
-        'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
     ],
 ];

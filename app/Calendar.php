@@ -27,8 +27,8 @@ class Calendar extends Model {
 
     public function getAssociatedEmails() {
         return $this->where('calendars.calendar', '=', $this->calendar)
-                        ->join('calendar_email', 'calendar_email.calendar_id', '=', 'calendars.id')
-                        ->join('googles', 'googles.id', '=', 'calendar_email.email_id')
+                        ->join('calendar_google', 'calendar_google.calendar_id', '=', 'calendars.id')
+                        ->join('googles', 'googles.id', '=', 'calendar_google.google_id')
                         ->select('googles.email')
                         ->get()
                         ->lists('email');

@@ -43,13 +43,13 @@ class CalendarService {
 
         $attendees = $request->attendees;
 
-        $email = new Google();
-        $emails = $email->getEmails($attendees);
+        $google = new Google();
+        $googles = $google->getEmails($attendees);
 
         $calendar = new Calendar();
         $calendar->calendar = $insertedCalendar->getId();
         $calendar->save();
-        $calendar->googles()->saveMany($emails->all());
+        $calendar->googles()->saveMany($google->all());
 
         $this->associateAttendees($insertedCalendar, $request);
     }
@@ -80,23 +80,23 @@ class CalendarService {
         $attendees = $request->attendees;
         $disassociate = $request->disassociate;
 
-        $email = new Google();
-        $addEmails = $email->getEmails($attendees);
-        $removeEmails = $email->getEmails($disassociate);
+        $google = new Google();
+        $addEmails = $google->getEmails($attendees);
+        $removeEmails = $google->getEmails($disassociate);
 
-        foreach ($removeEmails as $email) {
-            $this->disassociateAttendee($id, $email->email);
+        foreach ($removeEmails as $google) {
+            $this->disassociateAttendee($id, $google->email);
         }
 
         $calendar = new Calendar();
         $calendar = $calendar->getCalendar($id);
 
         foreach ($removeEmails as $removeEmail) {
-            $calendar->emails()->detach($removeEmail->id);
+            $calendar->googles()->detach($removeEmail->id);
         }
 
         foreach ($addEmails as $addEmail) {
-            $calendar->emails()->attach($addEmail->id);
+            $calendar->googles()->attach($addEmail->id);
         }
 
         $this->associateAttendees($googleCalendar, $request);
@@ -114,10 +114,10 @@ class CalendarService {
 
         foreach ($calendars as $calendar) {
             $id = $calendar->calendar;
-            foreach ($calendar->emails as $email) {
-                $this->disassociateAttendee($id, $email->email);
+            foreach ($calendar->googles as $google) {
+                $this->disassociateAttendee($id, $google->email);
             }
-            $calendar->emails()->sync([], true);
+            $calendar->googles()->sync([], true);
             $calendar->delete();
             $this->calendarService->calendars->delete($id);
         }

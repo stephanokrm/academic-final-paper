@@ -26,7 +26,6 @@ Calendários
                 <th width="12%" colspan="3">Ações</th>
             </tr>
         </thead>
-
         <tbody>
             @foreach ($calendars as $calendar)
             <tr>

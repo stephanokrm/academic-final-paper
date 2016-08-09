@@ -30,6 +30,22 @@ $(document).ready(function () {
         $('.button-collapse').sideNav('hide');
     });
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(window).scroll(function () {
+        if ($(this).scrollTop() == 0) {
+            $('.main-navbar').removeClass('nav-shadow');
+        } else {
+            if (!$('.main-navbar').hasClass('nav-shadow')) {
+                $('.main-navbar').addClass('nav-shadow');
+            }
+        }
+    });
+
 });
 
 function responsiveModal(id) {

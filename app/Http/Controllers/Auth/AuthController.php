@@ -14,26 +14,6 @@ class AuthController extends Controller {
     private $service;
     protected $username = 'username';
 
-    /*
-      |--------------------------------------------------------------------------
-      | Registration & Login Controller
-      |--------------------------------------------------------------------------
-      |
-      | This controller handles the registration of new users, as well as the
-      | authentication of existing users. By default, this controller uses
-      | a simple trait to add these behaviors. Why don't you explore it?
-      |
-     */
-
-    // use AuthenticatesAndRegistersUsers;
-
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @param  \Illuminate\Contracts\Auth\Guard  $auth
-     * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
-     * @return void
-     */
     public function __construct(AuthService $service) {
         $this->middleware('guest', ['except' => ['logout', 'register']]);
         $this->service = $service;
@@ -45,7 +25,15 @@ class AuthController extends Controller {
 
     public function login(Request $request) {
         $user = $this->service->login($request);
-        return isset($user) ? redirect()->route('auth.register') : redirect()->route('home.index')->withMessage('Login efetuado com sucesso.');
+        if ($user) {
+            if ($user->isTeacher()) {
+                return redirect()->route('home.index')->withMessage('Login efetuado com sucesso.');
+            }
+            $teams = Team::all();
+            return view('auth.register')->withTeams($teams)->withUser($user);
+        }
+
+        return redirect()->route('home.index')->withMessage('Login efetuado com sucesso.');
     }
 
     public function logout() {
@@ -53,11 +41,6 @@ class AuthController extends Controller {
         $googleService->logout();
         $this->service->logout();
         return redirect()->route('auth.index');
-    }
-
-    public function register() {
-        $teams = Team::all();
-        return view('auth.register')->withTeams($teams);
     }
 
 }

@@ -7,7 +7,7 @@ Início
 @section('content')
 <div class="col s12 m12 l12">
     <div class="row center">
-        <img class="academic-logo-home" src="{{ asset('/images/academic-logo.svg') }}">
+        <img alt="Logo Academic" class="academic-logo-home" src="{{ asset('/images/academic-logo.svg') }}">
     </div>
     <div class="row center">
         <div class="col s12 m12 l12">

@@ -50,11 +50,13 @@ class CalendarController extends Controller {
 
         $calendar = new Calendar();
         $calendar = $calendar->getCalendar($calendarId);
-        $associated = $calendar->emails;
+        $associated = $calendar->googles;
         $associatedEmails = $calendar->getAssociatedEmails();
 
-        $email = new Google();
-        $disassociated = $email->getDisassociated($associatedEmails);
+
+
+        $google = new Google();
+        $disassociated = $google->getDisassociated($associatedEmails);
 
         $service = new CalendarService($this->calendarService);
         $googleCalendar = $service->getCalendar($calendarId);

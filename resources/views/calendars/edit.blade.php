@@ -5,10 +5,10 @@ Editar Calendário
 @endsection
 
 @section('content')
-<div class="col s12 m10 offset-m1 l10 offset-l1">
+<div class="col s12 m8 offset-m2 l8 offset-l2">
     {!! Form::open(['method'  => 'patch', 'route' => ['calendars.update', Crypt::encrypt($calendar->getId())]]) !!}
     <div class="row">
-        <div class="col s12 m6 l6">
+        <div class="col s12 m6 offset-m3 l6 offset-l3">
             <label for="summary">Título</label>
             <input id="summary" type="text" class="validate" name="summary" value="{{ $calendar->getSummary() }}">
             @if($errors->has('summary'))
@@ -16,10 +16,10 @@ Editar Calendário
             @endif
         </div>
     </div>
-
     <div class="row">
         @if(count($disassociated) > 0)
         <div class="col s12 m6 l6">
+            <label>Desassociados</label>
             <table class="bordered">
                 <thead>
                     <tr>
@@ -61,6 +61,7 @@ Editar Calendário
         @endif
         @if(count($associated) > 0)
         <div class="col s12 m6 l6">
+            <label>Associados</label>
             <table class="bordered">
                 <thead>
                     <tr>

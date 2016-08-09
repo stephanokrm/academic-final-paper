@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCalendarEmailTable extends Migration {
+class CreateCalendarGoogleTable extends Migration {
 
     /**
      * Run the migrations.
@@ -27,7 +27,7 @@ class CreateCalendarEmailTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('calendar_email');
+        Schema::drop('calendar_google');
     }
 
 }

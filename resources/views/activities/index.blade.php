@@ -12,13 +12,13 @@ Atividades
         <h4 class="grey-text text-lighten-2">As atividades criadas pelo professor aparecem aqui</h4>
     </div>
     @else
-    @if(Session::get('user')->hasRole(2))
+    @if($user->isTeacher())
     {!! Form::open(['method' => 'post', 'route' => 'activities.destroy', 'class' => 'form-delete']) !!}
     @endif
     <table class="bordered highlight">
         <thead>
             <tr>
-                @if(Session::get('user')->hasRole(2))
+                @if($user->isTeacher())
                 <th width="15%">
                     <div class="center">
                         {!! Form::checkbox('select_all', null, old('select_all'), ['class' => 'filled-in', 'id' => 'select_all']) !!}
@@ -34,7 +34,7 @@ Atividades
         <tbody>
             @foreach($activities as $activity)
             <tr>
-                @if(Session::get('user')->hasRole(2))
+                @if($user->isTeacher())
                 <td>
                     <div class="center">
                         <input type="checkbox" name="activities[]" value="{{ $activity->getId() }}" class="filled-in checkbox-activity" id="delete_{{ $activity->getId() }}" />
@@ -63,12 +63,12 @@ Atividades
             @endforeach
         </tbody>
     </table>
-    @if(Session::get('user')->hasRole(2))
+    @if($user->isTeacher())
     {!! Form::close() !!}
     @endif
     @endif
 </div>
-@if(Session::get('user')->hasRole(2))
+@if($user->isTeacher())
 <div class="fixed-action-btn horizontal">
     <a class="btn-floating btn-large red waves-effect waves-light" href="{{ route('activities.create', Input::route('id')) }}">
         <i class="large material-icons">add</i>

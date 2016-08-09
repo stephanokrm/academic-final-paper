@@ -1,0 +1,28 @@
+class_name: AcceptanceTester
+modules:
+    disabled:
+        - PhpBrowser:
+            url: http://webacademico.canoas.ifrs.edu.br/~academic/index.php
+        - \Helper\Acceptance
+    enabled:
+        - WebDriver:
+            url: http://webacademico.canoas.ifrs.edu.br/~academic/index.php
+            browser: chrome
+            window_size: maximize
+            capabilities:
+                browserName: "chrome"
+                javascriptEnabled: true,
+                webStorageEnabled: true,
+                nativeEvents: true
+        - \Helper\Acceptance
+    disabled:
+        - WebDriver:
+            url: http://webacademico.canoas.ifrs.edu.br/~academic/index.php
+            browser: firefox
+            window_size: maximize
+            capabilities:
+                browserName: "firefox"
+                javascriptEnabled: true,
+                webStorageEnabled: true,
+                nativeEvents: true
+        - \Helper\Acceptance
