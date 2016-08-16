@@ -99,14 +99,14 @@ $(document).ready(function () {
     });
 
     $('#calendar').fullCalendar({
-        eventOrder: "start",
-        allDaySlot: true,
-        height: "auto",
-        header: {center: 'title', right: 'month, agendaWeek, agendaDay', left: 'today prev,next'},
-        titleFormat: 'DD MMMM, YYYY',
+        contentHeight: 750,
+        header: {center: 'title, ', right: 'month, agendaWeek, agendaDay, next', left: 'prev, today'},
+        titleFormat: 'DD - MMMM YYYY',
         lang: 'pt-br',
-        events: events,
+        events: events
     });
+
+    $('.fc-button').addClass('waves-effect waves-light');
 
     var summary = '';
 

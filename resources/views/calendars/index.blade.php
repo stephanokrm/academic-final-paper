@@ -13,7 +13,7 @@ Calendários
     </div>
     @else
     {!! Form::open([ 'method'  => 'post', 'route' => 'calendars.destroy', 'class' => 'form-delete']) !!}
-    <table class="bordered highlight">
+    <table class="bordered highlight list-table">
         <thead>
             <tr>
                 <th width="15%">

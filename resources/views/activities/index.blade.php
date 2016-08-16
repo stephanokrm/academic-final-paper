@@ -15,7 +15,7 @@ Atividades
     @if($user->isTeacher())
     {!! Form::open(['method' => 'post', 'route' => 'activities.destroy', 'class' => 'form-delete']) !!}
     @endif
-    <table class="bordered highlight">
+    <table class="bordered highlight list-table">
         <thead>
             <tr>
                 @if($user->isTeacher())

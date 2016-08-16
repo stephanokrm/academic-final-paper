@@ -21,7 +21,7 @@ class CreateActivitiesTable extends Migration {
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->index('event_id');
 
-            $table->integer('team_id')->unsigned();
+            $table->integer('team_id')->unsigned()->nullable();
             $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
             $table->index('team_id');
 

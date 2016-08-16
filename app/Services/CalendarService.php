@@ -49,7 +49,7 @@ class CalendarService {
         $calendar = new Calendar();
         $calendar->calendar = $insertedCalendar->getId();
         $calendar->save();
-        $calendar->googles()->saveMany($google->all());
+        $calendar->googles()->saveMany($googles->all());
 
         $this->associateAttendees($insertedCalendar, $request);
     }

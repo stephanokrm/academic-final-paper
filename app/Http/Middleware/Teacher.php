@@ -16,7 +16,7 @@ class Teacher {
      * @return mixed
      */
     public function handle($request, Closure $next) {
-        if (Session::get('user')->hasRole(2)) {
+        if (Session::get('user')->isTeacher()) {
             return $next($request);
         }
 

@@ -68,7 +68,7 @@ button, html, input, select, textarea {
 }
 
 main {
-    padding-top: 50px;
+    padding-top: 25px;
 }
 
 body {
@@ -139,7 +139,7 @@ nav ul a {
     font-size: 1.1rem;
 }
 
-table tbody tr {
+.list-table tbody tr {
     background-color: white;
 }
 
@@ -183,23 +183,6 @@ i.extra-large {
 .academic-logo-home {
     margin-top: 5%;
     height: 300px;
-}
-
-.events-list .collection {
-    border: none; 
-    border-radius: 0; 
-    margin-top: 0;
-}
-
-.events-list .collection-item {
-    border: none;
-}
-
-.events-list .collection.with-header .collection-header {
-    padding: 20px 20px;
-    background-color: #03a9f4;
-    font-size: 17px;
-    border: none;
 }
 
 .modal-header {
@@ -259,105 +242,76 @@ i.extra-large {
         margin-top: 8px;
         margin-bottom: 8px;
     }
-
-    #events-colletion {
-        padding-right: 0 !important;
-    }
-
-    #events-calendar {
-        padding-left: 0 !important;
-    }
 }
 
 /* ---------------- FULLCALENDAR ------------------*/
-.fc-toolbar {
-    background-color: #03a9f4;
-    margin-bottom: 0;
+.fc-body {
+    background-color: white;
 }
 
-.fc-left {
-    margin-top: 15px;
-    margin-left: 15px;
+.fc-center h2 {
+    font-size: 1.5rem;
+    margin-top: 10px;
 }
 
-.fc-right {
-    margin-top: 15px;
-    margin-right: 15px;
-}
-
-.fc-content {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-}
-
-.fc-widget-header {
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.fc-day-grid-event {
-    margin: 0;
-    border-radius: 0;
-}
-
-.fc-time-grid-container, .fc-divider, .fc-axis {
-    display: none;
-}
-
-.fc button {
+.fc-toolbar button {
+    background-color: #e0e0e0;
     border: none;
-    border-radius: 2px;
+    border-radius: 0;
     display: inline-block;
     height: 36px;
     line-height: 36px;
     outline: 0;
     padding: 0 2rem;
     text-transform: uppercase;
-    letter-spacing: .5px;
-    background-color: white;
-    color: black;
-}
-
-.fc-state-default.fc-corner-left {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.fc-state-default.fc-corner-right {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .fc-state-default {
+    background-color: grey;
     background-image: none;
     background-repeat: no-repeat;
-    background-color: #40c4ff;
-    border: none;
+    box-shadow: none;
+}
+
+.fc-day-header {
+    text-align: left !important;
+    padding: 8px !important;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.fc-day-grid-event {
+    border-radius: 2px;
+    margin: 0 2px 2px 2px;
+    padding: 10px;
+    cursor: pointer;
 }
 
 .fc-unthemed .fc-today {
-    background: #b3e5fc;
+    background: #eeeeee;
 }
 
-.fc-agenda-view .fc-day-grid .fc-row {
-    min-height: 300px;
+.fc-axis {
+    display: none;
 }
 
-.fc-basic-view .fc-body .fc-row {
-    min-height: 100px;
+.fc-time-grid-container {
+    display: none !important;
+    overflow-x: no-display;
+    overflow-y: no-display;
 }
 
-#calendar h2 {
-    color: white;
-    margin-top: 18px;
-    margin-bottom: 12px;
-    font-size: 1.8rem;
+.fc-divider {
+    display: none !important;
+    overflow-x: no-display;
+    overflow-y: no-display;
 }
 
-
-
-
+.fc-agendaWeek-view .fc-day-grid, .fc-agendaWeek-view .fc-bg, .fc-agendaDay-view .fc-day-grid, .fc-agendaDay-view .fc-bg {
+    min-height: 600px !important;
+}
 /* -----------COLORS FROM EVENT ------------- */
 .default-event {
     background-color: #9fe1e7 !important;

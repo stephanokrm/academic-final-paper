@@ -16,6 +16,10 @@ class CreateCalendarsTable extends Migration {
             $table->index('id');
             $table->string('calendar')->unique();
             $table->timestamps();
+
+            $table->integer('team_id')->unsigned()->nullable();
+            $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
+            $table->index('team_id');
         });
     }
 

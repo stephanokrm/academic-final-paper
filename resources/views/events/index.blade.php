@@ -43,7 +43,12 @@ Eventos
     </div> 
 </div>
 <div class="row first-row-events events-list">
-    <div class="col s12 m3 l2" id="events-colletion">
+    <div class="col s12 m12 l12" id="events-calendar">
+        <div class="row">
+            <div id="calendar"></div>
+        </div>
+    </div>
+    <div class="col s12 m3 l2 hide" id="events-colletion">
         <ul class="collection with-header">
             <li class="collection-header white-text center">Próximos Eventos</li>
             @foreach($events as $event)
@@ -58,14 +63,8 @@ Eventos
             </li>
             @endforeach
         </ul>
-
     </div>
-    <div class="col s12 m9 l10" id="events-calendar">
-        <div class="row">
-            <div id="calendar"></div>
-        </div>
-    </div>
-</div>
+</div> 
 @else
 <div class="row first-row">
     <div class="center">
