@@ -235,6 +235,11 @@ i.extra-large {
     background-color: #e3f2fd !important;
 }
 
+#user-options {
+    min-width: 200px !important;
+    margin-top: 64px;
+}
+
 /* ---------------- MOBILE ------------------------*/
 
 @media only screen and (max-width : 768px) {

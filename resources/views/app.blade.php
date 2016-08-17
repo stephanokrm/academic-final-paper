@@ -14,6 +14,11 @@
     </head>
     <body>
         @if(Session::has('user') && !isset($showNav))
+        <ul id='user-options' class='dropdown-content'>
+            <li><a href="#!"><i class="material-icons left">perm_identity</i>Perfil</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ route('auth.logout') }}"><i class="material-icons left">clear</i>Sair</a></li>
+        </ul>
         <header>
             <div class="navbar-fixed main-navbar">
                 <nav class="light-blue">
@@ -28,7 +33,7 @@
                                     <ul class="right hide-on-med-and-down">
                                         <li><a href="{{ URL::current() }}"><i class="material-icons">refresh</i></a></li>
                                         <li><a><i class="material-icons">notifications</i></a></li>
-                                        <li><a class="profile-img"><img alt="Imagem de Perfil" class="circle" src="{{ asset(Session::get('user')->google->profile_image) }}"></a></li>
+                                        <li><a data-constrainwidth="false" class="dropdown-button profile-img" data-activates='user-options'><img alt="Imagem de Perfil" class="circle" src="{{ asset(Session::get('user')->google->profile_image) }}"></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -78,7 +83,7 @@
                 @else
                 <li><a href="{{ Session::get('authUrl') }}"><i class="material-icons">open_in_new</i>Entrar no Google</a></li>
                 @endif
-                <li><a href="{{ route('auth.logout') }}"><i class="material-icons">clear</i>Sair</a></li>
+                <li class="hide-on-large-only"><a href="{{ route('auth.logout') }}"><i class="material-icons left">clear</i>Sair</a></li>
             </ul>
         </header>
         @endif
