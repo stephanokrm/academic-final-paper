@@ -312,6 +312,10 @@ i.extra-large {
 .fc-agendaWeek-view .fc-day-grid, .fc-agendaWeek-view .fc-bg, .fc-agendaDay-view .fc-day-grid, .fc-agendaDay-view .fc-bg {
     min-height: 600px !important;
 }
+
+.fc-event {
+    font-size: 1em;
+}
 /* -----------COLORS FROM EVENT ------------- */
 .default-event {
     background-color: #9fe1e7 !important;
