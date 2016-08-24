@@ -20,7 +20,7 @@ Adicionar Evento
     <div class="row">
         <div class="col s12 m12 l12">
             <p>
-                {!! Form::checkbox('all_day', 'Y', old('all_day'), ['id' => 'all_day']) !!}
+                {!! Form::checkbox('all_day', 'Y', old('all_day'), ['id' => 'all_day', 'class' => 'filled-in']) !!}
                 <label for="all_day">Dia Inteiro</label>
             </p>
         </div>
@@ -57,7 +57,7 @@ Adicionar Evento
             @endif
         </div>
     </div>
-    <div class="row">
+    <div class="row hide">
         <div class="col s12 m6 l6">
             <p>
                 {!! Form::checkbox('include_address', 'Y', old('include_address'), ['id' => 'include_address']) !!}

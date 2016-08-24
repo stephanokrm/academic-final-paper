@@ -25,7 +25,7 @@ class CalendarController extends Controller {
         $this->calendarService = new Google_Service_Calendar($client);
     }
 
-    public function index() {
+    public function index($id) {
         $service = new CalendarService($this->calendarService);
         $googleCalendars = $service->listCalendars();
         return view('calendars.index')->withCalendars($googleCalendars);

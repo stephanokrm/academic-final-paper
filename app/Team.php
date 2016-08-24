@@ -28,4 +28,8 @@ class Team extends Model {
         return $this->hasMany('Academic\Activity');
     }
 
+    public function calendars() {
+        return $this->hasMany('Academic\Calendar');
+    }
+
 }

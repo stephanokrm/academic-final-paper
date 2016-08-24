@@ -56,7 +56,7 @@ Editar Evento
             @endif
         </div>
     </div>
-    <div class="row">
+    <div class="row hide">
         <div class="col s12 m6 l6">
             <p>
                 {!! Form::checkbox('include_address', 'Y', $event->hasAddress(), ['id' => 'include_address']) !!}

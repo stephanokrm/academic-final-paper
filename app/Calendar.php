@@ -25,6 +25,10 @@ class Calendar extends Model {
         return $this->where('calendar', $id)->exists();
     }
 
+    public function team() {
+        return $this->belongsTo('Academic\Team');
+    }
+
     public function getAssociatedEmails() {
         return $this->where('calendars.calendar', '=', $this->calendar)
                         ->join('calendar_google', 'calendar_google.calendar_id', '=', 'calendars.id')

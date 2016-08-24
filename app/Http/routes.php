@@ -35,9 +35,9 @@ Route::group(['middleware' => ['validation']], function() {
         Route::group(['middleware' => 'google'], function() {
             Route::get('google/sair', ['as' => 'google.logout', 'uses' => 'GoogleController@logout']);
 
-            Route::get('calendarios', ['as' => 'calendars.index', 'uses' => 'CalendarController@index']);
-            Route::get('calendarios/criar', ['as' => 'calendars.create', 'uses' => 'CalendarController@create']);
-            Route::post('calendarios', ['as' => 'calendars.store', 'uses' => 'CalendarController@store']);
+            Route::get('turmas/{id}/calendarios', ['as' => 'calendars.index', 'uses' => 'CalendarController@index']);
+            Route::get('turmas/{id}/calendarios/criar', ['as' => 'calendars.create', 'uses' => 'CalendarController@create']);
+            Route::post('turmas/{id}/calendarios', ['as' => 'calendars.store', 'uses' => 'CalendarController@store']);
             Route::get('calendarios/{id}', ['as' => 'calendars.show', 'uses' => 'CalendarController@show']);
             Route::get('calendarios/{id}/editar', ['as' => 'calendars.edit', 'uses' => 'CalendarController@edit']);
             Route::patch('calendarios/{id}', ['as' => 'calendars.update', 'uses' => 'CalendarController@update']);
