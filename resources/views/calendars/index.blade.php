@@ -59,7 +59,7 @@ Calendários
     @endif
 </div>
 <div class="fixed-action-btn horizontal">
-    <a class="btn-floating btn-large red waves-effect waves-light" href="{{ route('calendars.create') }}">
+    <a class="btn-floating btn-large red waves-effect waves-light" href="{{ route('calendars.create', Input::route('id')) }}">
         <i class="large material-icons">add</i>
     </a>
 </div>

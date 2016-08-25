@@ -72,11 +72,11 @@
                 <li><a href="{{ route('home.index') }}"><i class="material-icons">home</i>Início</a></li>
                 <li><div class="divider"></div></li>
                 @if(Session::get('user')->isTeacher()) 
-                <li><a href=""><i class="material-icons">group</i>Turmas</a></li>
+                <li><a href="{{ route('teams.index') }}"><i class="material-icons">group</i>Turmas</a></li>
                 @else
                 <li><a href="{{ route('activities.index', Session::get('user')->getTeamFromUser()) }}"><i class="material-icons">import_contacts</i>Atividades</a></li>
-                @endif
                 <li><a href="{{ route('calendars.index', Session::get('user')->getTeamFromUser()) }}"><i class="material-icons">event_note</i>Calendários</a></li>
+                @endif
                 <li><div class="divider"></div></li>
                 @if(Session::has('credentials'))
                 <li><a href="{{ route('google.logout') }}"><i class="material-icons">open_in_new</i>Sair do Google</a></li>

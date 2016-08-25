@@ -12,6 +12,7 @@ use Google_Service_Calendar_AclRuleScope;
 use Academic\Validations\CalendarValidation;
 use Academic\Google;
 use Academic\Calendar;
+use Academic\Team;
 
 class CalendarService {
 
@@ -35,22 +36,19 @@ class CalendarService {
         return $googleCalendars;
     }
 
-    public function insertCalendar(Request $request) {
+    public function insertCalendar(Request $request, $teamId) {
         $this->validateCalendar($request);
-
+        $team = Team::findOrFail($teamId);
+        $google = new Google();
+        $calendar = new Calendar();
         $googleCalendar = $this->fillGoogleCalendar($request);
         $insertedCalendar = $this->calendarService->calendars->insert($googleCalendar);
-
         $attendees = $request->attendees;
-
-        $google = new Google();
         $googles = $google->getEmails($attendees);
-
-        $calendar = new Calendar();
         $calendar->calendar = $insertedCalendar->getId();
+        $calendar->team()->associate($team);
         $calendar->save();
         $calendar->googles()->saveMany($googles->all());
-
         $this->associateAttendees($insertedCalendar, $request);
     }
 
@@ -143,9 +141,6 @@ class CalendarService {
         }
 
         $googleCalendar->setSummary($request->summary);
-        $googleCalendar->setDescription($request->description);
-        $googleCalendar->setLocation($request->location);
-        $googleCalendar->setTimeZone($request->time_zone);
 
         return $googleCalendar;
     }

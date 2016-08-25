@@ -62,5 +62,9 @@ Route::group(['middleware' => ['validation']], function() {
                 Route::post('atividades/deletar', ['as' => 'activities.destroy', 'uses' => 'ActivityController@destroy']);
             });
         });
+
+        Route::group(['middleware' => 'teacher'], function() {
+            Route::get('turmas', ['as' => 'teams.index', 'uses' => 'TeamController@index']);
+        });
     });
 });

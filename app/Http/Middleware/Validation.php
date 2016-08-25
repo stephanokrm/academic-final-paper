@@ -38,6 +38,7 @@ class Validation {
         } catch (FormValidationException $exception) {
             return Redirect::back()->withErrors($exception->getErrors())->withInput();
         } catch (Exception $exception) {
+            dd($exception);
             $message = $exception instanceof HttpException ? 'Funcionalidade não implementada.' : 'Ocorreu um erro inesperado.';
             return Redirect::back()->withMessage($message)->withInput();
         }

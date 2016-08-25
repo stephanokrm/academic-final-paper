@@ -7,7 +7,7 @@ use Academic\Services\CalendarService;
 use Academic\Http\Controllers\Controller;
 use Academic\Calendar;
 use Academic\Google;
-use Academic\Student;
+use Academic\User;
 //
 use Illuminate\Http\Request;
 //
@@ -25,23 +25,23 @@ class CalendarController extends Controller {
         $this->calendarService = new Google_Service_Calendar($client);
     }
 
-    public function index($id) {
+    public function index($teamId) {
         $service = new CalendarService($this->calendarService);
         $googleCalendars = $service->listCalendars();
         return view('calendars.index')->withCalendars($googleCalendars);
     }
 
-    public function create() {
-        $student = new Student();
-        $students = $student->getStudentsByTeamExceptLoggedStudent();
-        return view('calendars.create')->withStudents($students);
+    public function create($teamId) {
+        $user = new User();
+        $users = $user->getUsersByTeamExceptLoggedUser();
+        return view('calendars.create')->withUsers($users);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request, $teamId) {
         $service = new CalendarService($this->calendarService);
-        $service->insertCalendar($request);
+        $service->insertCalendar($request, $teamId);
         return redirect()
-                        ->route('calendars.index')
+                        ->route('calendars.index', $teamId)
                         ->withMessage('Calendário criado com sucesso.');
     }
 
@@ -52,8 +52,6 @@ class CalendarController extends Controller {
         $calendar = $calendar->getCalendar($calendarId);
         $associated = $calendar->googles;
         $associatedEmails = $calendar->getAssociatedEmails();
-
-
 
         $google = new Google();
         $disassociated = $google->getDisassociated($associatedEmails);

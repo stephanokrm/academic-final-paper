@@ -6,7 +6,7 @@ Adicionar Calendário
 
 @section('content')
 <div class="col s12 m8 offset-m4 l8 offset-l4">
-    {!! Form::open(['route' => 'calendars.store']) !!}
+    {!! Form::open(['route' => ['calendars.store', Input::route('id')]]) !!}
     <div class="row">
         <div class="col s12 m6 l6">
             <label for="summary">Título</label>
@@ -16,7 +16,7 @@ Adicionar Calendário
             @endif
         </div>
     </div>
-    @if(count($students) > 0)
+    @if(count($users) > 0)
     <div class="row">
         <div class="col s12 m6 l6">
             <table class="bordered highlight">
@@ -32,15 +32,15 @@ Adicionar Calendário
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($students as $student)
+                    @foreach($users as $user)
                     <tr>
                         <td>
                             <div class="center">
-                                {!! Form::checkbox('attendees[]', $student->user->google->email, old('attendees[]'), ['class' => 'invite filled-in', 'id' => 'invite_' . $student->user->registration]) !!}
-                                <label for="invite_{{ $student->user->registration }}"></label>
+                                {!! Form::checkbox('attendees[]', $user->google->email, old('attendees[]'), ['class' => 'invite filled-in', 'id' => 'invite_' . $user->registration]) !!}
+                                <label for="invite_{{ $user->registration }}"></label>
                             </div>
                         </td>
-                        <td>{{ $student->user->name }}</td>
+                        <td>{{ $user->name }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -79,9 +79,9 @@ Adicionar Calendário
     @else
     <div class="row">
         <div class="col s12 m6 l6">
-            <div class="card-panel light-blue">
-                <span class="white-text"><i class="material-icons left">error</i> Nenhuma pessoa para ser vinculada.
-                </span>
+            <div class="center">
+                <i class="material-icons large grey-text text-lighten-2">sentiment_dissatisfied</i>
+                <h4 class="grey-text text-lighten-2">Nenhuma pessoa para ser vinculada</h4>
             </div>
         </div>
     </div>

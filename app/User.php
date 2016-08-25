@@ -4,6 +4,7 @@ namespace Academic;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Session;
 
 class User extends Model {
 
@@ -48,18 +49,23 @@ class User extends Model {
         $this->attributes['birth_date'] = $date->format('Y-m-d');
     }
 
-    public function hasRole($id) {
-        return !$this->roles->filter(function($role) use ($id) {
-                    return $role->id == $id;
-                })->isEmpty();
-    }
-
     public function isTeacher() {
         return count($this->teacher) > 0;
     }
 
     public function getTeamFromUser() {
         return $this->student->team_id;
+    }
+
+    public function getUsersByTeamExceptLoggedUser() {
+        $user = Session::get('user');
+        $userId = $user->id;
+        $teamId = $user->student->team_id;
+        return $this->where('users.id', '!=', $userId)
+                        ->where('students.team_id', $teamId)
+                        ->join('students', 'students.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
     }
 
 }

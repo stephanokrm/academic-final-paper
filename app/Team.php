@@ -3,10 +3,12 @@
 namespace Academic;
 
 use Illuminate\Database\Eloquent\Model;
+use Session;
 
 class Team extends Model {
 
     protected $fillable = ['year', 'description', 'school_year'];
+    protected $with = ['course'];
 
     public function teachers() {
         return $this->belongsToMany('Academic\Teacher');
@@ -30,6 +32,16 @@ class Team extends Model {
 
     public function calendars() {
         return $this->hasMany('Academic\Calendar');
+    }
+
+    public function getTeamsFromTeacher() {
+        $user = Session::get('user');
+        $teacherId = $user->teacher->id;
+        return $this->where('discipline_teacher_team.teacher_id', $teacherId)
+                        ->join('discipline_teacher_team', 'discipline_teacher_team.team_id', '=', 'teams.id')
+                        ->orderBy('teams.year', 'asc')
+                        ->orderBy('teams.school_year', 'asc')
+                        ->get();
     }
 
 }
