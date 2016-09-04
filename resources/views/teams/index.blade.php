@@ -15,31 +15,28 @@ Turmas
     <table class="bordered highlight list-table">
         <thead>
             <tr>
-                <th width="25%">Turma</th>
-                <th width="24%">Curso</th>
-                <th width="24%">Ano</th>
-                <th width="12%" colspan="3">Ações</th>
+                <th width="15%">Turma</th>
+                <th width="15%">Curso</th>
+                <th width="15%">Ano</th>
+                <th width="45%">Disciplina</th>
+                <th width="10%" colspan="2">Ações</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($teams as $team)
             <tr>
-                <td>{{ $team->year }}º ano</td>
+                <td>{{ $team->year }}º Ano</td>
                 <td>{{ $team->course->abbreviation }}</td>
                 <td>{{ $team->school_year }}</td>
+                <td>{{ $team->name }}</td>
                 <td>
-                    <a href="#">
-                        <i class="material-icons waves-effect waves-blue">mode_edit</i>
+                    <a href="{{ route('calendars.index', $team->id) }}">
+                        <i class="material-icons waves-effect waves-blue waves-circle">event_note</i>
                     </a>
                 </td>
                 <td>
-                    <a href="#">
-                        <i class="material-icons waves-effect waves-blue">arrow_forward</i>
-                    </a>
-                </td>
-                <td>
-                    <a href="#">
-                        <i class="material-icons waves-effect waves-blue">more_vert</i>
+                    <a href="{{ route('activities.index', $team->id) }}">
+                        <i class="material-icons waves-effect waves-blue waves-circle">import_contacts</i>
                     </a>
                 </td>
             </tr>

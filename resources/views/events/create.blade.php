@@ -139,8 +139,8 @@ Adicionar Evento
     <br><br>
     <div class="row">
         <div class="col s12 m6 l6">
-            <button type="submit" class="waves-effect waves-light btn light-blue right">Concluir</button>
-            <a href="{{ URL::previous() }}" class="waves-effect waves-light btn-flat light-blue-text right">Voltar</a>
+            <button type="submit" class="waves-effect waves-light btn light-blue right"><i class="material-icons left">done</i>Concluir</button>
+            <a href="{{ URL::previous() }}" class="waves-effect waves-light btn-flat light-blue-text right"><i class="material-icons left">keyboard_backspace</i>Voltar</a>
         </div>
     </div>
     {!! Form::close() !!}

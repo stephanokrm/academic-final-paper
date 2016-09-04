@@ -44,11 +44,12 @@ Route::group(['middleware' => ['validation']], function() {
             Route::post('calendarios/deletar', ['as' => 'calendars.destroy', 'uses' => 'CalendarController@destroy']);
 
             Route::get('calendarios/{id}/eventos', ['as' => 'events.index', 'uses' => 'EventController@index']);
+            Route::get('calendarios/{id}/lista-eventos', ['as' => 'events.events', 'uses' => 'EventController@events']);
             Route::get('calendarios/{id}/eventos/criar', ['as' => 'events.create', 'uses' => 'EventController@create']);
             Route::post('eventos', ['as' => 'events.store', 'uses' => 'EventController@store']);
             Route::get('calendarios/{calendar}/eventos/{id}', ['as' => 'events.show', 'uses' => 'EventController@show']);
             Route::get('calendarios/{calendar}/eventos/{id}/editar', ['as' => 'events.edit', 'uses' => 'EventController@edit']);
-            Route::patch('calendarios/{calendar}/eventos/{id}', ['as' => 'events.update', 'uses' => 'EventController@update']);
+            Route::post('calendarios/{calendar}/eventos/{id}', ['as' => 'events.update', 'uses' => 'EventController@update']);
             Route::delete('eventos/{id}', ['as' => 'events.destroy', 'uses' => 'EventController@destroy']);
 
             Route::get('turmas/{id}/atividades', ['as' => 'activities.index', 'uses' => 'ActivityController@index']);

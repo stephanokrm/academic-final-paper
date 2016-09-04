@@ -1,6 +1,19 @@
 /* global Materialize */
 
 $(document).ready(function () {
+
+    window.onbeforeunload = function () {
+        $('.progress').removeClass('hide');
+    }
+
+    $(document).ajaxStart(function () {
+        $('.progress').removeClass('hide');
+    });
+
+    $(document).ajaxStop(function () {
+        $('.progress').addClass('hide');
+    });
+
     $(".button-collapse").sideNav();
     $('select').material_select();
 
@@ -47,11 +60,3 @@ $(document).ready(function () {
     });
 
 });
-
-function responsiveModal(id) {
-    if ($(window).width() > 768) {
-        $('#' + id).removeClass('bottom-sheet');
-    } else {
-        $('#' + id).addClass('bottom-sheet');
-    }
-}

@@ -16,14 +16,16 @@ class EventModel {
     private $endTime = null;
     private $endDateTime;
     private $originalEndDate;
-    private $includeAddress;
-    private $street = null;
-    private $district = null;
-    private $number = null;
-    private $city = null;
-    private $state = null;
-    private $country = null;
     private $colorId;
+    private $calendar;
+
+    function getCalendar() {
+        return $this->calendar;
+    }
+
+    function setCalendar($calendar) {
+        $this->calendar = $calendar;
+    }
 
     function getBeginDateTime() {
         return $this->beginDateTime;
@@ -97,36 +99,12 @@ class EventModel {
         return $this->endTime;
     }
 
-    function getIncludeAddress() {
-        return $this->includeAddress;
-    }
-
-    function getStreet() {
-        return $this->street;
-    }
-
-    function getDistrict() {
-        return $this->district;
-    }
-
-    function getNumber() {
-        return $this->number;
-    }
-
-    function getCity() {
-        return $this->city;
-    }
-
-    function getState() {
-        return $this->state;
-    }
-
-    function getCountry() {
-        return $this->country;
-    }
-
     function getColorId() {
         return $this->colorId;
+    }
+
+    function setColorId($id) {
+        $this->colorId = $id;
     }
 
     function setSummary($summary) {
@@ -151,42 +129,6 @@ class EventModel {
 
     function setEndTime($endTime) {
         $this->endTime = is_null($endTime) ? $endTime : ' - ' . $endTime;
-    }
-
-    function setIncludeAddress($includeAddress) {
-        $this->includeAddress = $includeAddress;
-    }
-
-    public function hasAddress() {
-        return $this->includeAddress == true;
-    }
-
-    function setStreet($street) {
-        $this->street = $street;
-    }
-
-    function setDistrict($district) {
-        $this->district = $district;
-    }
-
-    function setNumber($number) {
-        $this->number = $number;
-    }
-
-    function setCity($city) {
-        $this->city = $city;
-    }
-
-    function setState($state) {
-        $this->state = $state;
-    }
-
-    function setCountry($country) {
-        $this->country = $country;
-    }
-
-    function setColorId($colorId) {
-        $this->colorId = $colorId;
     }
 
     public function isAllDay() {

@@ -8,10 +8,11 @@ use Carbon\Carbon;
 use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use Google_Service_Calendar_EventDateTime;
-use Google_Service_Calendar_EventReminders;
 //
 use Academic\Validations\EventValidation;
 use Academic\Models\EventModel;
+use Crypt;
+use Academic\Domain\Events\EventTransformer;
 
 class EventService {
 
@@ -30,8 +31,8 @@ class EventService {
     public function updateEvent(Request $request, $calendarId, $eventId) {
         $this->validate($request);
         $googleEvent = $this->getEvent($calendarId, $eventId);
-        $googleEvent = $this->fillGoogleEvent($request, $googleEvent);
-        $this->calendarService->events->update($calendarId, $googleEvent->getId(), $googleEvent);
+        $googleEventFilled = $this->fillGoogleEvent($request, $googleEvent);
+        $this->calendarService->events->update($calendarId, $googleEventFilled->getId(), $googleEventFilled);
     }
 
     public function deleteEvent($calendarId, $id) {
@@ -56,10 +57,9 @@ class EventService {
         $googleEvent->setSummary($request->summary);
         $googleEvent->setDescription($request->description);
         $googleEvent->setColorId($request->color);
-        $googleEvent = $this->fillGoogleEventDateTime($request, $googleEvent);
-        $googleEvent = $this->fillGoogleEventReminders($googleEvent);
+        $googleEventWithDate = $this->fillGoogleEventDateTime($request, $googleEvent);
 
-        return $googleEvent;
+        return $googleEventWithDate;
     }
 
     private function fillGoogleEventDateTime(Request $request, Google_Service_Calendar_Event $googleEvent) {
@@ -70,7 +70,7 @@ class EventService {
         $allDay = $request->all_day;
 
         $beginDate = $carbon->createFromFormat('d/m/Y', $request->begin_date)->toDateString();
-        $endDate = $carbon->createFromFormat('d/m/Y', $request->end_date)->toDateString();
+        $endDate = $googleEvent->getId() ? $carbon->createFromFormat('d/m/Y', $request->end_date)->toDateString() : $carbon->createFromFormat('d/m/Y', $request->end_date)->addDay()->toDateString();
 
         if (isset($allDay)) {
             $start->setDate($beginDate);
@@ -89,40 +89,22 @@ class EventService {
         return $googleEvent;
     }
 
-    private function fillGoogleEventReminders(Google_Service_Calendar_Event $googleEvent) {
-
-        $eventReminders = new Google_Service_Calendar_EventReminders();
-        $eventReminders->setUseDefault(true);
-        $googleEvent->setReminders($eventReminders);
-
-        return $googleEvent;
-    }
-
     public function listEvents($idCalendar) {
-        $googleEvents = $this->calendarService->events->listEvents($idCalendar);
-        $events = [];
-        $googleEvents = $googleEvents->getItems();
-        if (empty($googleEvents)) {
-            return $events;
-        } else {
-            foreach ($googleEvents as $googleEvent) {
-                $events[] = $this->transformGoogleEventToModel($googleEvent);
-            }
-        }
-        return $events;
+        $googleEventsList = $this->calendarService->events->listEvents($idCalendar);
+        $googleEvents = $googleEventsList->getItems();
+        return EventTransformer::fromGoogleEventsToArray($googleEvents, $idCalendar);
     }
 
-    public function transformGoogleEventToModel(Google_Service_Calendar_Event $googleEvent) {
+    public function transformGoogleEventToModel(Google_Service_Calendar_Event $googleEvent, $idCalendar) {
         $event = new EventModel();
+        $event->setCalendar(Crypt::encrypt($idCalendar));
         $event->setId($googleEvent->getId());
         $event->setSummary($googleEvent->getSummary());
         $event->setDescription($googleEvent->getDescription());
-        $event->setIncludeAddress(false);
         $event->setColorId($googleEvent->getColorId());
 
         if (isset($googleEvent->getStart()->dateTime)) {
             $event->setAllDay(false);
-
             $event->setBeginDate($this->convertDate($googleEvent->getStart()->dateTime));
             $event->setBeginTime($this->convertTime($googleEvent->getStart()->dateTime));
             $event->setBeginDateTime($this->convertDateTime($googleEvent->getStart()->dateTime));

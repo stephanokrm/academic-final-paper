@@ -28,7 +28,7 @@ Atividades
                 @endif
                 <th width="35%">Atividade</th>
                 <th width="38%">Data</th>
-                <th width="12%" colspan="3">Ações</th>
+                <th width="12%" colspan="2">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -52,11 +52,6 @@ Atividades
                 <td>
                     <a href="{{ route('activities.show', $activity->getId()) }}">
                         <i class="material-icons waves-effect waves-blue">arrow_forward</i>
-                    </a>
-                </td>
-                <td>
-                    <a href="#">
-                        <i class="material-icons waves-effect waves-blue">more_vert</i>
                     </a>
                 </td>
             </tr>

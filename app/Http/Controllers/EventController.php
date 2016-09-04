@@ -28,14 +28,15 @@ class EventController extends Controller {
      * @return Response
      */
     public function index($id) {
+        $idCalendar = Crypt::decrypt($id);
+        return view('events.index')->withCalendar($idCalendar);
+    }
 
+    public function events($id) {
         $idCalendar = Crypt::decrypt($id);
         $service = new EventService($this->calendarService);
         $events = $service->listEvents($idCalendar);
-
-        return view('events.index')
-                        ->withEvents($events)
-                        ->withCalendar($idCalendar);
+        return response()->json($events);
     }
 
     /**
@@ -99,12 +100,9 @@ class EventController extends Controller {
      * @return Response
      */
     public function update(Request $request, $idCalendar, $idEvent) {
-        $idCalendar = Crypt::decrypt($idCalendar);
         $service = new EventService($this->calendarService);
         $service->updateEvent($request, $idCalendar, $idEvent);
-        return redirect()
-                        ->route('events.index', Crypt::encrypt($idCalendar))
-                        ->withMessage('Evento editado com sucesso.');
+        return response()->json(['status' => 'success', 'message' => 'Evento editado com sucesso.']);
     }
 
     /**

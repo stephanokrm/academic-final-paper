@@ -109,15 +109,15 @@ Editar Calendário
         <div class="col s12 m6 l6">
             <label>Permissão</label>
             <p>
-                {!! Form::radio('role', 'reader', old('reader'), ['id' => 'reader']) !!}
+                {!! Form::radio('role', 'reader', old('reader'), ['id' => 'reader', 'class' => 'with-gap']) !!}
                 <label for="reader">Visualizar Detalhes de Eventos</label>
             </p>
             <p>
-                {!! Form::radio('role', 'writer', old('writer'), ['id' => 'writer']) !!}
+                {!! Form::radio('role', 'writer', old('writer'), ['id' => 'writer', 'class' => 'with-gap']) !!}
                 <label for="writer">Visualizar e Editar Detalhes de Eventos</label>
             </p>
             <p>
-                {!! Form::radio('role', 'owner', old('owner'), ['id' => 'owner']) !!}
+                {!! Form::radio('role', 'owner', old('owner'), ['id' => 'owner', 'class' => 'with-gap']) !!}
                 <label for="owner">Editar e Compartilhar Calendário</label>
             </p>
             @if($errors->has('role'))
@@ -129,8 +129,8 @@ Editar Calendário
 
     <div class="row">
         <div class="col s12 m12 l12">
-            <button type="submit" class="waves-effect waves-light btn light-blue right">Concluir</button>
-            <a href="{{ route('calendars.index') }}" class="waves-effect waves-light btn-flat light-blue-text right">Voltar</a>
+            <button type="submit" class="waves-effect waves-light btn light-blue right"><i class="material-icons left">done</i>Concluir</button>
+            <a href="{{ route('calendars.index') }}" class="waves-effect waves-light btn-flat light-blue-text right"><i class="material-icons left">keyboard_backspace</i>Voltar</a>
         </div>
     </div>
     {!! Form::close() !!}

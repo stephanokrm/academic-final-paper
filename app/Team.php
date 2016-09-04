@@ -39,6 +39,7 @@ class Team extends Model {
         $teacherId = $user->teacher->id;
         return $this->where('discipline_teacher_team.teacher_id', $teacherId)
                         ->join('discipline_teacher_team', 'discipline_teacher_team.team_id', '=', 'teams.id')
+                        ->join('disciplines', 'disciplines.id', '=', 'discipline_teacher_team.discipline_id')
                         ->orderBy('teams.year', 'asc')
                         ->orderBy('teams.school_year', 'asc')
                         ->get();
