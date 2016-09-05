@@ -89,12 +89,6 @@ class EventService {
         return $googleEvent;
     }
 
-    public function listEvents($idCalendar) {
-        $googleEventsList = $this->calendarService->events->listEvents($idCalendar);
-        $googleEvents = $googleEventsList->getItems();
-        return EventTransformer::fromGoogleEventsToArray($googleEvents, $idCalendar);
-    }
-
     public function transformGoogleEventToModel(Google_Service_Calendar_Event $googleEvent, $idCalendar) {
         $event = new EventModel();
         $event->setCalendar(Crypt::encrypt($idCalendar));
@@ -140,6 +134,25 @@ class EventService {
 
     private function convertTime($date) {
         return date('H:i', strtotime(str_replace(['T', 'Z'], ' ', $date)));
+    }
+
+    public function index(Request $request) {
+        $ids = $request->ids;
+        if (empty($ids)) {
+            return [];
+        } else {
+            return $this->getAllEventsFromCalendars($request);
+        }
+    }
+
+    private function getAllEventsFromCalendars(Request $request) {
+        $allEvents = [];
+        foreach ($request->ids as $id) {
+            $eventList = $this->calendarService->events->listEvents($id, ['timeMin' => $request->start . 'T00:00:00-00:00', 'timeMax' => $request->end . 'T00:00:00-00:00']);
+            $events = EventTransformer::fromGoogleEventsToArray($eventList->getItems(), $id);
+            $arrayEvents = array_merge($allEvents, $events);
+        }
+        return $arrayEvents;
     }
 
 }

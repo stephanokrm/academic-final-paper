@@ -57,12 +57,10 @@ class User extends Model {
         return $this->student->team_id;
     }
 
-    public function getUsersByTeamExceptLoggedUser() {
+    public static function getUsersByTeamExceptLoggedUser() {
         $user = Session::get('user');
-        $userId = $user->id;
-        $teamId = $user->student->team_id;
-        return $this->where('users.id', '!=', $userId)
-                        ->where('students.team_id', $teamId)
+        return $user->where('users.id', '!=', $user->id)
+                        ->where('students.team_id', $user->student->team_id)
                         ->join('students', 'students.user_id', '=', 'users.id')
                         ->orderBy('users.name', 'asc')
                         ->get();

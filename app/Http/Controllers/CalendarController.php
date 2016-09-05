@@ -25,23 +25,23 @@ class CalendarController extends Controller {
         $this->calendarService = new Google_Service_Calendar($client);
     }
 
-    public function index($teamId) {
+    public function index() {
         $service = new CalendarService($this->calendarService);
-        $googleCalendars = $service->listCalendars();
-        return view('calendars.index')->withCalendars($googleCalendars);
+        $calendars = $service->index();
+        return view('calendars.index')->withCalendars($calendars);
     }
 
-    public function create($teamId) {
-        $user = new User();
-        $users = $user->getUsersByTeamExceptLoggedUser();
-        return view('calendars.create')->withUsers($users);
+    public function create() {
+        $service = new CalendarService($this->calendarService);
+        $dados = $service->create();
+        return view('calendars.create')->withDados($dados);
     }
 
-    public function store(Request $request, $teamId) {
+    public function store(Request $request) {
         $service = new CalendarService($this->calendarService);
-        $service->insertCalendar($request, $teamId);
+        $service->insertCalendar($request);
         return redirect()
-                        ->route('calendars.index', $teamId)
+                        ->route('calendars.index')
                         ->withMessage('Calendário criado com sucesso.');
     }
 

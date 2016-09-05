@@ -6,7 +6,7 @@ Adicionar Calendário
 
 @section('content')
 <div class="col s12 m8 offset-m4 l8 offset-l4">
-    {!! Form::open(['route' => ['calendars.store', Input::route('id')]]) !!}
+    {!! Form::open(['route' => 'calendars.store']) !!}
     <div class="row">
         <div class="col s12 m6 l6">
             <label for="summary">Título</label>
@@ -16,7 +16,23 @@ Adicionar Calendário
             @endif
         </div>
     </div>
-    @if(count($users) > 0)
+    @if(Session::get('user')->isTeacher())
+    <div class="row">
+        <div class="col s12 m6 l6">
+            <label>Turma</label>
+            <select name="team">
+                <option value="" disabled selected>Selecione</option>
+                @foreach($dados as $dado)
+                <option value="{{ $dado->id }}" {{ $dado->id == old('team') ? 'selected' : '' }}>{{ $dado->description }} - {{ $dado->discipline }} - {{ $dado->abbreviation }}</option>
+                @endforeach
+            </select>
+            @if($errors->has('team'))
+            <span class="help-block">{{ $errors->first('team') }}</span>
+            @endif
+        </div>
+    </div>
+    @else
+    @if(count($dados) > 0)
     <div class="row">
         <div class="col s12 m6 l6">
             <label>Associar</label>
@@ -33,15 +49,15 @@ Adicionar Calendário
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($users as $user)
+                    @foreach($dados as $dado)
                     <tr>
                         <td>
                             <div class="center">
-                                {!! Form::checkbox('attendees[]', $user->google->email, old('attendees[]'), ['class' => 'invite filled-in', 'id' => 'invite_' . $user->registration]) !!}
-                                <label for="invite_{{ $user->registration }}"></label>
+                                {!! Form::checkbox('attendees[]', $dado->google->email, old('attendees[]'), ['class' => 'invite filled-in', 'id' => 'invite_' . $dado->registration]) !!}
+                                <label for="invite_{{ $dado->registration }}"></label>
                             </div>
                         </td>
-                        <td>{{ $user->name }}</td>
+                        <td>{{ $dado->name }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -86,6 +102,7 @@ Adicionar Calendário
             </div>
         </div>
     </div>
+    @endif
     @endif
     <div class="row">
         <div class="col s12 m6 l6">

@@ -74,6 +74,16 @@ body {
     margin-bottom: 0;
 }
 
+#calendar-panel {
+    background-size: auto;
+    background-image: url("http://fuse-angular-material.withinpixels.com/assets/images/backgrounds/march.jpg");
+    background-position: 0 50%;
+    background-size: 100% 1500%;
+    background-repeat: no-repeat;
+}
+
+
+
 .progress {
     background-color: #f44336;
     margin: 0.0rem 0 1rem 0;
@@ -316,6 +326,26 @@ i.extra-large {
     background-color: transparent;
 }
 
+.calendar-collection {
+    margin-top: 0;
+    box-shadow: none;
+}
+
+.collapsible-calendars {
+    margin-right: 0 !important;
+    line-height: 3.2rem !important;
+}
+
+#calendars-collapsible-header i {
+    margin-right: 0;
+}
+
+.secondary-content [type="checkbox"]+label {
+    padding-left: 20px;
+    height: 14px;
+}
+
+
 /*---------------- MEDIA ------------------------*/
 
 @media only screen and (max-width : 768px) {
@@ -342,10 +372,21 @@ i.extra-large {
     .modal {
         width: 90% !important;
     }
+    
+    #calendar-panel > .col {
+        padding-top: 30px;
+    }
 }
 
+@media only screen and (min-width: 993px) {
+    #calendar-panel > .col {
+        padding-top: 75px;
+    }
+}
+
+
 /*---------------- FULLCALENDAR ------------------*/
-.fc-body {
+.fc-head, .fc-body {
     background-color: white;
 }
 
@@ -369,6 +410,17 @@ i.extra-large {
 
 .fc-event {
     font-size: 1em;
+}
+
+.fc-toolbar {
+    display: none;
+}
+.fc-day {
+    cursor: pointer;
+}
+
+.fc-day:hover {
+    background-color: #eeeeee;
 }
 /*-----------COLORS FROM EVENT ------------- */
 .default-event {

@@ -27,15 +27,9 @@ class EventController extends Controller {
      *
      * @return Response
      */
-    public function index($id) {
-        $idCalendar = Crypt::decrypt($id);
-        return view('events.index')->withCalendar($idCalendar);
-    }
-
-    public function events($id) {
-        $idCalendar = Crypt::decrypt($id);
+    public function index(Request $request) {
         $service = new EventService($this->calendarService);
-        $events = $service->listEvents($idCalendar);
+        $events = $service->index($request);
         return response()->json($events);
     }
 

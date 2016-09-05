@@ -33,6 +33,7 @@ class Validation {
         } catch (FormValidationException $exception) {
             return $request->ajax() ? response()->json(['error' => $exception->getErrors()]) : Redirect::back()->withErrors($exception->getErrors())->withInput();
         } catch (Exception $exception) {
+            return response()->json($exception->getMessage());
             $message = $exception instanceof HttpException ? 'Funcionalidade não implementada.' : 'Ocorreu um erro inesperado.';
             return $request->ajax() ? response()->json(['error' => $message]) : Redirect::back()->withMessage($message)->withInput();
         }

@@ -15,6 +15,8 @@ $(document).ready(function () {
         json_events = events;
     });
 
+   
+
     calendar = $('#calendar').fullCalendar({
         displayEventTime: false,
         contentHeight: 750,

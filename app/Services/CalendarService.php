@@ -13,13 +13,17 @@ use Academic\Validations\CalendarValidation;
 use Academic\Google;
 use Academic\Calendar;
 use Academic\Team;
+use Academic\User;
+use Session;
 
 class CalendarService {
 
     private $calendarService;
+    private $user;
 
     public function __construct(Google_Service_Calendar $calendarService) {
         $this->calendarService = $calendarService;
+        $this->user = Session::get('user');
     }
 
     public function listCalendars() {
@@ -36,9 +40,9 @@ class CalendarService {
         return $googleCalendars;
     }
 
-    public function insertCalendar(Request $request, $teamId) {
+    public function insertCalendar(Request $request) {
         $this->validateCalendar($request);
-        $team = Team::findOrFail($teamId);
+        $team = Team::findOrFail($request->team);
         $google = new Google();
         $calendar = new Calendar();
         $googleCalendar = $this->fillGoogleCalendar($request);
@@ -143,6 +147,34 @@ class CalendarService {
         $googleCalendar->setSummary($request->summary);
 
         return $googleCalendar;
+    }
+
+    public function index() {
+        if ($this->user->isTeacher()) {
+            return $this->getAllCalendarsFromTeacher();
+        } else {
+            
+        }
+    }
+
+    private function getAllCalendarsFromTeacher() {
+        $team = new Team();
+        $ids = $team->getTeamsFromTeacherIds($this->user->teacher->id);
+        $calendarsGoogleIds = Calendar::getCalendarGoogleIdsFromTeams($ids);
+        $calendarList = $this->calendarService->calendarList->listCalendarList();
+        return array_filter($calendarList->getItems(), function($googleCalendar) use ($calendarsGoogleIds) {
+            if (in_array($googleCalendar->getId(), $calendarsGoogleIds)) {
+                return $googleCalendar;
+            }
+        });
+    }
+
+    public function create() {
+        if ($this->user->isTeacher()) {
+            return Team::getTeamsFromTeacher();
+        } else {
+            return User::getUsersByTeamExceptLoggedUser();
+        }
     }
 
 }

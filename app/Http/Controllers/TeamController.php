@@ -13,8 +13,7 @@ class TeamController extends Controller {
      * @return Response
      */
     public function index() {
-        $team = new Team();
-        $teams = $team->getTeamsFromTeacher();
+        $teams = Team::getTeamsFromTeacher();
         return view('teams.index')->withTeams($teams);
     }
 
@@ -43,7 +42,7 @@ class TeamController extends Controller {
      * @return Response
      */
     public function show($id) {
-        //
+        dd($id);
     }
 
     /**

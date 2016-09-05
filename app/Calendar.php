@@ -38,4 +38,9 @@ class Calendar extends Model {
                         ->lists('email');
     }
 
+    public static function getCalendarGoogleIdsFromTeams($ids) {
+        $calendar = new Calendar();
+        return $calendar->whereIn('team_id', $ids)->select('calendars.calendar')->get()->lists('calendar');
+    }
+
 }
