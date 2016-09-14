@@ -26,13 +26,16 @@ class Validation {
         try {
             return $next($request);
         } catch (Google_Exception $exception) {
+            dd($exception);
             $service = new GoogleService();
             $message = isset($exception->getErrors()[0]['message']) ? $exception->getErrors()[0]['message'] : $exception->getMessage();
             $messageInPortuguese = $service->translateMessage($message);
             return $request->ajax() ? response()->json(['error' => $messageInPortuguese]) : Redirect::back()->withMessage($messageInPortuguese)->withInput();
         } catch (FormValidationException $exception) {
+            dd($exception);
             return $request->ajax() ? response()->json(['error' => $exception->getErrors()]) : Redirect::back()->withErrors($exception->getErrors())->withInput();
         } catch (Exception $exception) {
+            dd($exception);
             return response()->json($exception->getMessage());
             $message = $exception instanceof HttpException ? 'Funcionalidade não implementada.' : 'Ocorreu um erro inesperado.';
             return $request->ajax() ? response()->json(['error' => $message]) : Redirect::back()->withMessage($message)->withInput();

@@ -1,0 +1,16 @@
+{
+    "theme_color": "#03a9f4",
+    "gcm_sender_id": "832170408556",
+    "name": "Academic",
+    "short_name": "Academic",
+    "icons": [{
+            "src": "/static/imgs/hangouts.png",
+            "type": "image/png",
+            "sizes": "500x500"
+        }],
+    "scope": "./",
+    "start_url": "/",
+    "background_color": "#eee",
+    "display": "standalone",
+    "gcm_user_visible_only": true
+} 

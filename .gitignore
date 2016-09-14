@@ -1,4 +1,4 @@
-/vendor
-
+vendor
 tests/_output/*
 tests/_output/*
+public_html/bower_components

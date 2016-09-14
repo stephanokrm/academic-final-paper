@@ -1,0 +1,9 @@
+{
+    "name": "academic",
+    "dependencies": {
+        "jquery": "3.*",
+        "fullcalendar": "3.*",
+        "jquery-validation": "1.*",
+        "materialize": "0.*"
+    }
+}

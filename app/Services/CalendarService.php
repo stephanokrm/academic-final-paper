@@ -15,6 +15,7 @@ use Academic\Calendar;
 use Academic\Team;
 use Academic\User;
 use Session;
+use Crypt;
 
 class CalendarService {
 
@@ -40,36 +41,17 @@ class CalendarService {
         return $googleCalendars;
     }
 
-    public function insertCalendar(Request $request) {
-        $this->validateCalendar($request);
-        $team = Team::findOrFail($request->team);
-        $google = new Google();
-        $calendar = new Calendar();
-        $googleCalendar = $this->fillGoogleCalendar($request);
-        $insertedCalendar = $this->calendarService->calendars->insert($googleCalendar);
-        $attendees = $request->attendees;
-        $googles = $google->getEmails($attendees);
-        $calendar->calendar = $insertedCalendar->getId();
-        $calendar->team()->associate($team);
-        $calendar->save();
-        $calendar->googles()->saveMany($googles->all());
-        $this->associateAttendees($insertedCalendar, $request);
-    }
-
-    private function associateAttendees(Google_Service_Calendar_Calendar $calendar, Request $request) {
-        $attendees = $request->attendees;
-        if (!empty($attendees)) {
-            $role = $request->role;
-            $calendarId = $calendar->getId();
+    private function associateAttendees(Google_Service_Calendar_Calendar $calendar, Request $request, $googleEmails) {
+        if (!empty($googleEmails)) {
+            $role = $this->user->isTeacher() ? 'reader' : $request->role;
             $rule = new Google_Service_Calendar_AclRule();
             $scope = new Google_Service_Calendar_AclRuleScope();
             $scope->setType('group');
-
-            foreach ($attendees as $attendee) {
+            foreach ($googleEmails as $attendee) {
                 $scope->setValue($attendee);
                 $rule->setScope($scope);
                 $rule->setRole($role);
-                $this->calendarService->acl->insert($calendarId, $rule);
+                $this->calendarService->acl->insert($calendar->getId(), $rule);
             }
         }
     }
@@ -105,26 +87,6 @@ class CalendarService {
         $this->calendarService->calendars->update($googleCalendar->getId(), $googleCalendar);
     }
 
-    public function deleteCalendar(Request $request) {
-        $calendar = new Calendar();
-        foreach ($request->calendars as $id) {
-            $calendarEloquent = $calendar->getCalendar($id);
-            if (is_object($calendarEloquent)) {
-                $calendars[] = $calendarEloquent;
-            }
-        }
-
-        foreach ($calendars as $calendar) {
-            $id = $calendar->calendar;
-            foreach ($calendar->googles as $google) {
-                $this->disassociateAttendee($id, $google->email);
-            }
-            $calendar->googles()->sync([], true);
-            $calendar->delete();
-            $this->calendarService->calendars->delete($id);
-        }
-    }
-
     public function getCalendar($id) {
         return $this->calendarService->calendars->get($id);
     }
@@ -138,35 +100,12 @@ class CalendarService {
         $validation->validate($request);
     }
 
-    private function fillGoogleCalendar(Request $request, Google_Service_Calendar_Calendar $googleCalendar = null) {
-
-        if (is_null($googleCalendar)) {
-            $googleCalendar = new Google_Service_Calendar_Calendar();
-        }
-
-        $googleCalendar->setSummary($request->summary);
-
-        return $googleCalendar;
-    }
-
     public function index() {
         if ($this->user->isTeacher()) {
             return $this->getAllCalendarsFromTeacher();
         } else {
-            
+            return $this->getAllCalendarsFromStudent();
         }
-    }
-
-    private function getAllCalendarsFromTeacher() {
-        $team = new Team();
-        $ids = $team->getTeamsFromTeacherIds($this->user->teacher->id);
-        $calendarsGoogleIds = Calendar::getCalendarGoogleIdsFromTeams($ids);
-        $calendarList = $this->calendarService->calendarList->listCalendarList();
-        return array_filter($calendarList->getItems(), function($googleCalendar) use ($calendarsGoogleIds) {
-            if (in_array($googleCalendar->getId(), $calendarsGoogleIds)) {
-                return $googleCalendar;
-            }
-        });
     }
 
     public function create() {
@@ -175,6 +114,65 @@ class CalendarService {
         } else {
             return User::getUsersByTeamExceptLoggedUser();
         }
+    }
+
+    public function store(Request $request) {
+        $this->validateCalendar($request);
+        $teamId = $this->user->isTeacher() ? $request->team : $this->user->student->team_id;
+        $googleEmails = $this->user->isTeacher() ? Google::getEmailsByTeam($teamId) : $request->attendees;
+        $googleCalendar = $this->fillGoogleCalendar($request);
+        $insertedCalendar = $this->calendarService->calendars->insert($googleCalendar);
+        $google = new Google();
+        $googles = $google->getEmails($googleEmails);
+        $calendar = new Calendar();
+        $calendar->calendar = $insertedCalendar->getId();
+        $calendar->team()->associate(Team::findOrFail($teamId));
+        $calendar->save();
+        $allGoogles = $this->user->isTeacher() ? $googles->all() : array_merge($googles->all(), [$this->user->google]);
+        $calendar->googles()->saveMany($allGoogles);
+        $this->associateAttendees($insertedCalendar, $request, $googleEmails);
+    }
+
+    private function getAllCalendarsFromTeacher() {
+        $team = new Team();
+        $ids = $team->getTeamsFromTeacherIds($this->user->teacher->id);
+        $calendarsGoogleIds = Calendar::getCalendarGoogleIdsFromTeams($ids);
+        return $this->filterCalendars($calendarsGoogleIds);
+    }
+
+    private function getAllCalendarsFromStudent() {
+        $calendarsGoogleIds = Calendar::getCalendarsIdsByGoogleId($this->user->google->id);
+        return $this->filterCalendars($calendarsGoogleIds);
+    }
+
+    private function filterCalendars($calendarsGoogleIds) {
+        $calendarList = $this->calendarService->calendarList->listCalendarList();
+        return array_filter($calendarList->getItems(), function($googleCalendar) use ($calendarsGoogleIds) {
+            if (in_array($googleCalendar->getId(), $calendarsGoogleIds)) {
+                return $googleCalendar;
+            }
+        });
+    }
+
+    private function fillGoogleCalendar(Request $request, Google_Service_Calendar_Calendar $googleCalendar = null) {
+        if (is_null($googleCalendar)) {
+            $googleCalendar = new Google_Service_Calendar_Calendar();
+        }
+        $googleCalendar->setSummary($request->summary);
+        return $googleCalendar;
+    }
+
+    public function destroy($id) {
+        $calendarId = Crypt::decrypt($id);
+        $calendar = new Calendar();
+        $calendarEloquent = $calendar->getCalendar($calendarId);
+        $googles = Google::getGooglesCalendarsExceptCreator($this->user->google->id, $calendarEloquent->id);
+        foreach ($googles as $google) {
+            $this->disassociateAttendee($calendarEloquent->calendar, $google->email);
+        }
+        $calendarEloquent->googles()->sync([], true);
+        $calendarEloquent->delete();
+        $this->calendarService->calendars->delete($calendarId);
     }
 
 }

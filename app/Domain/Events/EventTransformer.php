@@ -4,7 +4,7 @@ namespace Academic\Domain\Events;
 
 class EventTransformer {
 
-    public static function fromGoogleEventsToArray(array $googleEvents, $idCalendar) {
+    public static function fromGoogleEventsToArray($googleEvents, $idCalendar) {
         return array_map(function($googleEvent) use ($idCalendar) {
             $event['id'] = $googleEvent->getId();
             $event['title'] = $googleEvent->getSummary();

@@ -25,7 +25,9 @@ class EventService {
     public function insertEvent(Request $request) {
         $this->validate($request);
         $googleEvent = $this->fillGoogleEvent($request);
-        return $this->calendarService->events->insert($request->calendar_id, $googleEvent);
+        $event = $this->calendarService->events->insert($request->calendar_id, $googleEvent);
+        $eventArray = EventTransformer::fromGoogleEventsToArray([$event], $request->calendar_id);
+        return $eventArray[0];
     }
 
     public function updateEvent(Request $request, $calendarId, $eventId) {
@@ -146,11 +148,20 @@ class EventService {
     }
 
     private function getAllEventsFromCalendars(Request $request) {
-        $allEvents = [];
+        $arrayEvents = [];
+        $optParams = [
+            'singleEvents' => true,
+            'timeMin' => $request->start . 'T00:00:00-00:00',
+            'timeMax' => $request->end . 'T00:00:00-00:00'
+        ];
+
         foreach ($request->ids as $id) {
-            $eventList = $this->calendarService->events->listEvents($id, ['timeMin' => $request->start . 'T00:00:00-00:00', 'timeMax' => $request->end . 'T00:00:00-00:00']);
-            $events = EventTransformer::fromGoogleEventsToArray($eventList->getItems(), $id);
-            $arrayEvents = array_merge($allEvents, $events);
+            $eventList = $this->calendarService->events->listEvents($id, $optParams);
+            $items = $eventList->getItems();
+            if (!empty($items)) {
+                $events = EventTransformer::fromGoogleEventsToArray($eventList->getItems(), $id);
+                $arrayEvents = array_merge($arrayEvents, $events);
+            }
         }
         return $arrayEvents;
     }

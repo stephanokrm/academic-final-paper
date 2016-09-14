@@ -43,4 +43,12 @@ class Calendar extends Model {
         return $calendar->whereIn('team_id', $ids)->select('calendars.calendar')->get()->lists('calendar');
     }
 
+    public static function getCalendarsIdsByGoogleId($id) {
+        $calendar = new Calendar();
+        return $calendar->where('calendar_google.google_id', $id)
+                        ->join('calendar_google', 'calendar_google.calendar_id', '=', 'calendars.id')
+                        ->get()
+                        ->lists('calendar');
+    }
+
 }

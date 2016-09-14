@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
         <meta name="csrf-token" content="{{ csrf_token()}}"/>
+        <meta name="theme-color" content="#03a9f4"> 
         <title>Academic - @yield('title')</title>
-        <link rel="icon" href="{{ asset('/images/academic-logo.ico') }}">
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-        <link type="text/css" rel="stylesheet" href="{{ asset('/materialize/css/materialize.min.css')}}"/>
-        <link type="text/css" rel="stylesheet" href="{{ asset('/font-awesome/css/font-awesome.min.css')}}" media="screen"/>
-        @yield('css')
-        <link type="text/css" rel="stylesheet" property="" href="{{ asset('/css/style.css')}}"/>
+        <link rel="manifest" href="{{ asset('manifest.json') }}">
+        <link rel="icon" href="{{ asset('/images/academic-logo.ico') }}"/>
+        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+        <link type="text/css" rel="stylesheet" href="{{ asset('/bower_components/materialize/dist/css/materialize.min.css')}}"/>
+        @yield('css') 
+        <link type="text/css" rel="stylesheet" href="{{ asset('/css/app.css')}}"/>
     </head>
     <body>
         @if(Session::has('user') && !isset($showNav))
-        <ul id='user-options' class='dropdown-content'>
+        <ul id='user-options' class='dropdown-content custom-dropdown-content'>
             <li><a href="#!"><i class="material-icons left">perm_identity</i>Perfil</a></li>
             @if(Session::has('credentials'))
             <li><a href="{{ route('google.logout')}}"><i class="material-icons left">open_in_new</i>Sair do Google</a></li>
@@ -24,12 +25,12 @@
             @endif
             <li><a href="{{ route('auth.logout')}}"><i class="material-icons left">clear</i>Sair</a></li>
         </ul>
-        <ul id="activity-options" class="dropdown-content">
+        <ul id="activity-options" class="dropdown-content custom-dropdown-content">
             <li><a href="#!"><i class="material-icons left">assignment</i>Tarefas</a></li>
             <li><a href="#!"><i class="material-icons left">class</i>Avaliações</a></li>
             <li><a href="#!"><i class="material-icons left">import_contacts</i>Todas atividades</a></li>
         </ul>
-        <ul id="menu-options" class="dropdown-content">
+        <ul id="menu-options" class="dropdown-content custom-dropdown-content">
             <li><a href="{{ route('home.index')}}"><i class="material-icons left">home</i>Início</a></li>
             @if(Session::get('user')->isTeacher()) 
             <li><a href="{{ route('teams.index')}}"><i class="material-icons left">people_outline</i>Turmas</a></li>
@@ -49,11 +50,11 @@
                                 </a>
                                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                                 <ul class="right hide-on-med-and-down">
-                                    <li><a data-constrainwidth="false" data-alignment="right" class="dropdown-button" href="#!" data-activates="menu-options">Menu<i class="material-icons right">arrow_drop_down</i></a></li>
-                                    <li><a data-constrainwidth="false" data-alignment="right" class="dropdown-button" href="#!" data-activates="activity-options">Atividades<i class="material-icons right">arrow_drop_down</i></a></li>
-                                    <li><a href="{{ route('calendars.index', Session::get('user')->getTeamFromUser()) }}">Calendários</a></li>
+                                    <li><a data-constrainwidth="false" data-alignment="right" class="dropdown-button" href="#!" data-activates="menu-options">Menu<i class="material-icons right">keyboard_arrow_down</i></a></li>
+                                    <li><a data-constrainwidth="false" data-alignment="right" class="dropdown-button" href="#!" data-activates="activity-options">Atividades<i class="material-icons right">keyboard_arrow_down</i></a></li>
+                                    <li><a href="{{ route('calendars.index') }}">Calendários</a></li>
                                     <li class="waves-effect waves-light"><a><i class="material-icons">notifications</i></a></li>
-                                    <li><a data-constrainwidth="false" data-alignment="right" class="dropdown-button profile-img" data-activates='user-options'><img alt="Imagem de Perfil" class="circle left" src="{{ asset(Session::get('user')->google->profile_image) }}"><i class="material-icons right">arrow_drop_down</i><span class="right user-name">{{ Session::get('user')->name }}</span></a></li>
+                                    <li><a data-constrainwidth="false" data-alignment="right" class="dropdown-button profile-img" data-activates='user-options'><img alt="Imagem de Perfil" class="circle left" src="{{ asset(Session::get('user')->google->profile_image) }}"><i class="material-icons right tiny">keyboard_arrow_down</i><span class="right user-name">{{ Session::get('user')->name }}</span></a></li>
                                 </ul>
                                 <ul class="side-nav" id="mobile-demo">
                                     <li>
@@ -129,11 +130,11 @@
                 </div>
             </div>
         </main>
-
-        <script type="text/javascript" src="{{ asset('/js/jquery-3.1.0.min.js')}}"></script>
-        <script type="text/javascript" src="{{ asset('/materialize/js/materialize.min.js')}}"></script>
-        <script type="text/javascript" src="{{ asset('/js/main.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('/bower_components/jquery/dist/jquery.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('/bower_components/materialize/dist/js/materialize.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('/bower_components/jquery-validation/dist/jquery.validate.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('/js/jquery.mask.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('/js/app.js')}}"></script>
         @yield('js')
     </body>
 </html>

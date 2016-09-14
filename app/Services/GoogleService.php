@@ -20,6 +20,7 @@ class GoogleService {
             if ($code) {
                 $accessToken = $client->authenticate($code);
                 Session::put('credentials', $accessToken);
+                Session::flash('message', 'Login no Google efetuado com sucesso.');
             } else {
                 $authUrl = $client->createAuthUrl();
                 Session::put('authUrl', $authUrl);
@@ -43,18 +44,16 @@ class GoogleService {
     private function consigureClient() {
         $client = new Google_Client();
         $client->setApplicationName('Academic');
+        $client->addScope([
+            Google_Service_Calendar::CALENDAR,
+            Google_Service_Plus::PLUS_LOGIN,
+            Google_Service_Plus::PLUS_ME,
+            Google_Service_Plus::USERINFO_EMAIL,
+            Google_Service_Plus::USERINFO_PROFILE
+        ]);
         $client->setClientId('853157239818-rsl4k0s23joipal9li62p32s02uk65de.apps.googleusercontent.com');
         $client->setClientSecret('uCN_zH8cN5d6cRKk7Im2dX2o');
         $client->setRedirectUri('http://webacademico.canoas.ifrs.edu.br/~academic/index.php/home');
-        $client->setScopes([
-            'profile',
-            'email',
-            Google_Service_Calendar::CALENDAR,
-            'https://www.googleapis.com/auth/plus.login',
-            'https://www.googleapis.com/auth/plus.me',
-            'https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile'
-        ]);
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
         return $client;

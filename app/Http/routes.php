@@ -10,7 +10,7 @@
   | and give it the controller to call when that URI is requested.
   |
  */
-Route::group(['middleware' => ['validation']], function() {
+Route::group(['middleware' => 'validation'], function() {
 
     Route::get('/', function() {
         return redirect()->route('home.index');
@@ -33,22 +33,25 @@ Route::group(['middleware' => ['validation']], function() {
         Route::delete('usuarios/{id}', ['as' => 'users.destroy', 'uses' => 'UserController@destroy']);
 
         Route::group(['middleware' => 'google'], function() {
+            Route::resource('calendars', 'CalendarController');
+
             Route::get('google/sair', ['as' => 'google.logout', 'uses' => 'GoogleController@logout']);
 
             Route::post('eventos', ['as' => 'events.index', 'uses' => 'EventController@index']);
+            Route::resource('events', 'EventController', ['except' => ['index', 'update']]);
 
-            Route::get('calendarios/{id}/eventos', ['as' => 'events.index', 'uses' => 'EventController@index']);
-            Route::get('calendarios/{id}/eventos/criar', ['as' => 'events.create', 'uses' => 'EventController@create']);
-            Route::post('eventos/salvar', ['as' => 'events.store', 'uses' => 'EventController@store']);
-            Route::get('calendarios/{calendar}/eventos/{id}', ['as' => 'events.show', 'uses' => 'EventController@show']);
-            Route::get('calendarios/{calendar}/eventos/{id}/editar', ['as' => 'events.edit', 'uses' => 'EventController@edit']);
+//            Route::get('calendarios/{id}/eventos/criar', ['as' => 'events.create', 'uses' => 'EventController@create']);
+//            Route::post('eventos/salvar', ['as' => 'events.store', 'uses' => 'EventController@store']);
+//            Route::get('calendarios/{calendar}/eventos/{id}', ['as' => 'events.show', 'uses' => 'EventController@show']);
+//            Route::get('calendarios/{calendar}/eventos/{id}/editar', ['as' => 'events.edit', 'uses' => 'EventController@edit']);
             Route::post('calendarios/{calendar}/eventos/{id}', ['as' => 'events.update', 'uses' => 'EventController@update']);
-            Route::delete('eventos/{id}', ['as' => 'events.destroy', 'uses' => 'EventController@destroy']);
+//            Route::delete('eventos/{id}', ['as' => 'events.destroy', 'uses' => 'EventController@destroy']);
 
             Route::get('turmas/{id}/atividades', ['as' => 'activities.index', 'uses' => 'ActivityController@index']);
             Route::get('atividades/{id}', ['as' => 'activities.show', 'uses' => 'ActivityController@show']);
 
             Route::group(['middleware' => 'teacher'], function() {
+                Route::resource('teams', 'TeamController');
                 Route::get('turmas/{id}/atividades/criar', ['as' => 'activities.create', 'uses' => 'ActivityController@create']);
                 Route::post('turmas/{id}/atividades', ['as' => 'activities.store', 'uses' => 'ActivityController@store']);
                 Route::get('atividades/{id}/editar', ['as' => 'activities.edit', 'uses' => 'ActivityController@edit']);
@@ -56,7 +59,5 @@ Route::group(['middleware' => ['validation']], function() {
                 Route::post('atividades/deletar', ['as' => 'activities.destroy', 'uses' => 'ActivityController@destroy']);
             });
         });
-        Route::resource('calendars', 'CalendarController', ['middleware' => 'google']);
-        Route::resource('teams', 'TeamController', ['middleware' => 'teacher']);
     });
 });

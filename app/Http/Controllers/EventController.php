@@ -53,10 +53,8 @@ class EventController extends Controller {
      */
     public function store(Request $request) {
         $service = new EventService($this->calendarService);
-        $service->insertEvent($request);
-        return redirect()
-                        ->route('events.index', Crypt::encrypt($request->calendar_id))
-                        ->withMessage('Evento criado com sucesso.');
+        $event = $service->insertEvent($request);
+        return response()->json(['success' => true, 'message' => 'Evento criado com sucesso.', 'event' => $event]);
     }
 
     /**

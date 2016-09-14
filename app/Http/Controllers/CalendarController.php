@@ -4,10 +4,10 @@ namespace Academic\Http\Controllers;
 
 use Academic\Services\GoogleService;
 use Academic\Services\CalendarService;
+use Academic\Domain\Color\ColorHelper;
 use Academic\Http\Controllers\Controller;
 use Academic\Calendar;
 use Academic\Google;
-use Academic\User;
 //
 use Illuminate\Http\Request;
 //
@@ -27,8 +27,10 @@ class CalendarController extends Controller {
 
     public function index() {
         $service = new CalendarService($this->calendarService);
+        $colors = $this->calendarService->colors->get();
+        $colorHelper = new ColorHelper();
         $calendars = $service->index();
-        return view('calendars.index')->withCalendars($calendars);
+        return view('calendars.index')->withCalendars($calendars)->withColors($colors)->withColorHelper($colorHelper);
     }
 
     public function create() {
@@ -39,7 +41,7 @@ class CalendarController extends Controller {
 
     public function store(Request $request) {
         $service = new CalendarService($this->calendarService);
-        $service->insertCalendar($request);
+        $service->store($request);
         return redirect()
                         ->route('calendars.index')
                         ->withMessage('Calendário criado com sucesso.');
@@ -73,9 +75,9 @@ class CalendarController extends Controller {
                         ->withMessage('Calendário editado com sucesso.');
     }
 
-    public function destroy(Request $request) {
+    public function destroy($id) {
         $service = new CalendarService($this->calendarService);
-        $service->deleteCalendar($request);
+        $service->destroy($id);
         return redirect()
                         ->route('calendars.index')
                         ->withMessage('Calendário excluído com sucesso.');
