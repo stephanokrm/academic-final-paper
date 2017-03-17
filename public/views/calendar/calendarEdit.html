@@ -1,0 +1,69 @@
+<md-dialog aria-label="Editar Calendário">
+    <form ng-cloak id="calendar-edit-form" name="calendar-edit-form" class="bigger-font-size">
+        <md-toolbar>
+            <div class="md-toolbar-tools"> 
+                <md-button class="md-icon-button" ng-click="vm.closeModal()">
+                    <md-icon class="material-icons" aria-label="Close dialog">clear</md-icon>
+                </md-button>
+                <h2>Editar Calendário</h2>
+                <span flex></span>
+                <md-button ng-click="vm.updateCalendar(calendarEdit)">Concluído</md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="row" layout-align-gt-xs="center center" layout-wrap>
+                    <md-input-container flex="100">
+                        <label>Título</label>
+                        <input ng-model="vm.calendarEdit.summary" required type="text" name="summary" id="summary" ng-maxlength="255" md-autofocus>
+                        <div ng-messages="calendar-edit-form.summary.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="required" class="md-input-message-animation ng-scope">
+                                <span>Este campo é necessário</span>
+                            </div>
+                            <div ng-message="maxlength" class="md-input-message-animation ng-scope">
+                                <span>Este campo deve conter no máximo 255 caracteres</span>
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex="100" ng-show="vm.isTeacher">
+                        <label>Turma</label>
+                        <md-select ng-model="vm.calendarEdit.team" name="team" id="team"> 
+                            <md-option ng-repeat="team in vm.teamsEdit" value="{{team.id}}">
+                                {{team.year}}º Ano - <span hide-xs>{{team.name}}</span><span hide-gt-xs>{{team.abbreviation}}</span>
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <div flex="100">
+                    	<label>Convidados</label>
+                    	<md-list>
+                            <md-list-item ng-repeat="attendee in vm.attendees track by $index" class="noright">
+                                <img alt="Foto" ng-src="{{attendee.profile_image}}" class="md-avatar" />
+                                <p>{{attendee.user.name}}</p>
+                                <md-icon class="md-secondary material-icons" ng-click="vm.removeAttendee(attendee)" aria-label="Remove">clear</md-icon>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                    <div ng-show="!vm.isTeacher" flex="100">
+                        <label>Alunos para convidar</label>
+                        <md-list>
+                            <md-list-item ng-repeat="attendee in vm.notAttendees track by $index" class="noright">
+                                <img alt="Foto" ng-src="{{attendee.profile_image}}" class="md-avatar"/>
+                                <p>{{attendee.name}}</p>
+                                <md-tooltip md-direction="right" ng-if="!vm.calendarEdit.role">Selecione uma permissão para convidar</md-tooltip>
+                                <md-icon ng-disabled="!vm.calendarEdit.role" class="md-secondary material-icons" aria-label="Move" ng-click="vm.addAttendee(attendee)">done</md-icon>
+                            </md-list-item>
+                        </md-list>
+                        <br>
+                        <label>Permissão dos convidados</label>
+                        <br><br>
+                        <md-radio-group ng-model="vm.calendarEdit.role"> 
+                            <md-radio-button value="reader">Visualizar Detalhes de Eventos</md-radio-button>
+                            <md-radio-button value="writer">Visualizar e Editar Detalhes de Eventos</md-radio-button>
+                            <md-radio-button value="owner">Editar e Compartilhar Calendário</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

@@ -2,85 +2,108 @@
 
 namespace Academic\Http\Controllers;
 
-use Academic\Services\GoogleService;
-use Academic\Services\CalendarService;
-use Academic\Domain\Color\ColorHelper;
 use Academic\Http\Controllers\Controller;
-use Academic\Calendar;
-use Academic\Google;
-//
+use Academic\Services\CalendarService;
+use Academic\Http\Requests\CalendarRequest;
 use Illuminate\Http\Request;
-//
-use Crypt;
-//
-use Google_Service_Calendar;
 
 class CalendarController extends Controller {
 
-    private $calendarService;
+    protected $service;
 
-    public function __construct() {
-        $service = new GoogleService();
-        $client = $service->getClient();
-        $this->calendarService = new Google_Service_Calendar($client);
+    public function __construct(CalendarService $service) {
+        $this->service = $service;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
     public function index() {
-        $service = new CalendarService($this->calendarService);
-        $colors = $this->calendarService->colors->get();
-        $colorHelper = new ColorHelper();
-        $calendars = $service->index();
-        return view('calendars.index')->withCalendars($calendars)->withColors($colors)->withColorHelper($colorHelper);
+        $calendars = $this->service->index();
+        return response()->json($calendars);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
     public function create() {
-        $service = new CalendarService($this->calendarService);
-        $dados = $service->create();
-        return view('calendars.create')->withDados($dados);
+        //
     }
 
-    public function store(Request $request) {
-        $service = new CalendarService($this->calendarService);
-        $service->store($request);
-        return redirect()
-                        ->route('calendars.index')
-                        ->withMessage('Calendário criado com sucesso.');
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store(CalendarRequest $request) {
+        $calendar = $this->service->store($request);
+        return response()->json($calendar);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show($id) {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function edit($id) {
-        $calendarId = Crypt::decrypt($id);
-
-        $calendar = new Calendar();
-        $calendar = $calendar->getCalendar($calendarId);
-        $associated = $calendar->googles;
-        $associatedEmails = $calendar->getAssociatedEmails();
-
-        $google = new Google();
-        $disassociated = $google->getDisassociated($associatedEmails);
-
-        $service = new CalendarService($this->calendarService);
-        $googleCalendar = $service->getCalendar($calendarId);
-        return view('calendars.edit')
-                        ->withCalendar($googleCalendar)
-                        ->withAssociated($associated)
-                        ->withDisassociated($disassociated);
+        //
     }
 
-    public function update(Request $request, $id) {
-        $calendarId = Crypt::decrypt($id);
-        $service = new CalendarService($this->calendarService);
-        $service->updateCalendar($request, $calendarId);
-        return redirect()
-                        ->route('calendars.index')
-                        ->withMessage('Calendário editado com sucesso.');
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update(CalendarRequest $request, $id) {
+        $this->service->update($request, $id);
+        return response()->json('Calendário editado!');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function destroy($id) {
-        $service = new CalendarService($this->calendarService);
-        $service->destroy($id);
-        return redirect()
-                        ->route('calendars.index')
-                        ->withMessage('Calendário excluído com sucesso.');
+        $this->service->destroy($id);
+        return response()->json('Calendário removido!');
+    }
+
+    public function attendees($id) {
+        $attendees = $this->service->attendees($id);
+        return response()->json($attendees);
+    }
+
+    public function notAttendees($id) {
+        $notAttendees = $this->service->notAttendees($id);
+        return response()->json($notAttendees);
+    }
+
+    public function addAttendee(Request $request) {
+        $this->service->addAttendee($request);
+        return response()->json('Aluno adicionado!');
+    }
+
+    public function removeAttendee(Request $request) {
+        $this->service->removeAttendee($request);
+        return response()->json('Aluno removido!');
     }
 
 }

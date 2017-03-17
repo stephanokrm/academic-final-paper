@@ -2,16 +2,42 @@
 
 namespace Academic\Http\Controllers;
 
+use Academic\Http\Requests\LoginRequest;
+use Academic\Http\Requests\RegisterRequest;
+use Academic\Services\UserService;
 use Academic\Http\Controllers\Controller;
-use Academic\Google;
-use Academic\Team;
-use Academic\Student;
-use Academic\User;
-use Academic\Validations\RegisterValidation;
-use Illuminate\Http\Request;
-use Session;
 
 class UserController extends Controller {
+
+    protected $username = 'username';
+    protected $service;
+
+    public function __construct(UserService $service) {
+        $this->service = $service;
+    }
+
+    public function usersByTeam() {
+        $users = $this->service->usersByTeam();
+        return response()->json($users);
+    }
+
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param  LoginRequest $request
+     * @return Response
+     */
+    public function authenticate(LoginRequest $request) {
+        $user = $this->service->authenticate($request);
+        return response()->json($user);
+    }
+
+    /**
+     * Handle an logout attempt.
+     */
+    public function logout() {
+        $this->service->logout();
+    }
 
     /**
      * Display a listing of the resource.
@@ -36,7 +62,7 @@ class UserController extends Controller {
      *
      * @return Response
      */
-    public function store() {
+    public function store(RegisterRequest $request) {
         //
     }
 
@@ -47,8 +73,7 @@ class UserController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $user = User::findOrFail($id);
-        return view('users.show')->withUser($user);
+        //
     }
 
     /**
@@ -67,31 +92,9 @@ class UserController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id) {
-        $validation = new RegisterValidation();
-        $validation->validate($request);
-
-        $user = Session::get('user');
-        $user->birth_date = $request->birth_date;
-        $user->active = '1';
-        $user->save();
-
-        $team = Team::findOrFail($request->team);
-
-        $student = new Student();
-        $student->user()->associate($user);
-        $student->team()->associate($team);
-        $student->save();
-
-        $google = new Google();
-        $google->email = $request->email;
-        $google->profile_image = '/images/user.svg';
-        $google->user()->associate($user);
-        $google->save();
-
-        Session::put('user', $user);
-
-        return redirect()->route('home.index')->withMessage('Registro efetuado com sucesso.');
+    public function update(RegisterRequest $request, $id) {
+        $user = $this->service->update($request, $id);
+        return response()->json($user);
     }
 
     /**

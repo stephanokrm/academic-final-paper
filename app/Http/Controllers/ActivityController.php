@@ -2,143 +2,96 @@
 
 namespace Academic\Http\Controllers;
 
+use Academic\Http\Requests\ActivityRequest;
 use Academic\Http\Controllers\Controller;
-use Academic\Services\AcitivityService;
-use Academic\Services\CalendarService;
-use Academic\Services\GoogleService;
-use Academic\Services\EventService;
-use Academic\Validations\ActivityValidation;
-use Academic\Calendar;
-use Academic\Activity;
-use Academic\Event;
-use Academic\Team;
-use Academic\Models\ActivityModel;
-//
 use Illuminate\Http\Request;
-//
-use Google_Service_Calendar;
-//
-use Session;
+use Academic\Services\ActivityService;
 
 class ActivityController extends Controller {
 
-    private $calendarService;
+    protected $service;
 
-    public function __construct() {
-        $service = new GoogleService();
-        $client = $service->getClient();
-        $this->calendarService = new Google_Service_Calendar($client);
+    public function __construct(ActivityService $service) {
+        $this->service = $service;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
     public function index($id) {
-        $eventService = new EventService($this->calendarService);
-        $service = new AcitivityService();
-        $activities = $service->getActivitiesFromTeam($id);
-        $activitiesModel = [];
-        foreach ($activities as $activity) {
-            $calendarId = $activity->event->calendar->calendar;
-            $eventId = $activity->event->event;
-            $googleEvent = $eventService->getEvent($calendarId, $eventId);
-            $event = $eventService->transformGoogleEventToModel($googleEvent);
-
-            $activityModel = new ActivityModel();
-            $activityModel->setId($activity->id);
-            $activityModel->setSummary($event->getSummary());
-            $activityModel->setDate($event->getBeginDate());
-            $activityModel->setColorId($event->getColorId());
-            $activityModel->setWeight($activity->weight);
-            $activityModel->setTotalScore($activity->total_score);
-            $activitiesModel[] = $activityModel;
-        }
-
-        $user = Session::get('user');
-
-        return view('activities.index')->withActivities($activitiesModel)->withUser($user);
+        $activities = $this->service->index($id);
+        return response()->json($activities);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
     public function create() {
-        $service = new CalendarService($this->calendarService);
-        $googleCalendars = $service->listCalendars();
-        $colors = $this->calendarService->colors->get();
-        return view('activities.create')
-                        ->withCalendars($googleCalendars)
-                        ->withColors($colors);
+        //
     }
 
-    public function store(Request $request, $teamId) {
-        $validation = new ActivityValidation();
-        $validation->validate($request);
-
-        $request->merge(['all_day' => 'Y', 'begin_date' => $request->date, 'end_date' => $request->date]);
-        $service = new EventService($this->calendarService);
-        $insertedEvent = $service->insertEvent($request);
-
-        $team = Team::findOrFail($teamId);
-        $students = $team->students;
-
-        $calendar = new Calendar();
-        $calendar = $calendar->getCalendar($request->calendar_id);
-
-        $event = new Event();
-        $event->event = $insertedEvent->getId();
-        $event->calendar()->associate($calendar);
-        $event->save();
-
-        $acitivity = new Activity();
-        $acitivity->fill($request->all());
-        $acitivity->event()->associate($event);
-        $acitivity->team()->associate($team);
-        $acitivity->save();
-
-        foreach ($students as $student) {
-            $acitivity->students()->attach($student->id, ['done' => '0', 'returned' => '0']);
-        }
-
-        return redirect()
-                        ->route('activities.index', $teamId)
-                        ->withMessage('Atividade criada com sucesso.');
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store(ActivityRequest $request) {
+        $this->service->store($request);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function show($id) {
-        abort(501);
+        $activity = $this->service->show($id);
+        return response()->json($activity);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function edit($id) {
-        $eventService = new EventService($this->calendarService);
-        $service = new AcitivityService();
-        $activity = Activity::findOrFail($id);
-
-        $calendarId = $activity->event->calendar->calendar;
-        $eventId = $activity->event->event;
-        $googleEvent = $eventService->getEvent($calendarId, $eventId);
-        $event = $eventService->transformGoogleEventToModel($googleEvent);
-
-        $activityModel = new ActivityModel();
-        $activityModel->setId($activity->id);
-        $activityModel->setSummary($event->getSummary());
-        $activityModel->setDate($event->getBeginDate());
-        $activityModel->setColorId($event->getColorId());
-        $activityModel->setDescription($event->getDescription());
-        $activityModel->setWeight($activity->weight);
-        $activityModel->setTotalScore($activity->total_score);
-        $activityModel->setCalendarId($calendarId);
-
-        $service = new CalendarService($this->calendarService);
-        $googleCalendars = $service->listCalendars();
-        $colors = $this->calendarService->colors->get();
-
-        return view('activities.edit')
-                        ->withActivity($activityModel)
-                        ->withCalendars($googleCalendars)
-                        ->withColors($colors);
+        $activity = $this->service->edit($id);
+        return response()->json($activity);
     }
 
-    public function update(Request $request, $id) {
-        abort(501);
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update(ActivityRequest $request, $id) {
+        $this->service->update($request, $id);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function destroy($id) {
-        abort(501);
+        $this->service->destroy($id);
+    }
+
+    public function details(Request $request, $id) {
+        $this->service->details($request, $id);
+    }
+
+    public function fromStudent() {
+        $activities = $this->service->fromStudent();
+        return response()->json(compact('activities'));
     }
 
 }

@@ -2,24 +2,17 @@
 
 namespace Academic\Http\Controllers;
 
-use Crypt;
-//
-use Illuminate\Http\Request;
-//
-use Academic\Services\EventService;
-use Academic\Services\GoogleService;
 use Academic\Http\Controllers\Controller;
-//
-use Google_Service_Calendar;
+use Academic\Services\EventService;
+use Academic\Http\Requests\EventRequest;
+use Illuminate\Http\Request;
 
 class EventController extends Controller {
 
-    private $calendarService;
+    protected $service;
 
-    public function __construct() {
-        $service = new GoogleService();
-        $client = $service->getClient();
-        $this->calendarService = new Google_Service_Calendar($client);
+    public function __construct(EventService $service) {
+        $this->service = $service;
     }
 
     /**
@@ -28,8 +21,7 @@ class EventController extends Controller {
      * @return Response
      */
     public function index(Request $request) {
-        $service = new EventService($this->calendarService);
-        $events = $service->index($request);
+        $events = $this->service->index($request);
         return response()->json($events);
     }
 
@@ -38,12 +30,8 @@ class EventController extends Controller {
      *
      * @return Response
      */
-    public function create($id) {
-        $idCalendar = Crypt::decrypt($id);
-        $colors = $this->calendarService->colors->get();
-        return view('events.create')
-                        ->withCalendar($idCalendar)
-                        ->withColors($colors);
+    public function create() {
+        //
     }
 
     /**
@@ -51,10 +39,9 @@ class EventController extends Controller {
      *
      * @return Response
      */
-    public function store(Request $request) {
-        $service = new EventService($this->calendarService);
-        $event = $service->insertEvent($request);
-        return response()->json(['success' => true, 'message' => 'Evento criado com sucesso.', 'event' => $event]);
+    public function store(EventRequest $request) {
+        $event = $this->service->store($request);
+        return response()->json($event);
     }
 
     /**
@@ -63,8 +50,8 @@ class EventController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function show() {
-        
+    public function show($id) {
+        //
     }
 
     /**
@@ -73,16 +60,8 @@ class EventController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function edit($idCalendar, $idEvent) {
-        $idCalendar = Crypt::decrypt($idCalendar);
-        $service = new EventService($this->calendarService);
-        $googleEvent = $service->getEvent($idCalendar, $idEvent);
-        $event = $service->transformGoogleEventToModel($googleEvent);
-        $colors = $this->calendarService->colors->get();
-        return view('events.edit')
-                        ->withEvent($event)
-                        ->withCalendarId($idCalendar)
-                        ->withColors($colors);
+    public function edit($id) {
+        //
     }
 
     /**
@@ -91,10 +70,9 @@ class EventController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $idCalendar, $idEvent) {
-        $service = new EventService($this->calendarService);
-        $service->updateEvent($request, $idCalendar, $idEvent);
-        return response()->json(['status' => 'success', 'message' => 'Evento editado com sucesso.']);
+    public function update(EventRequest $request, $id) {
+        $event = $this->service->update($request, $id);
+        return response()->json($event);
     }
 
     /**
@@ -104,11 +82,7 @@ class EventController extends Controller {
      * @return Response
      */
     public function destroy(Request $request, $id) {
-        $service = new EventService($this->calendarService);
-        $service->deleteEvent($request->calendar_id, $id);
-        return redirect()
-                        ->route('events.index', Crypt::encrypt($request->calendar_id))
-                        ->withMessage('Evento excluído com sucesso.');
+        $this->service->destroy($request, $id);
     }
 
 }

@@ -1,0 +1,75 @@
+<div layout="row" layout-align="center center">
+    <div flex-gt-sm="40" flex-xs="100" flex-sm="100" layout-padding>
+        <md-subheader class="md-no-sticky">Nova atividade</md-subheader>
+    </div>
+</div>
+
+<div layout="row" layout-align="center center">
+    <div flex-gt-sm="40" flex-xs="100" flex-sm="100" layout-padding>
+        <form name="activityForm" class="bigger-font-size white md-whiteframe-2dp" ng-submit="vm.storeActivity()" layout-padding>
+            <div layout="row" layout-align-gt-xs="center center" layout-wrap>
+                <md-input-container flex="100">
+                    <label>Calendário</label>
+                    <md-select ng-model="vm.activity.calendar" name="calendar" id="calendar" required>
+                        <md-option ng-repeat="calendar in vm.calendars" value="{{calendar.id}}">
+                            {{calendar.summary}}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="activityForm.calendar.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                        <div ng-message="required" class="md-input-message-animation ng-scope"><span>Selecione um calendário</span></div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>Digite um título</label>
+                    <input ng-model="vm.activity.summary" required type="text" name="summary" id="summary">
+                    <div ng-messages="activityForm.summary.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                        <div ng-message="required" class="md-input-message-animation ng-scope"><span>Digite o título</span></div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex-gt-xs="50" flex-xs="100">
+                    <label>Peso</label>
+                    <input ng-model="vm.activity.weight" required type="text" name="weight" id="weight">
+                    <div ng-messages="activityForm.weight.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                        <div ng-message="required" class="md-input-message-animation ng-scope"><span>Digite o peso</span></div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex-gt-xs="50" flex-xs="100">
+                    <label>Nota máxima</label>
+                    <input ng-model="vm.activity.total_score" required type="text" name="total_score" id="total_score">
+                    <div ng-messages="activityForm.total_score.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                        <div ng-message="required" class="md-input-message-animation ng-scope"><span>Digite a nota total</span></div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>Data</label>
+                    <md-datepicker ng-model="vm.activity.date" required name="date" id="date"></md-datepicker>
+                    <div ng-messages="activityForm.date.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                        <div ng-message="valid" class="md-input-message-animation ng-scope"><span>O valor inserido não é uma data</span></div>
+                        <div ng-message="required" class="md-input-message-animation ng-scope"><span>Este campo é necessário</span></div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>Adicionar descrição</label>
+                    <textarea ng-model="vm.activity.description" md-maxlength="500" name="description" id="description" rows="4" md-select-on-focus></textarea>
+                    <div ng-messages="activityForm.description.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                        <div ng-message="maxlength" class="md-input-message-animation ng-scope"><span>Este campo deve conter no máximo 500 caracteres</span></div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>Tipo da atividade</label>
+                    <md-select ng-model="vm.activity.color" name="color" id="color" required>
+                        <md-option ng-repeat="color in vm.colors" value="{{color.id}}" ng-style="color.background">
+                            {{color.name}}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="activityForm.color.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                        <div ng-message="required" class="md-input-message-animation ng-scope"><span>Escolha um tipo</span></div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-align="end center">
+                <md-button class="md-raised md-primary" ng-disabled="activityForm.$invalid" type="submit">Concluir</md-button>
+            </div>
+        </form>
+    </div>
+</div>

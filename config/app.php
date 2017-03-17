@@ -35,7 +35,7 @@ return [
       | ahead and set this to a sensible default for you out of the box.
       |
      */
-    'timezone' => 'America/Sao_Paulo',
+    'timezone' => 'UTC',
     /*
       |--------------------------------------------------------------------------
       | Application Locale Configuration
@@ -46,7 +46,7 @@ return [
       | to any of the locales which will be supported by the application.
       |
      */
-    'locale' => 'pt-br',
+    'locale' => 'en',
     /*
       |--------------------------------------------------------------------------
       | Application Fallback Locale
@@ -128,13 +128,8 @@ return [
         'Academic\Providers\ConfigServiceProvider',
         'Academic\Providers\EventServiceProvider',
         'Academic\Providers\RouteServiceProvider',
-        /*
-         *
-         */
-        'Collective\Html\HtmlServiceProvider',
-        'Dsdevbe\LdapConnector\LdapConnectorServiceProvider',
         'Lord\Laroute\LarouteServiceProvider',
-        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Dsdevbe\LdapConnector\LdapConnectorServiceProvider'
     ],
     /*
       |--------------------------------------------------------------------------
@@ -180,7 +175,5 @@ return [
         'URL' => 'Illuminate\Support\Facades\URL',
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View' => 'Illuminate\Support\Facades\View',
-        'Form' => 'Collective\Html\FormFacade',
-        'Html' => 'Collective\Html\HtmlFacade',
     ],
 ];

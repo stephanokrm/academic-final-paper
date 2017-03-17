@@ -1,0 +1,36 @@
+<div layout="row" layout-align="center center" flex="100">
+    <div flex-xs="100" flex-sm="100" flex-md="50" flex-lg="25" flex-xl="25">
+        <md-card>
+            <img ng-src="../~academic/images/academic-logo.svg" class="md-card-image md-card-academic-logo" alt="Washed Out">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Acesse sua conta</span>
+                </md-card-title-text>
+            </md-card-title>
+            <form name="loginForm" ng-submit="vm.doLogin()">
+                <md-card-content>
+                    <div layout="column">
+                        <md-input-container>
+                            <label>Matrícula</label>
+                            <input ng-model="vm.user.username" type="text" name="username" id="username" required md-autofocus>
+                            <div ng-messages="loginForm.username.$error" role="alert" multiple>
+                                <div ng-message="required" class="my-message">Digite sua matrícula.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Senha</label>
+                            <input ng-model="vm.user.password" type="password" name="password" id="password" required>
+                            <div ng-messages="loginForm.password.$error" role="alert" multiple>
+                                <div ng-message="required" class="my-message">Digite sua senha.</div>
+                                <div ng-message="password" class="my-message">Digite uma senha válida.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="column" layout-align="start">
+                    <md-button class="md-raised md-primary" ng-disabled="loginForm.$invalid" type="submit">Entrar</md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+    </div>
+</div>

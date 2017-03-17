@@ -1,0 +1,100 @@
+<md-dialog aria-label="Novo Evento" class="custom-md-dialog">
+    <form ng-cloak id="eventStoreForm" name="eventStoreForm" class="bigger-font-size">
+        <md-toolbar style="{{vm.style}}">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="vm.closeModal()">
+                    <md-icon class="material-icons" aria-label="Fechar">clear</md-icon>
+                </md-button>
+                <h2 ng-bind="vm.eventAction"></h2>
+                <span flex></span>
+                <md-button ng-click="vm.showConfirm(vm.event)" ng-show="vm.editing">Excluir</md-button>
+                <md-button ng-click="vm.saveEvent()" ng-disabled="vm.eventStoreForm.$invalid">Concluído</md-button>
+            </div>
+            
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="row" layout-align-gt-xs="center center" layout-wrap>
+                    <md-input-container flex="100">
+                        <label>Digite um título</label>
+                        <input ng-model="vm.event.summary" required type="text" name="summary" id="summary" ng-maxlength="255" md-autofocus>
+                        <div ng-messages="eventStoreForm.summary.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="required" class="md-input-message-animation ng-scope"><span>Digite o título</span></div>
+                            <div ng-message="maxlength" class="md-input-message-animation ng-scope"><span>Este campo deve conter no máximo 255 caracteres</span></div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex="100" class="md-icon-float">
+                        <label>Calendário</label>
+                        <md-icon class="material-icons">event</md-icon>
+                        <md-select ng-model="vm.event.calendar" name="calendar" id="calendar" required>
+                            <md-option ng-repeat="calendar in vm.calendarsEvent" value="{{calendar.id}}">
+                                {{calendar.summary}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="eventStoreForm.calendar.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="required" class="md-input-message-animation ng-scope"><span>Selecione um calendário</span></div>
+                        </div>
+                    </md-input-container>
+                    <md-list flex="100">
+                        <md-list-item>
+                            <md-icon class="material-icons">schedule</md-icon>
+                            <p>O dia todo</p>
+                            <md-switch class="md-secondary" ng-model="vm.event.all_day"></md-switch>
+                        </md-list-item>
+                    </md-list>
+                    <md-input-container flex-gt-xs="50" flex-xs="100">
+                        <label>Data de inicio</label>
+                        <md-datepicker ng-model="vm.event.begin_date" name="begin_date" id="begin_date" required></md-datepicker>
+                        <div ng-messages="eventStoreForm.begin_date.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="required" class="md-input-message-animation ng-scope"><span>Escolha uma data de inicio</span></div>
+                            <div ng-message="valid"><span>Escolha uma data válida</span></div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex-gt-xs="50" flex-xs="100">
+                        <label>Hora de inicio</label>
+                        <input ng-model="vm.event.begin_time" type="text" name="begin_time" id="begin_time" ui-time-mask="short" ng-disabled="vm.event.all_day" ng-required="!event.all_day">
+                        <div ng-messages="eventStoreForm.begin_time.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="required" class="md-input-message-animation ng-scope"><span>Escolha uma hora de inicio</span></div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex-gt-xs="50" flex-xs="100">
+                        <label>Data de fim</label>
+                        <md-datepicker ng-model="vm.event.end_date" name="end_date" id="end_date" required></md-datepicker>
+                        <div ng-messages="eventStoreForm.end_date.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="required" class="md-input-message-animation ng-scope"><span>Escolha uma data de fim</span></div>
+                            <div ng-message="valid"><span>Escolha uma data válida</span></div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex-gt-xs="50" flex-xs="100">
+                        <label>Hora de fim</label>
+                        <input ng-model="vm.event.end_time" type="text" name="end_time" id="end_time" ui-time-mask="short" ng-disabled="vm.event.all_day" ng-required="!event.all_day">
+                        <div ng-messages="eventStoreForm.end_time.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="required" class="md-input-message-animation ng-scope"><span>Escolha uma hora de fim</span></div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex="100" class="md-icon-float">
+                        <label>Cor do evento</label>
+                        <md-icon class="material-icons">color_lens</md-icon>
+                        <md-select ng-model="vm.event.color" ng-change="vm.changeEventColor()" name="color" id="color" required>
+                            <md-option ng-repeat="color in vm.colors track by $index" value="{{$index + 1}}">
+                                {{color.name}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="eventStoreForm.color.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="required" class="md-input-message-animation ng-scope"><span>Escolha uma cor</span></div>
+                        </div>
+                    </md-input-container>
+                    <md-divider></md-divider>
+                    <md-input-container flex="100" class="md-icon-float">
+                        <label>Adicionar descrição</label>
+                        <md-icon class="material-icons">subject</md-icon>
+                        <textarea ng-model="vm.event.description" md-maxlength="500" name="description" id="description" rows="4" md-select-on-focus></textarea>
+                        <div ng-messages="eventStoreForm.description.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                            <div ng-message="maxlength" class="md-input-message-animation ng-scope"><span>Este campo deve conter no máximo 500 caracteres</span></div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

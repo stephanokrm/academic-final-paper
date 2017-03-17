@@ -3,7 +3,7 @@
 namespace Academic\Http\Controllers;
 
 use Academic\Http\Controllers\Controller;
-use Academic\Team;
+use Academic\Models\Team;
 
 class TeamController extends Controller {
 
@@ -13,8 +13,7 @@ class TeamController extends Controller {
      * @return Response
      */
     public function index() {
-        $teams = Team::getTeamsFromTeacher();
-        return view('teams.index')->withTeams($teams);
+        return response()->json(Team::year());
     }
 
     /**
@@ -23,7 +22,7 @@ class TeamController extends Controller {
      * @return Response
      */
     public function create() {
-        //
+        return response()->json(Team::teacher());
     }
 
     /**
@@ -42,7 +41,7 @@ class TeamController extends Controller {
      * @return Response
      */
     public function show($id) {
-        dd($id);
+        //
     }
 
     /**

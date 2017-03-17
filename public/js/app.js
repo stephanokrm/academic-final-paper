@@ -1,52 +1,164 @@
-/* global Materialize */
+angular.module('academic', [
+    'ngMaterial',
+    'ngMessages',
+    'ngAnimate',
+    'LocalStorageModule',
+    'ui.utils.masks',
+    'ui.router',
+    'ui.calendar',
+    'restangular',
+    'angular-loading-bar',
+    'md.data.table'
+]);
+angular
+        .module('academic')
+        .constant('ROUTE', 'http://webacademico.canoas.ifrs.edu.br/~academic/index.php/')
+        .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
+                $locationProvider.html5Mode(true);
+                $urlRouterProvider.otherwise('/');
+                $stateProvider.
+                        state('login', {
+                            url: '/login',
+                            templateUrl: 'views/user/userLogin.html',
+                            controller: 'LoginController',
+                            controllerAs: 'vm'
+                        }).
+                        state('register', {
+                            url: '/registro',
+                            templateUrl: 'views/user/userRegister.html',
+                            controller: 'RegisterController',
+                            authorize: true
+                        }).
+                        state('calendars', {
+                            url: '/calendarios',
+                            templateUrl: 'views/calendar/calendarIndex.html',
+                            controller: 'CalendarController',
+                            controllerAs: 'vm',
+                            authorize: true,
+                            authorize_google: true
+                        }).
+                        state('home', {
+                            url: '/',
+                            templateUrl: 'views/home.html',
+                            controller: 'HomeController',
+                            authorize: true
+                        }).
+                        state('activitiesIndex', {
+                            url: '/turma/:id/atividades',
+                            templateUrl: 'views/activity/index.html',
+                            controller: 'ActivityIndexController',
+                            controllerAs: 'vm',
+                            authorize: true,
+                            authorize_google: true
+                        }).
+                        state('activitiesCreate', {
+                            url: '/turma/:id/atividades/criar',
+                            templateUrl: 'views/activity/create.html',
+                            controller: 'ActivityCreateController',
+                            controllerAs: 'vm',
+                            authorize: true,
+                            authorize_google: true
+                        }).
+                        state('activitiesEdit', {
+                            url: '/atividades/:id/editar',
+                            templateUrl: 'views/activity/edit.html',
+                            controller: 'ActivityEditController',
+                            controllerAs: 'vm',
+                            authorize: true,
+                            authorize_google: true
+                        }).
+                        state('activitiesShow', {
+                            url: '/atividades/:id/detalhes',
+                            templateUrl: 'views/activity/show.html',
+                            controller: 'ActivityShowController',
+                            controllerAs: 'vm',
+                            authorize: true,
+                            authorize_google: true
+                        }).
+                        state('teamsIndex', {
+                            url: '/turmas',
+                            templateUrl: 'views/team/index.html',
+                            controller: 'TeamIndexController as vm',
+                            authorize: true
+                        })
+                        .state('userGrades', {
+                            url: '/notas',
+                            templateUrl: 'views/user/userGrades.html',
+                            controller: 'GradesController as vm',
+                            authorize: true,
+                            authorize_google: true
+                        });
+            }])
+        .run(["$rootScope", "$location", '$window', '$mdToast', 'userService', 'GoogleService', 'localStorageService', function ($rootScope, $location, $window, $mdToast, userService, GoogleService, localStorageService) {
+                $rootScope.google_authenticated = GoogleService.checkIfIsLogged();
+                $rootScope.googleUrl = GoogleService.getAuthUrl();
+                $rootScope.$on("$stateChangeStart", function (e, toState, toParams, fromState, fromParams) {
+                    $rootScope.previousUrl = fromState.url;
+                    $rootScope.authenticated = false;
+                    if (toState.authorize === true) {
+                        if (userService.isLoggedIn()) {
+                            $rootScope.isTeacher = userService.isTeacher();
+                            if (userService.isActive()) {
+                                $rootScope.authenticated = true;
+                                $rootScope.user = userService.getCurrentUser();
+                            } else {
+                                $location.path("/registro");
+                            }
+                        } else {
+                            $location.path("/login");
+                        }
+                    }
+                    if (toState.authorize_google === true) {
+                        if (!GoogleService.checkIfIsLogged()) {
+                            localStorageService.set('requestedUrl', toState.url);
+                            e.preventDefault();
+                            $window.location.href = GoogleService.getAuthUrl();
+                        }
+                    }
+                });
+            }]);
+/* global NaN, moment */
 
-$(document).ready(function () {
+angular
+        .module('academic')
+        .constant('DEFAULT_ERROR_MESSAGE', 'Algo deu errado. Verifique novamente mais tarde.');
 
-    $.validator.setDefaults({
-        success: "valid"
-    });
+angular
+        .module('academic')
+        .config(function ($mdThemingProvider) {
+            $mdThemingProvider.theme('default')
+                    .primaryPalette('light-blue', {
+                        'default': '600'
+                    })
+                    .accentPalette('light-blue', {
+                        'default': '700'
+                    });
+        });
 
-    window.onbeforeunload = function () {
-        $('.progress').removeClass('hide');
-    };
+angular
+        .module('academic')
+        .config(function ($mdDateLocaleProvider) {
+            $mdDateLocaleProvider.months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', ' Dezembro'];
+            $mdDateLocaleProvider.shortMonths = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', ' Dez'];
+            $mdDateLocaleProvider.days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+            $mdDateLocaleProvider.shortDays = ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sá'];
+            $mdDateLocaleProvider.firstDayOfWeek = 1;
 
-    $(document).ajaxStart(function () {
-        $('.progress').removeClass('hide');
-    });
+            $mdDateLocaleProvider.formatDate = function (date) {
+                return date ? moment(date).format('DD/MM/YYYY') : '';
+            };
 
-    $(document).ajaxStop(function () {
-        $('.progress').addClass('hide');
-    });
+            $mdDateLocaleProvider.parseDate = function (dateString) {
+                var m = moment(dateString, 'DD/MM/YYYY', true);
+                return m.isValid() ? m.toDate() : new Date(NaN);
+            };
+        });
 
-    $(".button-collapse").sideNav();
-    $('select').material_select();
+angular.module('academic')
+        .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
+                cfpLoadingBarProvider.includeSpinner = false;
+            }]);
 
-    if ($('#message').length) {
-        Materialize.toast($('#message').data('message'), 4000);
-    }
 
-    $('.datepicker').pickadate({
-        selectMonths: true,
-        selectYears: 15,
-        labelMonthNext: 'Próximo Mês',
-        labelMonthPrev: 'Mês Anterior',
-        labelMonthSelect: 'Selecione o Mês',
-        labelYearSelect: 'Selecione o Ano',
-        monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-        monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-        weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-        weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-        weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-        today: 'Hoje',
-        clear: 'Limpar',
-        close: 'Fechar',
-        format: 'dd/mm/yyyy'
-    });
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-});
+//# sourceMappingURL=app.js.map

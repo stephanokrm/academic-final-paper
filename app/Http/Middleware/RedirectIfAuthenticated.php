@@ -1,26 +1,44 @@
-<?php
-
-namespace Academic\Http\Middleware;
+<?php namespace Academic\Http\Middleware;
 
 use Closure;
-use Session;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\RedirectResponse;
 
 class RedirectIfAuthenticated {
 
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next) {
-        if (Session::has('user')) {
-            return new RedirectResponse(route('home.index'));
-        }
+	/**
+	 * The Guard implementation.
+	 *
+	 * @var Guard
+	 */
+	protected $auth;
 
-        return $next($request);
-    }
+	/**
+	 * Create a new filter instance.
+	 *
+	 * @param  Guard  $auth
+	 * @return void
+	 */
+	public function __construct(Guard $auth)
+	{
+		$this->auth = $auth;
+	}
+
+	/**
+	 * Handle an incoming request.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  \Closure  $next
+	 * @return mixed
+	 */
+	public function handle($request, Closure $next)
+	{
+		if ($this->auth->check())
+		{
+			return new RedirectResponse(url('/home'));
+		}
+
+		return $next($request);
+	}
 
 }

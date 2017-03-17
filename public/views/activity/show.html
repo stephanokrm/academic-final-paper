@@ -1,0 +1,20 @@
+<div layout="row" layout-align="center center">
+    <div flex-gt-sm="60" flex-xs="100" flex-sm="100" layout-padding>
+        <md-subheader class="md-no-sticky">Alunos</md-subheader>
+    </div>
+</div>
+
+<div layout="row" layout-align="center center">
+    <div flex-gt-sm="60" flex-xs="100" flex-sm="100" md-whiteframe="1" class="white">
+        <md-list-item ng-repeat="user in vm.users" class="md-3-line noright white md-whiteframe-2dp">
+            <img alt="{{user.personal.name}}" ng-src="{{user.google.profile_image}}" class="md-avatar" />
+            <div class="md-list-item-text" layout="column">
+                <h3>{{user.personal.name}}</h3>
+                <h4><span ng-hide="user.activity.returned">Não </span>Entregue</h4>
+                <p><span ng-hide="user.activity.done">Não </span>Pronto - <span ng-show="user.activity.grade">{{user.activity.grade}}/{{vm.activity.total_score}}</span><span ng-hide="user.activity.grade">Sem nota</span></p>
+            </div>
+            <md-icon ng-if="vm.isTeacher" ng-click="vm.openDetailsDialog(user, $event)" aria-label="Send Email" class="md-secondary md-hue-3 material-icons" >add</md-icon>
+            <md-divider></md-divider>
+        </md-list-item>
+    </div>
+</div>

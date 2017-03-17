@@ -1,0 +1,109 @@
+<md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools">
+        <h2>
+            <span>{{vm.viewTitle}}</span>
+        </h2>
+        <span flex></span>
+        <md-button class="md-icon-button" type="button" ng-click="vm.calendarAction('prev')" aria-label="Previous">
+            <md-icon class="material-icons">keyboard_arrow_left</md-icon>
+        </md-button>
+        <md-button hide-xs class="md-icon-button" type="button" aria-label="Today" ng-click="calendarAction('today')">
+            <md-icon class="material-icons">today</md-icon>
+            <md-tooltip md-direction="down">Hoje</md-tooltip>
+        </md-button>
+        <div hide-gt-xs>
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                    <md-icon class="material-icons">more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button aria-label="Month" ng-click="vm.changeView('month')">
+                            <md-icon class="material-icons">view_module</md-icon>
+                            Mês
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button aria-label="Week" ng-click="vm.changeView('agendaWeek')">
+                            <md-icon class="material-icons">view_column</md-icon>
+                            Semana
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button aria-label="Day" ng-click="vm.changeView('agendaDay')">
+                            <md-icon class="material-icons">view_day</md-icon>
+                            Dia
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button aria-label="Day" ng-click="vm.calendarAction('today')">
+                            <md-icon class="material-icons">today</md-icon>
+                            Hoje
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content> 
+            </md-menu>
+        </div>
+        <md-button class="md-icon-button" type="button" ng-click="vm.calendarAction('next')" aria-label="Next">
+            <md-icon class="material-icons">keyboard_arrow_right</md-icon>
+        </md-button>
+        <div hide-xs>
+            <md-button ng-show="vm.agendaDay" class="md-icon-button" type="button" aria-label="Day" ng-click="vm.changeView('agendaDay')">
+                <md-icon class="material-icons">view_day</md-icon>
+                <md-tooltip md-direction="down">Dia</md-tooltip>
+            </md-button>
+            <md-button ng-show="vm.agendaWeek" class="md-icon-button" type="button" aria-label="Week" ng-click="vm.changeView('agendaWeek')">
+                <md-icon class="material-icons">view_column</md-icon>
+                <md-tooltip md-direction="down">Semana</md-tooltip>
+            </md-button>
+            <md-button ng-show="vm.month" class="md-icon-button" type="button" aria-label="Month" ng-click="vm.changeView('month')">
+                <md-icon class="material-icons">view_module</md-icon>
+                <md-tooltip md-direction="down">Mês</md-tooltip>
+            </md-button>
+        </div>
+    </div>
+</md-toolbar>
+<div layout="row">
+    <div flex="100">
+        <div layout="column">
+            <div layout="row" layout-xs="column"> 
+                <div layout="row" flex-gt-xs="20" layout-align="space-around start">
+                    <md-list flex> 
+                        <md-list-item>
+                            <md-button class="md-button-full-width" ng-click="vm.createCalendar()">Novo Calendário</md-button>
+                        </md-list-item>
+                        <md-list-item ng-repeat="calendar in vm.calendars track by $index"> 
+                            <md-checkbox ng-model="calendar.selected" ng-change="vm.refrashEvents()"></md-checkbox>
+                            <p>{{calendar.summary}}</p>
+                            <md-menu>
+                                <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                                    <md-icon class="material-icons" aria-label="Chat">more_vert</md-icon>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.editCalendar(calendar)">
+                                            <md-icon class="material-icons" md-menu-align-target>mode_edit</md-icon>
+                                            Editar
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.destroyCalendar(calendar)">
+                                            <md-icon class="material-icons">delete</md-icon>
+                                            Remover
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content> 
+                            </md-menu>
+                        </md-list-item>
+                    </md-list>
+                </div>
+                <div layout="row" flex-gt-xs="80">
+                    <div class="calendar" ng-model="vm.eventSources" calendar="calendar" ui-calendar="vm.uiConfig.calendar" id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<md-button class="md-accent md-fab md-fab-bottom-right" ng-click="vm.createEvent()">
+    <md-icon class="material-icons">add</md-icon>
+</md-button>

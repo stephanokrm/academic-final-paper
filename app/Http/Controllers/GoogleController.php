@@ -14,12 +14,39 @@ class GoogleController extends Controller {
     }
 
     /**
+     * Handle an authentication attempt.
+     *
+     * @return Response
+     */
+    public function authenticate() {
+        $this->service->authenticate();
+        return response()->json(str_random(40));
+    }
+
+    /**
+     * Create an url for authentication.
+     *
+     * @return Response
+     */
+    public function createAuthUrl() {
+        $url = $this->service->createAuthUrl();
+        return response()->json($url);
+    }
+
+    /**
+     * Handle an logout attempt.
+     */
+    public function logout() {
+        $this->service->logout();
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
      */
     public function index() {
-        
+        //
     }
 
     /**
@@ -78,11 +105,6 @@ class GoogleController extends Controller {
      */
     public function destroy($id) {
         //
-    }
-
-    public function logout() {
-        $this->service->logout();
-        return redirect()->route('home.index')->withMessage('Você saiu do Google.');
     }
 
 }

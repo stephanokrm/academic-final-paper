@@ -1,0 +1,55 @@
+<br>
+<div layout="row">
+    <div flex-xs="100" flex-sm="100" flex-md="50" flex-lg="30" flex-xl="25" flex-offset-md="15" flex-offset-lg="35" flex-offset-xl="35">
+        <div layout-padding>
+            <div layout="row" layout-align="center center" layout-wrap>
+                <img ng-src="../~academic/images/academic-logo.svg" class="md-card-image" alt="Washed Out" id="login-academic-logo">
+            </div>
+            <div layout="row" layout-align="center center" layout-wrap>
+                <h4 class="md-title">Bem vindo, {{userName}}!</h4>
+            </div>
+            <div layout="row" layout-align="center">
+                <h5 class="md-subhead">Por favor, preencha os dados a baixo para prosseguir.</h5>
+            </div>
+        </div>
+        <md-card>
+            <br>
+            <form name="register" class="bigger-font-size">
+                <md-card-content>
+                    <div layout="row" layout-align-gt-xs="center center" layout-wrap>
+                        <md-input-container flex="100">
+                            <label>Data Nascimento</label>
+                            <md-datepicker ng-model="user.birthday" name="birthday" id="birthday" required></md-datepicker md-autofocus>
+                            <div ng-messages="register.birthday.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                                <div ng-message="valid" class="md-input-message-animation ng-scope"><span>O valor inserido não é uma data</span></div>
+                                <div ng-message="required" class="md-input-message-animation ng-scope"><span>Este campo é necessário</span></div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex="100">
+                            <label>Turma</label>
+                            <md-select ng-model="user.team" required name="team" id="team">
+                                <md-option ng-repeat="team in teams" value="{{team.id}}">
+                                    {{team.year}}º Ano - <span hide-xs>{{team.course.name}}</span><span hide-gt-xs>{{team.course.abbreviation}}</span>
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="register.team.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                                <div ng-message="required" class="md-input-message-animation ng-scope"><span>Este campo é necessário</span></div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex="100">
+                            <label>E-mail Google</label>
+                            <input ng-model="user.email" required type="email" name="email" id="email">
+                            <div ng-messages="register.email.$error" role="alert" multiple="multiple" class="md-input-messages-animation md-auto-hide ng-active" aria-live="assertive">
+                                <div ng-message="required" class="md-input-message-animation ng-scope"><span>Este campo é necessário</span></div>
+                                <div ng-message="email" class="md-input-message-animation ng-scope"><span>Este campo deve conter um e-mail válido</span></div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="center center">
+                    <md-button class="md-raised md-primary" ng-click="doRegister()" ng-disabled="register.$invalid" flex="25">Salvar</md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+    </div>
+</div>

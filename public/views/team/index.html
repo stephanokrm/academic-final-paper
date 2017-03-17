@@ -1,0 +1,21 @@
+<div layout="row">
+    <div flex-gt-xs="25" flex-xs="100" ng-repeat="team in vm.teams">
+        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{team.discipline}}</span>
+                    <span class="md-subhead">{{team.description}}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-lg card-media">
+                        <img ng-src="/~academic/images/7dda385ed3724fea700d45a0349d9e77.png" class="md-avatar" />
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button ng-click="vm.showTeamActivities(team)">Atividades</md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div>
+

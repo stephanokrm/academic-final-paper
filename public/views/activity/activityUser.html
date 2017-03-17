@@ -1,0 +1,36 @@
+<md-dialog aria-label="User">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="vm.hide()">
+                    <md-icon class="material-icons" aria-label="Fechar">clear</md-icon>
+                </md-button>
+                <h2>Detalhes</h2>
+                <span flex></span>
+                <md-button ng-click="vm.conclude()">CONCLUIR</md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-list>
+                <md-list-item ng-click="">
+                    <md-icon class="material-icons">done</md-icon>
+                    <p> Concluído </p>
+                    <md-switch class="md-secondary" ng-model="vm.user.activity.done"></md-switch>
+                </md-list-item>
+                <md-list-item ng-click="">
+                    <md-icon class="material-icons">done_all</md-icon>
+                    <p> Entregue </p>
+                    <md-switch class="md-secondary" ng-model="vm.user.activity.returned"></md-switch>
+                </md-list-item>
+                <md-list-item ng-click="">
+                    <md-input-container class="md-icon-float" flex="100">
+                        <label>Nota</label>
+                        <md-icon class="material-icons">assessment</md-icon>
+                        <input ng-disabled="!vm.user.activity.done" ng-model="vm.user.activity.grade" type="number" step="any" name="grade" min="0" max="{{vm.activity.total_score}}" value="{{vm.user.activity.grade}}">
+                        <div class="hint"><span ng-bind="vm.user.activity.grade"></span>/<span ng-bind="vm.activity.total_score"></span></div>
+                    </md-input-container>
+                </md-list-item>
+            </md-list>
+        </md-dialog-content>
+    </form>
+</md-dialog>

@@ -3,139 +3,17 @@
 namespace Academic\Services;
 
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-//
-use Google_Service_Calendar;
-use Google_Service_Calendar_Event;
-use Google_Service_Calendar_EventDateTime;
-//
-use Academic\Validations\EventValidation;
-use Academic\Models\EventModel;
-use Crypt;
-use Academic\Domain\Events\EventTransformer;
+use Academic\Services\GoogleService;
+use Academic\Transformers\EventTransformer;
+use Academic\Builders\GoogleEventBuilder;
 
 class EventService {
 
     private $calendarService;
 
-    public function __construct(Google_Service_Calendar $calendarService) {
-        $this->calendarService = $calendarService;
-    }
-
-    public function insertEvent(Request $request) {
-        $this->validate($request);
-        $googleEvent = $this->fillGoogleEvent($request);
-        $event = $this->calendarService->events->insert($request->calendar_id, $googleEvent);
-        $eventArray = EventTransformer::fromGoogleEventsToArray([$event], $request->calendar_id);
-        return $eventArray[0];
-    }
-
-    public function updateEvent(Request $request, $calendarId, $eventId) {
-        $this->validate($request);
-        $googleEvent = $this->getEvent($calendarId, $eventId);
-        $googleEventFilled = $this->fillGoogleEvent($request, $googleEvent);
-        $this->calendarService->events->update($calendarId, $googleEventFilled->getId(), $googleEventFilled);
-    }
-
-    public function deleteEvent($calendarId, $id) {
-        $this->calendarService->events->delete($calendarId, $id);
-    }
-
-    public function getEvent($idCalendar, $idEvent) {
-        return $this->calendarService->events->get($idCalendar, $idEvent);
-    }
-
-    private function validate(Request $request) {
-        $validation = new EventValidation();
-        $validation->validate($request);
-    }
-
-    private function fillGoogleEvent(Request $request, Google_Service_Calendar_Event $googleEvent = null) {
-
-        if (is_null($googleEvent)) {
-            $googleEvent = new Google_Service_Calendar_Event();
-        }
-
-        $googleEvent->setSummary($request->summary);
-        $googleEvent->setDescription($request->description);
-        $googleEvent->setColorId($request->color);
-        $googleEventWithDate = $this->fillGoogleEventDateTime($request, $googleEvent);
-
-        return $googleEventWithDate;
-    }
-
-    private function fillGoogleEventDateTime(Request $request, Google_Service_Calendar_Event $googleEvent) {
-        $carbon = new Carbon();
-        $end = new Google_Service_Calendar_EventDateTime();
-        $start = new Google_Service_Calendar_EventDateTime();
-
-        $allDay = $request->all_day;
-
-        $beginDate = $carbon->createFromFormat('d/m/Y', $request->begin_date)->toDateString();
-        $endDate = $googleEvent->getId() ? $carbon->createFromFormat('d/m/Y', $request->end_date)->toDateString() : $carbon->createFromFormat('d/m/Y', $request->end_date)->addDay()->toDateString();
-
-        if (isset($allDay)) {
-            $start->setDate($beginDate);
-            $googleEvent->setStart($start);
-            $end->setDate($endDate);
-            $googleEvent->setEnd($end);
-
-            return $googleEvent;
-        }
-
-        $start->setDateTime($beginDate . 'T' . $request->begin_time . ':00.000-00:00');
-        $googleEvent->setStart($start);
-        $end->setDateTime($endDate . 'T' . $request->end_time . ':00.000-00:00');
-        $googleEvent->setEnd($end);
-
-        return $googleEvent;
-    }
-
-    public function transformGoogleEventToModel(Google_Service_Calendar_Event $googleEvent, $idCalendar) {
-        $event = new EventModel();
-        $event->setCalendar(Crypt::encrypt($idCalendar));
-        $event->setId($googleEvent->getId());
-        $event->setSummary($googleEvent->getSummary());
-        $event->setDescription($googleEvent->getDescription());
-        $event->setColorId($googleEvent->getColorId());
-
-        if (isset($googleEvent->getStart()->dateTime)) {
-            $event->setAllDay(false);
-            $event->setBeginDate($this->convertDate($googleEvent->getStart()->dateTime));
-            $event->setBeginTime($this->convertTime($googleEvent->getStart()->dateTime));
-            $event->setBeginDateTime($this->convertDateTime($googleEvent->getStart()->dateTime));
-
-            $event->setEndDate($this->convertDate($googleEvent->getEnd()->dateTime));
-            $event->setEndTime($this->convertTime($googleEvent->getEnd()->dateTime));
-            $event->setEndDateTime($this->convertDateTime($googleEvent->getEnd()->dateTime));
-
-            $event->setOriginalBeginDate($googleEvent->getStart()->dateTime);
-            $event->setOriginalEndDate($googleEvent->getEnd()->dateTime);
-        } else {
-            $event->setAllDay(true);
-
-            $event->setBeginDate($this->convertDate($googleEvent->getStart()->date));
-            $event->setBeginTime(null);
-
-            $event->setEndDate($this->convertDate($googleEvent->getEnd()->date));
-            $event->setEndTime(null);
-
-            $event->setOriginalBeginDate($googleEvent->getStart()->date);
-            $event->setOriginalEndDate($googleEvent->getEnd()->date);
-        }
-        return $event;
-    }
-
-    private function convertDate($date) {
-        return date('d/m/Y', strtotime($date));
-    }
-
-    private function convertDateTime($date) {
-        return date('d/m/Y - H:i', strtotime(str_replace(['T', 'Z'], ' ', $date)));
-    }
-
-    private function convertTime($date) {
-        return date('H:i', strtotime(str_replace(['T', 'Z'], ' ', $date)));
+    public function __construct() {
+        $googleService = new GoogleService();
+        $this->calendarService = $googleService->getCalendarService();
     }
 
     public function index(Request $request) {
@@ -149,6 +27,7 @@ class EventService {
 
     private function getAllEventsFromCalendars(Request $request) {
         $arrayEvents = [];
+
         $optParams = [
             'singleEvents' => true,
             'timeMin' => $request->start . 'T00:00:00-00:00',
@@ -164,6 +43,64 @@ class EventService {
             }
         }
         return $arrayEvents;
+    }
+
+    public function store(Request $request) {
+        $request->begin_date = substr($request->begin_date, 0, 10);
+        $request->end_date = substr($request->end_date, 0, 10);
+        $calendarEvent = $this->createEvent($request);
+        $insertedCalendarEvent = $this->calendarService->events->insert($request->calendar, $calendarEvent);
+        $events = EventTransformer::fromGoogleEventsToArray([$insertedCalendarEvent], $request->calendar);
+        return $events[0];
+    }
+
+    private function createEvent(Request $request) {
+        $googleEventBuilder = new GoogleEventBuilder();
+        $googleEventBuilder->create()
+                ->addSummary($request->summary)
+                ->addDescription($request->description)
+                ->addColor($request->color);
+
+        if ($request->all_day) {
+            return $googleEventBuilder->addStartDate($request->begin_date)
+                            ->addEndDate($request->end_date)
+                            ->get();
+        }
+
+        return $googleEventBuilder->addStartDateTime($request->begin_date, $request->begin_time)
+                        ->addEndDateTime($request->end_date, $request->end_time)
+                        ->get();
+    }
+
+    public function update(Request $request, $id) {
+        $request->begin_date = substr($request->begin_date, 0, 10);
+        $request->end_date = substr($request->end_date, 0, 10);
+        $calendarEvent = $this->editEvent($request, $id);
+        $updatedCalendarEvent = $this->calendarService->events->update($request->calendar, $id, $calendarEvent);
+        $events = EventTransformer::fromGoogleEventsToArray([$updatedCalendarEvent], $request->calendar);
+        return $events[0];
+    }
+
+    private function editEvent(Request $request, $id) {
+        $event = $this->calendarService->events->get($request->calendar, $id);
+        $googleEventBuilder = new GoogleEventBuilder();
+        $googleEventBuilder->edit($event)->addSummary($request->summary)
+                ->addDescription($request->description)
+                ->addColor($request->color);
+
+        if ($request->all_day) {
+            return $googleEventBuilder->addStartDate($request->begin_date)
+                            ->addEndDate($request->end_date)
+                            ->get();
+        }
+
+        return $googleEventBuilder->addStartDateTime($request->begin_date, $request->begin_time)
+                        ->addEndDateTime($request->end_date, $request->end_time)
+                        ->get();
+    }
+
+    public function destroy(Request $request, $id) {
+        $this->calendarService->events->delete($request->calendar, $id);
     }
 
 }

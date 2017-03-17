@@ -1,0 +1,22 @@
+<div layout="row" layout-align="center center">
+    <div flex-gt-sm="60" flex-xs="100" flex-sm="100" layout-padding>
+        <md-subheader class="md-no-sticky">Atividades</md-subheader>
+    </div>
+</div>
+<div layout="row" layout-align="center center">
+    <div flex-gt-sm="60" flex-xs="100" flex-sm="100" md-whiteframe="1" class="white">
+        <md-list-item class="secondary-button-padding md-3-line" ng-click="vm.showActivity(activity)" ng-repeat="activity in vm.activities">
+            <div class="md-list-item-text" layout="column">
+                <h3>{{activity.event.summary}}</h3>
+                <h4>{{activity.date}}</h4>
+                <p>{{activity.event.description}}</p>
+            </div>
+            <md-icon ng-if="vm.isTeacher" class="md-secondary material-icons" ng-click="vm.removeActivity(activity)" aria-label="Delete">delete</md-icon>
+            <md-icon ng-if="vm.isTeacher" class="md-secondary material-icons" ng-click="vm.editActivity(activity)" aria-label="Edit">mode_edit</md-icon>
+            <md-divider></md-divider>
+        </md-list-item>
+    </div>
+</div>
+<md-button ng-if="vm.isTeacher" class="md-primary md-fab md-fab-bottom-right" ng-click="vm.createActivity()">
+    <md-icon class="material-icons">add</md-icon>
+</md-button>
