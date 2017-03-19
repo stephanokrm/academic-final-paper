@@ -6,4 +6,7 @@
 /.idea
 Homestead.json
 Homestead.yaml
+/public/bower_components
+/public/css
+/public/js
 .env

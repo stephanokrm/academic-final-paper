@@ -12,13 +12,13 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function (mix) {
-    mix.less(['app.less'], 'public_html/css/app.css');
+    mix.less(['app.less'], 'public/css/app.css');
 
     mix.scripts([
         'app/app.module.js',
         'app/app.routes.js',
         'app/app.others.js'
-    ], 'public_html/js/app.js');
+    ], 'public/js/app.js');
 
     mix.scripts([
         'app/components/user/loginController.js',
@@ -28,10 +28,11 @@ elixir(function (mix) {
         'app/components/activity/ActivityCreateController.js',
         'app/components/activity/ActivityEditController.js',
         'app/components/activity/ActivityShowController.js',
+        'app/components/activity/GradesController.js',
         'app/components/team/TeamIndexController.js',
         'app/shared/navController.js',
         'app/shared/homeController.js'
-    ], 'public_html/js/controllers.js');
+    ], 'public/js/controllers.js');
 
     mix.scripts([
         'app/components/user/userService.js',
@@ -40,7 +41,7 @@ elixir(function (mix) {
         'app/components/google/googleService.js',
         'app/components/event/EventService.js',
         'app/components/activity/ActivityService.js'
-    ], 'public_html/js/services.js');
+    ], 'public/js/services.js');
 
-    mix.scripts([], 'public_html/js/directives.js');
+    mix.scripts([], 'public/js/directives.js');
 });

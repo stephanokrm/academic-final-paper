@@ -5,15 +5,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
         <meta name="theme-color" content="#03a9f4"> 
         <title>Academic</title>
-        <base href="/~academic/">
+        <base href="/">
         <link rel="manifest" href="manifest.json">
         <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
         <link type="text/css" rel="stylesheet" href="bower_components/angular-material/angular-material.min.css"/>
-        <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+        <link type="text/css" rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
         <link type="text/css" rel="stylesheet" href="css/app.css"/>
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <link rel='stylesheet' href='bower_components/angular-loading-bar/build/loading-bar.min.css' type='text/css' media='all' />
-        <link href="bower_components/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet" type="text/css"/>
+        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+        <link type="text/css" rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css"/>
+        <link type="text/css" rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.min.css"/>
     </head>
     <body ng-app="academic" ng-cloak layout="column">
     <md-toolbar class="md-primary md-whiteframe-2dp" ng-show="authenticated">
@@ -132,11 +132,11 @@
     <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/lang-all.js"></script>
+    <script type="text/javascript" src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
     <script type="text/javascript" src="js/laroute.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/controllers.js"></script>
     <script type="text/javascript" src="js/services.js"></script>
     <script type="text/javascript" src="js/directives.js"></script>
-    <script type="text/javascript" src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
 </body>
 </html>

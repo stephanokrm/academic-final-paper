@@ -7,7 +7,12 @@ input:-webkit-autofill:active {
 * {
   font-family: 'Roboto', sans-serif;
 }
-
+html {
+  overflow-y: auto !important;
+}
+body {
+  overflow-y: hidden !important;
+}
 .bigger-font-size input,
 .bigger-font-size .md-text {
   font-size: 17px !important;
@@ -240,10 +245,9 @@ input:-webkit-autofill:active {
   background: red !important;
   height: 4px !important;
 }
-
 .md-card-academic-logo {
-    height: 250px !important;
-    padding-top: 25px;
+  height: 250px !important;
+  padding-top: 25px;
 }
 
 /*# sourceMappingURL=app.css.map */

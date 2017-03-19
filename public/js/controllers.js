@@ -12,7 +12,7 @@
         vm.doLogin = doLogin;
 
         function doLogin() {
-            GoogleService.createAuthUrl().then(function (url) {
+            GoogleService.createAuthUrl().then(function (url) { 
                 $rootScope.googleUrl = url;
                 return $rootScope.googleUrl;
             });
@@ -524,12 +524,12 @@ angular
     'use strict';
 
     angular
-            .module('academic')
-            .controller('ActivityCreateController', ActivityCreateController);
+        .module('academic')
+        .controller('ActivityCreateController', ActivityCreateController);
 
-    ActivityCreateController.$inject = ['$rootScope', '$location', '$state', '$stateParams', 'ActivityService', 'CalendarService'];
-    function ActivityCreateController($rootScope, $location, $state, $stateParams, ActivityService, CalendarService) {
-        var vm = this;
+    ActivityCreateController.$inject = ['$rootScope', '$state', '$location', '$stateParams', 'ActivityService', 'CalendarService'];
+    function ActivityCreateController($rootScope, $state, $location, $stateParams, ActivityService, CalendarService) {
+        let vm = this;
         vm.activity = {team_id: $stateParams.id};
         vm.calendars = [];
         vm.colors = [
@@ -678,11 +678,34 @@ angular
             };
 
         }
-
+        
         function isTeacher() {
             vm.isTeacher = userService.isTeacher();
         }
 
+    }
+
+})();
+(function () {
+    'use strict';
+
+    angular
+        .module('academic')
+        .controller('GradesController', GradesController);
+
+    GradesController.$inject = ['$rootScope', '$location', '$state', 'ActivityService'];
+    function GradesController($rootScope, $location, $state, ActivityService) {
+        let vm = this;
+        vm.activities = [];
+        vm.back = back;
+
+        ActivityService.getActivitiesFromStudent().then(function (data) {
+            vm.activities = data.activities;
+        });
+
+        function back() {
+            $location.path($rootScope.previousUrl);
+        }
     }
 
 })();
@@ -717,55 +740,55 @@ angular
     }
 
 })();
-angular
+(function () {
+    'use strict';
+
+    angular
         .module('academic')
-        .controller('navController', [
-            '$state',
-            '$scope',
-            '$location',
-            '$rootScope',
-            '$mdSidenav',
-            'userService',
-            'GoogleService',
-            function ($state, $scope, $location, $rootScope, $mdSidenav, userService, GoogleService) {
+        .controller('navController', navController);
 
-                $scope.toggleLeft = buildToggler('left');
-                $scope.goToActivities = goToActivities;
-                $scope.goToTeams = goToTeams;
-                $scope.navigateTo = navigateTo;
+    navController.$inject = ['$state', '$scope', '$location', '$rootScope', '$mdSidenav', 'userService', 'GoogleService'];
+    function navController($state, $location, $rootScope, $mdSidenav, userService, GoogleService) {
+        let vm = this;
+        vm.toggleLeft = buildToggler('left');
+        vm.goToActivities = goToActivities;
+        vm.goToTeams = goToTeams;
+        vm.doLogout = doLogout;
+        vm.doGoogleLogout = doGoogleLogout;
 
-                $scope.doLogout = function () {
-                    userService.logout();
-                    $location.path('/login');
-                };
+        function doGoogleLogout() {
+            GoogleService.logout().then(() => {
+                $rootScope.google_authenticated = false;
+                $state.go('home');
+            });
+        }
 
-                $scope.doGoogleLogout = function () {
-                    GoogleService.logout().then(function () {
-                        $rootScope.google_authenticated = false;
-                        $state.go('home');
-                    });
-                };
+        function doLogout() {
+            userService.logout();
+            $location.path('/login');
+        }
 
-                function buildToggler(componentId) {
-                    return function () {
-                        $mdSidenav(componentId).toggle();
-                    };
-                }
+        function buildToggler(componentId) {
+            return function () {
+                $mdSidenav(componentId).toggle();
+            };
+        }
 
-                function goToActivities(user) {
-                    var user = userService.getCurrentUser();
-                    $state.go('activitiesIndex', {id: user.student.team_id});
-                }
+        function goToActivities() {
+            let user = userService.getCurrentUser();
+            $state.go('activitiesIndex', {id: user.student.team_id});
+        }
 
-                function goToTeams() {
-                    $state.go('teamsIndex', {});
-                }
+        function goToTeams() {
+            $state.go('teamsIndex', {});
+        }
 
-                function navigateTo(state) {
-                    $state.go(state, {});
-                }
+        function navigateTo(state) {
+            $state.go(state, {});
+        }
+    }
 
-            }]);
+})();
 
 angular
         .module('academic')
@@ -776,11 +799,11 @@ angular
             'localStorageService',
             function ($location, $rootScope, GoogleService, localStorageService) {
                 $rootScope.pageTitle = 'Início';
-
+                
                 if (!GoogleService.checkIfIsLogged() && getURLParameter('code')) {
                     GoogleService.authenticate().then(function () {
                         $rootScope.google_authenticated = true;
-                        $location.path('/');
+                        $location.path(localStorageService.get('requestedUrl'));
                     });
                 }
 
@@ -789,30 +812,6 @@ angular
                 }
 
             }]);
-
-(function () {
-    'use strict';
-
-    angular
-            .module('academic')
-            .controller('GradesController', GradesController);
-
-    GradesController.$inject = ['$rootScope', '$location', '$state', 'ActivityService'];
-    function GradesController($rootScope, $location, $state, ActivityService) {
-        var vm = this;
-        vm.activities = [];
-        vm.back = back;
-
-        ActivityService.getActivitiesFromStudent().then(function (data) {
-            vm.activities = data.activities;
-        });
-
-        function back() {
-            $location.path($rootScope.previousUrl);
-        }
-    }
-
-})();
 
 
 //# sourceMappingURL=controllers.js.map

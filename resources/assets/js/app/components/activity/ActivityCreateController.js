@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-            .module('academic')
-            .controller('ActivityCreateController', ActivityCreateController);
+        .module('academic')
+        .controller('ActivityCreateController', ActivityCreateController);
 
-    ActivityCreateController.$inject = ['$rootScope', '$state', '$stateParams', 'ActivityService', 'CalendarService'];
-    function ActivityCreateController($rootScope, $state, $stateParams, ActivityService, CalendarService) {
-        var vm = this;
+    ActivityCreateController.$inject = ['$rootScope', '$state', '$location', '$stateParams', 'ActivityService', 'CalendarService'];
+    function ActivityCreateController($rootScope, $state, $location, $stateParams, ActivityService, CalendarService) {
+        let vm = this;
         vm.activity = {team_id: $stateParams.id};
         vm.calendars = [];
         vm.colors = [
@@ -16,6 +16,7 @@
             {id: 11, background: {"background-color": "#dc2127", "color": "white"}, name: "Prova"}
         ];
         vm.storeActivity = storeActivity;
+        vm.back = back;
         $rootScope.pageTitle = 'Nova Atividade';
 
         getCalendars();
@@ -31,6 +32,10 @@
             return ActivityService.storeActivity(vm.activity).then(function () {
                 $state.go('activitiesIndex', {id: vm.activity.team_id});
             });
+        }
+
+        function back() {
+            $location.path($rootScope.previousUrl);
         }
     }
 

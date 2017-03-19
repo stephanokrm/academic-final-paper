@@ -2,27 +2,28 @@
     'use strict';
 
     angular
-            .module('academic')
-            .factory('ActivityService', ActivityService);
+        .module('academic')
+        .factory('ActivityService', ActivityService);
 
     ActivityService.$inject = ['$http', '$mdToast'];
     function ActivityService($http, $mdToast) {
-        var service = {
+        let service = {
             getActivities: getActivities,
             storeActivity: storeActivity,
             getActivity: getActivity,
             updateActivity: updateActivity,
             removeActivity: removeActivity,
             showActivity: showActivity,
-            saveDetails: saveDetails
+            saveDetails: saveDetails,
+            getActivitiesFromStudent: getActivitiesFromStudent
         };
 
         return service;
 
         function getActivities(id) {
             return $http.get(laroute.route('activities.index', {team: id}))
-                    .then(getActivitiesComplete)
-                    .catch(getActivitiesFailed);
+                .then(getActivitiesComplete)
+                .catch(getActivitiesFailed);
 
             function getActivitiesComplete(response) {
                 return response.data;
@@ -35,8 +36,8 @@
 
         function getActivity(id) {
             return $http.get(laroute.route('activities.edit', {activities: id}))
-                    .then(getActivityComplete)
-                    .catch(getActivityFailed);
+                .then(getActivityComplete)
+                .catch(getActivityFailed);
 
             function getActivityComplete(response) {
                 return response.data;
@@ -49,8 +50,8 @@
 
         function storeActivity(activity) {
             return $http.post(laroute.route('activities.store'), activity)
-                    .then(storeActivityComplete)
-                    .catch(storeActivityFailed);
+                .then(storeActivityComplete)
+                .catch(storeActivityFailed);
 
             function storeActivityComplete(response) {
                 showMessage('Atividade salva!');
@@ -64,8 +65,8 @@
 
         function updateActivity(activity) {
             return $http.put(laroute.route('activities.update', {activities: activity.id}), activity)
-                    .then(updateActivityComplete)
-                    .catch(updateActivityFailed);
+                .then(updateActivityComplete)
+                .catch(updateActivityFailed);
 
             function updateActivityComplete(response) {
                 showMessage('Atividade atualizada!');
@@ -79,8 +80,8 @@
 
         function removeActivity(activity) {
             return $http.delete(laroute.route('activities.destroy', {activities: activity.activity.id}))
-                    .then(removeActivityComplete)
-                    .catch(removeActivityFailed);
+                .then(removeActivityComplete)
+                .catch(removeActivityFailed);
 
             function removeActivityComplete(response) {
                 showMessage('Atividade removida!');
@@ -94,8 +95,8 @@
 
         function showActivity(id) {
             return $http.get(laroute.route('activities.show', {activities: id}))
-                    .then(showActivityComplete)
-                    .catch(showActivityFailed);
+                .then(showActivityComplete)
+                .catch(showActivityFailed);
 
             function showActivityComplete(response) {
                 return response.data;
@@ -108,8 +109,8 @@
 
         function saveDetails(user, activity) {
             return $http.post(laroute.route('activities.details', {id: activity.id}), user)
-                    .then(saveDetailsComplete)
-                    .catch(saveDetailsFailed);
+                .then(saveDetailsComplete)
+                .catch(saveDetailsFailed);
 
             function saveDetailsComplete(response) {
                 showMessage('Detalhes salvos!');
@@ -121,11 +122,25 @@
             }
         }
 
+        function getActivitiesFromStudent() {
+            return $http.get(laroute.route('activities.fromStudent'))
+                .then(getActivitiesFromStudentComplete)
+                .catch(getActivitiesFromStudentFailed);
+
+            function getActivitiesFromStudentComplete(response) {
+                return response.data;
+            }
+
+            function getActivitiesFromStudentFailed(response) {
+                showMessage('Não foi possível buscar as atividades.');
+            }
+        }
+
         function showMessage(message) {
             $mdToast.show($mdToast.simple()
-                    .textContent(message)
-                    .position('bottom right')
-                    .hideDelay(4000));
+                .textContent(message)
+                .position('bottom right')
+                .hideDelay(4000));
         }
     }
 })();
