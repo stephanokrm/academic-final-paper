@@ -17,12 +17,13 @@ elixir(function (mix) {
     mix.scripts([
         'app/app.module.js',
         'app/app.routes.js',
-        'app/app.others.js'
+        'app/app.others.js',
+        'app/app.laroute.js'
     ], 'public/js/app.js');
 
     mix.scripts([
-        'app/components/user/loginController.js',
-        'app/components/user/registerController.js',
+        'app/components/user/LoginController.js',
+        'app/components/user/RegisterController.js',
         'app/components/calendar/CalendarController.js',
         'app/components/activity/ActivityIndexController.js',
         'app/components/activity/ActivityCreateController.js',
@@ -30,18 +31,16 @@ elixir(function (mix) {
         'app/components/activity/ActivityShowController.js',
         'app/components/activity/GradesController.js',
         'app/components/team/TeamIndexController.js',
-        'app/shared/navController.js',
-        'app/shared/homeController.js'
+        'app/shared/NavigationController.js',
+        'app/shared/HomeController.js'
     ], 'public/js/controllers.js');
 
     mix.scripts([
-        'app/components/user/userService.js',
-        'app/components/team/teamService.js',
+        'app/components/user/UserService.js',
+        'app/components/team/TeamService.js',
         'app/components/calendar/CalendarService.js',
-        'app/components/google/googleService.js',
+        'app/components/google/GoogleService.js',
         'app/components/event/EventService.js',
         'app/components/activity/ActivityService.js'
     ], 'public/js/services.js');
-
-    mix.scripts([], 'public/js/directives.js');
 });

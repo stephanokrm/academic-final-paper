@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-            .module('academic')
-            .controller('ActivityEditController', ActivityEditController);
+        .module('academic')
+        .controller('ActivityEditController', ActivityEditController);
 
     ActivityEditController.$inject = ['$rootScope', '$state', '$stateParams', 'ActivityService', 'CalendarService'];
     function ActivityEditController($rootScope, $state, $stateParams, ActivityService, CalendarService) {

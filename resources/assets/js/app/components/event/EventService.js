@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-            .module('academic')
-            .factory('EventService', EventService);
+        .module('academic')
+        .factory('EventService', EventService);
 
     EventService.$inject = ['$http'];
     function EventService($http) {

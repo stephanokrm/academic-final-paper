@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-            .module('academic')
-            .controller('ActivityShowController', ActivityShowController);
+        .module('academic')
+        .controller('ActivityShowController', ActivityShowController);
 
-    ActivityShowController.$inject = ['$rootScope', '$stateParams', '$mdDialog', 'ActivityService', 'userService'];
-    function ActivityShowController($rootScope, $stateParams, $mdDialog, ActivityService, userService) {
+    ActivityShowController.$inject = ['$rootScope', '$stateParams', '$mdDialog', 'ActivityService', 'UserService'];
+    function ActivityShowController($rootScope, $stateParams, $mdDialog, ActivityService, UserService) {
         var vm = this;
         vm.activity = {};
         vm.isTeacher = false;
@@ -62,9 +62,9 @@
             };
 
         }
-        
+
         function isTeacher() {
-            vm.isTeacher = userService.isTeacher();
+            vm.isTeacher = UserService.isTeacher();
         }
 
     }

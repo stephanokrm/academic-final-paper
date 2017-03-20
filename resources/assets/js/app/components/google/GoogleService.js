@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-            .module('academic')
-            .factory('GoogleService', GoogleService);
+        .module('academic')
+        .factory('GoogleService', GoogleService);
 
     GoogleService.$inject = ['$http', '$mdToast', 'localStorageService'];
     function GoogleService($http, $mdToast, localStorageService) {
@@ -20,8 +20,8 @@
 
         function createAuthUrl() {
             return $http.get(laroute.route('googles.createAuthUrl'))
-                    .then(createAuthUrlComplete)
-                    .catch(createAuthUrlFailed);
+                .then(createAuthUrlComplete)
+                .catch(createAuthUrlFailed);
 
             function createAuthUrlComplete(response) {
                 localStorageService.set('url', response.data);
@@ -35,8 +35,8 @@
 
         function authenticate() {
             return $http.get(laroute.route('googles.authenticate'))
-                    .then(authenticateComplete)
-                    .catch(authenticateFailed);
+                .then(authenticateComplete)
+                .catch(authenticateFailed);
 
             function authenticateComplete(response) {
                 localStorageService.set('access_token', response.data);
@@ -51,8 +51,8 @@
 
         function logout() {
             return $http.get(laroute.route('googles.logout'))
-                    .then(logoutComplete)
-                    .catch(logoutFailed);
+                .then(logoutComplete)
+                .catch(logoutFailed);
 
             function logoutComplete(response) {
                 localStorageService.remove('access_token');
@@ -75,9 +75,9 @@
 
         function showMessage(message) {
             $mdToast.show($mdToast.simple()
-                    .textContent(message)
-                    .position('bottom right')
-                    .hideDelay(4000));
+                .textContent(message)
+                .position('bottom right')
+                .hideDelay(4000));
         }
     }
 })();

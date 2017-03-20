@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-            .module('academic')
-            .controller('TeamIndexController', TeamIndexController);
+        .module('academic')
+        .controller('TeamIndexController', TeamIndexController);
 
-    TeamIndexController.$inject = ['$rootScope', '$state', 'teamService'];
-    function TeamIndexController($rootScope, $state, teamService) {
+    TeamIndexController.$inject = ['$rootScope', '$state', 'TeamService'];
+    function TeamIndexController($rootScope, $state, TeamService) {
         var vm = this;
         vm.teams = [];
         vm.showTeamActivities = showTeamActivities;
@@ -15,7 +15,7 @@
         getTeams();
 
         function getTeams() {
-            return teamService.getAllFromTeacher(function (teams) {
+            return TeamService.getAllFromTeacher(function (teams) {
                 vm.teams = teams;
                 return vm.teams;
             }, function () {

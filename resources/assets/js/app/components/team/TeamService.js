@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-            .module('academic')
-            .factory('teamService', teamService);
+        .module('academic')
+        .factory('TeamService', TeamService);
 
-    teamService.$inject = ['Restangular'];
-    function teamService(Restangular) {
+    TeamService.$inject = ['Restangular'];
+    function TeamService(Restangular) {
         var service = {
             getAll: getAll,
             getAllFromTeacher: getAllFromTeacher

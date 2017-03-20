@@ -5,12 +5,12 @@ return [
     /*
      * The destination path for the javascript file.
      */
-    'path' => 'public_html/js',
+    'path' => 'resources/assets/js/app',
 
     /*
      * The destination filename for the javascript file.
      */
-    'filename' => 'laroute',
+    'filename' => 'app.laroute',
 
     /*
      * The namespace for the helper functions. By default this will bind them to
@@ -53,6 +53,6 @@ return [
      * Appends a prefix to URLs. By default the prefix is an empty string.
     *
     */
-    'prefix' => '/~academic/index.php',
+    'prefix' => '',
 
 ];

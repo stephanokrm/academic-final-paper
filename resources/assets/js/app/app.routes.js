@@ -7,55 +7,49 @@ angular
         $stateProvider.state('login', {
             url: '/login',
             templateUrl: 'views/user/userLogin.html',
-            controller: 'LoginController',
-            controllerAs: 'vm',
+            controller: 'LoginController as vm',
             authorize: false,
             authorize_google: false
         }).state('register', {
             url: '/registro',
             templateUrl: 'views/user/userRegister.html',
-            controller: 'RegisterController',
+            controller: 'RegisterController as vm',
             authorize: true,
             authorize_google: false
         }).state('calendars', {
             url: '/calendarios',
             templateUrl: 'views/calendar/calendarIndex.html',
-            controller: 'CalendarController',
-            controllerAs: 'vm',
+            controller: 'CalendarController as vm',
             authorize: true,
             authorize_google: true
         }).state('home', {
             url: '/',
             templateUrl: 'views/home.html',
-            controller: 'HomeController',
+            controller: 'HomeController as vm',
             authorize: true,
             authorize_google: false
         }).state('activitiesIndex', {
             url: '/turma/:id/atividades',
             templateUrl: 'views/activity/index.html',
-            controller: 'ActivityIndexController',
-            controllerAs: 'vm',
+            controller: 'ActivityIndexController as vm',
             authorize: true,
             authorize_google: true
         }).state('activitiesCreate', {
             url: '/turma/:id/atividades/criar',
             templateUrl: 'views/activity/create.html',
-            controller: 'ActivityCreateController',
-            controllerAs: 'vm',
+            controller: 'ActivityCreateController as vm',
             authorize: true,
             authorize_google: true
         }).state('activitiesEdit', {
             url: '/atividades/:id/editar',
             templateUrl: 'views/activity/edit.html',
-            controller: 'ActivityEditController',
-            controllerAs: 'vm',
+            controller: 'ActivityEditController as vm',
             authorize: true,
             authorize_google: true
         }).state('activitiesShow', {
             url: '/atividades/:id/detalhes',
             templateUrl: 'views/activity/show.html',
-            controller: 'ActivityShowController',
-            controllerAs: 'vm',
+            controller: 'ActivityShowController as vm',
             authorize: true,
             authorize_google: true
         }).state('teamsIndex', {
@@ -72,17 +66,17 @@ angular
             authorize_google: true
         });
     }])
-    .run(["$rootScope", "$location", '$window', '$mdToast', 'userService', 'GoogleService', 'localStorageService', function ($rootScope, $location, $window, $mdToast, userService, GoogleService, localStorageService) {
+    .run(["$rootScope", "$location", '$window', '$mdToast', 'UserService', 'GoogleService', 'localStorageService', function ($rootScope, $location, $window, $mdToast, UserService, GoogleService, localStorageService) {
         $rootScope.google_authenticated = GoogleService.checkIfIsLogged();
         $rootScope.googleUrl = GoogleService.getAuthUrl();
         $rootScope.$on("$stateChangeStart", function (e, toState) {
             $rootScope.authenticated = false;
             if (toState.authorize === true) {
-                if (userService.isLoggedIn()) {
-                    $rootScope.isTeacher = userService.isTeacher();
-                    if (userService.isActive()) {
+                if (UserService.isLoggedIn()) {
+                    $rootScope.isTeacher = UserService.isTeacher();
+                    if (UserService.isActive()) {
                         $rootScope.authenticated = true;
-                        $rootScope.user = userService.getCurrentUser();
+                        $rootScope.user = UserService.getCurrentUser();
                     } else {
                         $location.path("/registro");
                     }

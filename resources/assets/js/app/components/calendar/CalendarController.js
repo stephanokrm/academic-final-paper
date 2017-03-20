@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-            .module('academic')
-            .controller('CalendarController', CalendarController);
+        .module('academic')
+        .controller('CalendarController', CalendarController);
 
-    CalendarController.$inject = ['$timeout', '$rootScope', '$mdToast', '$mdDialog', 'CalendarService', 'teamService', 'userService', 'EventService', 'DEFAULT_ERROR_MESSAGE'];
-    function CalendarController($timeout, $rootScope, $mdToast, $mdDialog, CalendarService, teamService, userService, EventService, DEFAULT_ERROR_MESSAGE) {
+    CalendarController.$inject = ['$timeout', '$rootScope', '$mdToast', '$mdDialog', 'CalendarService', 'TeamService', 'UserService', 'EventService', 'DEFAULT_ERROR_MESSAGE'];
+    function CalendarController($timeout, $rootScope, $mdToast, $mdDialog, CalendarService, TeamService, UserService, EventService, DEFAULT_ERROR_MESSAGE) {
         var vm = this;
         var index;
         var emails = [];
@@ -165,9 +165,9 @@
 
         function showMessageToast(message) {
             $mdToast.show($mdToast.simple()
-                    .textContent(message)
-                    .position('bottom right')
-                    .hideDelay(4000));
+                .textContent(message)
+                .position('bottom right')
+                .hideDelay(4000));
         }
 
         function refreshEvents() {
@@ -199,19 +199,19 @@
             var vm = this;
             vm.calendarCreate = {};
             vm.calendarCreate.attendees = [];
-            vm.isTeacher = userService.isTeacher();
+            vm.isTeacher = UserService.isTeacher();
             vm.storeCalendar = storeCalendar;
             vm.toggleUser = toggleUser;
 
-            if (userService.isTeacher()) {
-                teamService.getAllFromTeacher(function (teams) {
+            if (UserService.isTeacher()) {
+                TeamService.getAllFromTeacher(function (teams) {
                     $rootScope.isActionLoading = false;
                     vm.teams = teams;
                 }, function () {
                     showMessageToast(DEFAULT_ERROR_MESSAGE);
                 });
             } else {
-                userService.getByTeam(function (users) {
+                UserService.getByTeam(function (users) {
                     $rootScope.isActionLoading = false;
                     vm.users = users;
                 }, function () {
@@ -239,19 +239,20 @@
         function CalendarEditDialogController($mdDialog, locals) {
             var vm = this;
             vm.calendarEdit = locals.calendar;
-            vm.isTeacher = userService.isTeacher();
+            vm.isTeacher = UserService.isTeacher();
 
             vm.toggleUser = function (attendee) {
                 index = emails.indexOf(attendee.email);
                 attendee.selected ? emails.push(attendee.email) : emails.splice(index, 1);
             };
 
-            if (userService.isTeacher()) {
-                teamService.getAllFromTeacher(function (teams) {
+            if (UserService.isTeacher()) {
+                TeamService.getAllFromTeacher(function (teams) {
                     vm.teams = teams;
                 }, function () {
                     showMessageToast(DEFAULT_ERROR_MESSAGE);
-                }, function () {});
+                }, function () {
+                });
             } else {
                 CalendarService.getNotAttendees(locals.calendar).then(function (users) {
                     vm.notAttendees = users;
@@ -266,7 +267,11 @@
                 CalendarService.addAttendee(vm.calendarEdit).then(function () {
                     index = vm.notAttendees.indexOf(attendee);
                     vm.notAttendees.splice(index, 1);
-                    vm.attendees.push({profile_image: attendee.profile_image, email: attendee.email, user: {name: attendee.name}});
+                    vm.attendees.push({
+                        profile_image: attendee.profile_image,
+                        email: attendee.email,
+                        user: {name: attendee.name}
+                    });
                 });
             };
 
@@ -275,7 +280,11 @@
                 CalendarService.removeAttendee(vm.calendarEdit).then(function () {
                     index = vm.attendees.indexOf(attendee);
                     vm.attendees.splice(index, 1);
-                    vm.notAttendees.push({profile_image: attendee.profile_image, name: attendee.user.name, email: attendee.user.email});
+                    vm.notAttendees.push({
+                        profile_image: attendee.profile_image,
+                        name: attendee.user.name,
+                        email: attendee.user.email
+                    });
                 });
             };
 
@@ -320,9 +329,9 @@
 
             vm.showConfirm = function (event) {
                 var confirm = $mdDialog.confirm()
-                        .title('Gostaria de excluir esse evento?')
-                        .ok('Excluir')
-                        .cancel('Cancelar');
+                    .title('Gostaria de excluir esse evento?')
+                    .ok('Excluir')
+                    .cancel('Cancelar');
 
                 $mdDialog.show(confirm).then(function () {
                     EventService.destroy(event, function () {
@@ -330,7 +339,8 @@
                         showMessageToast('Evento removido!');
                     }, function () {
                         showMessageToast(DEFAULT_ERROR_MESSAGE);
-                    }, function () {});
+                    }, function () {
+                    });
                 });
             };
 
@@ -363,7 +373,8 @@
                         showMessageToast('Evento criado!');
                     }, function () {
                         showMessageToast(DEFAULT_ERROR_MESSAGE);
-                    }, function () {});
+                    }, function () {
+                    });
                 }
             };
 
@@ -375,7 +386,8 @@
                     showMessageToast('Evento editado!');
                 }, function () {
                     showMessageToast(DEFAULT_ERROR_MESSAGE);
-                }, function () {});
+                }, function () {
+                });
             }
         }
 

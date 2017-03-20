@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-            .module('academic')
-            .factory('CalendarService', CalendarService);
+        .module('academic')
+        .factory('CalendarService', CalendarService);
 
     CalendarService.$inject = ['$http', '$mdToast'];
     function CalendarService($http, $mdToast) {
@@ -23,8 +23,8 @@
 
         function getCalendars() {
             return $http.get(laroute.route('calendars.index'))
-                    .then(getCalendarsComplete)
-                    .catch(getCalendarsFailed);
+                .then(getCalendarsComplete)
+                .catch(getCalendarsFailed);
 
             function getCalendarsComplete(response) {
                 return response.data;
@@ -32,16 +32,16 @@
 
             function getCalendarsFailed() {
                 $mdToast.show($mdToast.simple()
-                        .textContent('Ocorreu um erro ao buscar os calendários.')
-                        .position('bottom right')
-                        .hideDelay(4000));
+                    .textContent('Ocorreu um erro ao buscar os calendários.')
+                    .position('bottom right')
+                    .hideDelay(4000));
             }
         }
 
         function storeCalendar(calendar) {
             return $http.post(laroute.route('calendars.store'), calendar)
-                    .then(storeCalendarComplete)
-                    .catch(storeCalendarFailed);
+                .then(storeCalendarComplete)
+                .catch(storeCalendarFailed);
 
             function storeCalendarComplete(response) {
                 showMessage('Calendário salvo!');
@@ -55,8 +55,8 @@
 
         function updateCalendar(calendar) {
             return $http.put(laroute.route('calendars.update', {calendars: calendar.id}), calendar)
-                    .then(updateCalendarComplete)
-                    .catch(updateCalendarFailed);
+                .then(updateCalendarComplete)
+                .catch(updateCalendarFailed);
 
             function updateCalendarComplete(response) {
                 showMessage('Calendário editado!');
@@ -70,8 +70,8 @@
 
         function removeCalendar(calendar) {
             return $http.delete(laroute.route('calendars.destroy', {calendars: calendar.id}))
-                    .then(removeCalendarComplete)
-                    .catch(removeCalendarFailed);
+                .then(removeCalendarComplete)
+                .catch(removeCalendarFailed);
 
             function removeCalendarComplete(response) {
                 showMessage('Calendário excluído!');
@@ -85,8 +85,8 @@
 
         function getAttendees(calendar) {
             return $http.get(laroute.route('calendars.attendees', {id: calendar.id}))
-                    .then(getAttendeesComplete)
-                    .catch(getAttendeesFailed);
+                .then(getAttendeesComplete)
+                .catch(getAttendeesFailed);
 
             function getAttendeesComplete(response) {
                 return response.data;
@@ -94,16 +94,16 @@
 
             function getAttendeesFailed() {
                 $mdToast.show($mdToast.simple()
-                        .textContent('Ocorreu um erro ao buscar os convidados.')
-                        .position('bottom right')
-                        .hideDelay(4000));
+                    .textContent('Ocorreu um erro ao buscar os convidados.')
+                    .position('bottom right')
+                    .hideDelay(4000));
             }
         }
 
         function getNotAttendees(calendar) {
             return $http.get(laroute.route('calendars.notAttendees', {id: calendar.id}))
-                    .then(getNotAttendeesComplete)
-                    .catch(getNotAttendeesFailed);
+                .then(getNotAttendeesComplete)
+                .catch(getNotAttendeesFailed);
 
             function getNotAttendeesComplete(response) {
                 return response.data;
@@ -111,16 +111,16 @@
 
             function getNotAttendeesFailed() {
                 $mdToast.show($mdToast.simple()
-                        .textContent('Ocorreu um erro ao buscar os não convidados.')
-                        .position('bottom right')
-                        .hideDelay(4000));
+                    .textContent('Ocorreu um erro ao buscar os não convidados.')
+                    .position('bottom right')
+                    .hideDelay(4000));
             }
         }
 
         function addAttendee(calendar) {
             return $http.post(laroute.route('calendars.addAttendee'), calendar)
-                    .then(addAttendeeComplete)
-                    .catch(addAttendeeFailed);
+                .then(addAttendeeComplete)
+                .catch(addAttendeeFailed);
 
             function addAttendeeComplete(response) {
                 showMessage('Convidado adicionado!');
@@ -134,8 +134,8 @@
 
         function removeAttendee(calendar) {
             return $http.post(laroute.route('calendars.removeAttendee'), calendar)
-                    .then(removeAttendeeComplete)
-                    .catch(removeAttendeeFailed);
+                .then(removeAttendeeComplete)
+                .catch(removeAttendeeFailed);
 
             function removeAttendeeComplete(response) {
                 showMessage('Convidado removido!');
@@ -149,9 +149,9 @@
 
         function showMessage(message) {
             $mdToast.show($mdToast.simple()
-                    .textContent(message)
-                    .position('bottom right')
-                    .hideDelay(4000));
+                .textContent(message)
+                .position('bottom right')
+                .hideDelay(4000));
         }
 
     }

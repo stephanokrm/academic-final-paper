@@ -5,8 +5,8 @@
         .module('academic')
         .controller('navController', navController);
 
-    navController.$inject = ['$state', '$scope', '$location', '$rootScope', '$mdSidenav', 'userService', 'GoogleService'];
-    function navController($state, $location, $rootScope, $mdSidenav, userService, GoogleService) {
+    navController.$inject = ['$state', '$scope', '$location', '$rootScope', '$mdSidenav', 'UserService', 'GoogleService'];
+    function navController($state, $location, $rootScope, $mdSidenav, UserService, GoogleService) {
         let vm = this;
         vm.toggleLeft = buildToggler('left');
         vm.goToActivities = goToActivities;
@@ -22,7 +22,7 @@
         }
 
         function doLogout() {
-            userService.logout();
+            UserService.logout();
             $location.path('/login');
         }
 
@@ -33,7 +33,7 @@
         }
 
         function goToActivities() {
-            let user = userService.getCurrentUser();
+            let user = UserService.getCurrentUser();
             $state.go('activitiesIndex', {id: user.student.team_id});
         }
 

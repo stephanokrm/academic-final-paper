@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-            .module('academic')
-            .controller('ActivityIndexController', ActivityIndexController);
+        .module('academic')
+        .controller('ActivityIndexController', ActivityIndexController);
 
-    ActivityIndexController.$inject = ['$rootScope', '$state', '$stateParams', '$mdDialog', 'ActivityService', 'userService'];
-    function ActivityIndexController($rootScope, $state, $stateParams, $mdDialog, ActivityService, userService) {
+    ActivityIndexController.$inject = ['$rootScope', '$state', '$stateParams', '$mdDialog', 'ActivityService', 'UserService'];
+    function ActivityIndexController($rootScope, $state, $stateParams, $mdDialog, ActivityService, UserService) {
         var vm = this;
         vm.activities = [];
         vm.isTeacher = false;
@@ -21,10 +21,10 @@
 
         function getActivities() {
             return ActivityService.getActivities($stateParams.id)
-                    .then(function (activities) {
-                        vm.activities = activities;
-                        return vm.activities;
-                    });
+                .then(function (activities) {
+                    vm.activities = activities;
+                    return vm.activities;
+                });
         }
 
         function createActivity() {
@@ -37,9 +37,9 @@
 
         function removeActivity(activity) {
             var confirm = $mdDialog.confirm()
-                    .title('Gostaria de excluir essa atividade?')
-                    .ok('Excluir')
-                    .cancel('Cancelar');
+                .title('Gostaria de excluir essa atividade?')
+                .ok('Excluir')
+                .cancel('Cancelar');
 
             $mdDialog.show(confirm).then(function () {
                 ActivityService.removeActivity(activity).then(function () {
@@ -54,7 +54,7 @@
         }
 
         function isTeacher() {
-            vm.isTeacher = userService.isTeacher();
+            vm.isTeacher = UserService.isTeacher();
         }
     }
 

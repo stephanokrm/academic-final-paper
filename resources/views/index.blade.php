@@ -133,10 +133,8 @@
     <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/lang-all.js"></script>
     <script type="text/javascript" src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
-    <script type="text/javascript" src="js/laroute.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/controllers.js"></script>
     <script type="text/javascript" src="js/services.js"></script>
-    <script type="text/javascript" src="js/directives.js"></script>
 </body>
 </html>
