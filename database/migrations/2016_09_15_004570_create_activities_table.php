@@ -12,8 +12,7 @@ class CreateActivitiesTable extends Migration {
      */
     public function up() {
         Schema::create('activities', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->double('weight');
             $table->double('total_score');
 
@@ -35,7 +34,7 @@ class CreateActivitiesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('activities');
+        Schema::dropIfExists('activities');
     }
 
 }

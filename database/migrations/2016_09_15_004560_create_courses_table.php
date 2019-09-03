@@ -12,8 +12,7 @@ class CreateCoursesTable extends Migration {
      */
     public function up() {
         Schema::create('courses', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('abbreviation');
             $table->timestamps();
@@ -26,7 +25,7 @@ class CreateCoursesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('courses');
+        Schema::dropIfExists('courses');
     }
 
 }

@@ -2,7 +2,6 @@
 
 namespace Academic\Http\Controllers;
 
-use Academic\Http\Controllers\Controller;
 use Academic\Services\EventService;
 use Academic\Http\Requests\EventRequest;
 use Illuminate\Http\Request;

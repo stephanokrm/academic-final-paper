@@ -2,8 +2,7 @@
 
 namespace Academic\Http\Controllers;
 
-use Academic\Http\Controllers\Controller;
-use Academic\Models\Team;
+use Academic\Team;
 
 class TeamController extends Controller {
 

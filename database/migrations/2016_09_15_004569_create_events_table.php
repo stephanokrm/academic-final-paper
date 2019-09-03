@@ -12,8 +12,7 @@ class CreateEventsTable extends Migration {
      */
     public function up() {
         Schema::create('events', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->string('event')->unique();
             $table->integer('calendar_id')->unsigned();
             $table->foreign('calendar_id')->references('id')->on('calendars')->onDelete('cascade');
@@ -28,7 +27,7 @@ class CreateEventsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('events');
+        Schema::dropIfExists('events');
     }
 
 }

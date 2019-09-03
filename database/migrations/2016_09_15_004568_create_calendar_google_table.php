@@ -27,7 +27,7 @@ class CreateCalendarGoogleTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('calendar_google');
+        Schema::dropIfExists('calendar_google');
     }
 
 }

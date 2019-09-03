@@ -2,7 +2,6 @@
 
 namespace Academic\Http\Controllers;
 
-use Academic\Http\Controllers\Controller;
 use Academic\Services\CalendarService;
 use Academic\Http\Requests\CalendarRequest;
 use Illuminate\Http\Request;

@@ -12,8 +12,7 @@ class CreateDisciplinesTable extends Migration {
      */
     public function up() {
         Schema::create('disciplines', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->timestamps();
         });
@@ -25,7 +24,7 @@ class CreateDisciplinesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('disciplines');
+        Schema::dropIfExists('disciplines');
     }
 
 }

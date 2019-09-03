@@ -30,7 +30,7 @@ class CreateActivityStudentTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('activity_student');
+        Schema::dropIfExists('activity_student');
     }
 
 }

@@ -4,11 +4,11 @@ namespace Academic\Services;
 
 use Auth;
 use Session;
-use Academic\Models\User;
-use Academic\Models\Team;
-use Academic\Models\Google;
-use Academic\Models\Teacher;
-use Academic\Models\Student;
+use Academic\User;
+use Academic\Team;
+use Academic\Google;
+use Academic\Teacher;
+use Academic\Student;
 use Academic\Http\Requests\LoginRequest;
 use Academic\Http\Requests\RegisterRequest;
 use Illuminate\Http\JsonResponse;

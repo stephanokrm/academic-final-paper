@@ -12,8 +12,7 @@ class CreateAttendancesTable extends Migration {
      */
     public function up() {
         Schema::create('attendances', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->boolean('showed_up')->nullable();
             $table->dateTime('attendance_date');
             $table->integer('user_id')->unsigned();
@@ -29,7 +28,7 @@ class CreateAttendancesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('attendances');
+        Schema::dropIfExists('attendances');
     }
 
 }

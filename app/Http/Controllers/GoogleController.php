@@ -2,7 +2,6 @@
 
 namespace Academic\Http\Controllers;
 
-use Academic\Http\Controllers\Controller;
 use Academic\Services\GoogleService;
 
 class GoogleController extends Controller {

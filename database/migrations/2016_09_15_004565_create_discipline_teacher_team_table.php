@@ -30,7 +30,7 @@ class CreateDisciplineTeacherTeamTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('teacher_team');
+        Schema::dropIfExists('teacher_team');
     }
 
 }

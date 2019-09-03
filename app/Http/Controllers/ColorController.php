@@ -1,7 +1,5 @@
 <?php namespace Academic\Http\Controllers;
 
-use Academic\Http\Requests;
-use Academic\Http\Controllers\Controller;
 use Academic\Services\ColorService;
 
 use Illuminate\Http\Request;

@@ -12,8 +12,7 @@ class CreateNotificationsTable extends Migration {
      */
     public function up() {
         Schema::create('notifications', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->boolean('seen');
             $table->date('notification_date');
             $table->integer('user_id')->unsigned();
@@ -32,7 +31,7 @@ class CreateNotificationsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('notifications');
+        Schema::dropIfExists('notifications');
     }
 
 }

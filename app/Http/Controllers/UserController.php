@@ -5,7 +5,6 @@ namespace Academic\Http\Controllers;
 use Academic\Http\Requests\LoginRequest;
 use Academic\Http\Requests\RegisterRequest;
 use Academic\Services\UserService;
-use Academic\Http\Controllers\Controller;
 
 class UserController extends Controller {
 

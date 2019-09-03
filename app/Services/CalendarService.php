@@ -9,9 +9,9 @@ use Google_Service_Calendar_AclRuleScope;
 use Academic\Http\Requests\CalendarRequest;
 use Illuminate\Http\Request;
 use Academic\Services\GoogleService;
-use Academic\Models\Team;
-use Academic\Models\Google;
-use Academic\Models\Calendar;
+use Academic\Team;
+use Academic\Google;
+use Academic\Calendar;
 
 class CalendarService {
 

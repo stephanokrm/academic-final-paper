@@ -12,8 +12,7 @@ class CreateStudentsTable extends Migration {
      */
     public function up() {
         Schema::create('students', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->index('user_id');
@@ -30,7 +29,7 @@ class CreateStudentsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('students');
+        Schema::dropIfExists('students');
     }
 
 }

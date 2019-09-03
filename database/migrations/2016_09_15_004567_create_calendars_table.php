@@ -12,8 +12,7 @@ class CreateCalendarsTable extends Migration {
      */
     public function up() {
         Schema::create('calendars', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->string('calendar')->unique();
             $table->timestamps();
 
@@ -29,7 +28,7 @@ class CreateCalendarsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('calendars');
+        Schema::dropIfExists('calendars');
     }
 
 }

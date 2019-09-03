@@ -12,8 +12,7 @@ class CreateGooglesTable extends Migration {
      */
     public function up() {
         Schema::create('googles', function(Blueprint $table) {
-            $table->increments('id');
-            $table->index('id');
+            $table->bigIncrements('id');
             $table->string('email')->unique();
             $table->string('profile_image')->nullable();
             $table->string('access_token')->nullable();
@@ -30,7 +29,7 @@ class CreateGooglesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('googles');
+        Schema::dropIfExists('googles');
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace Academic\Builders;
 
-use Academic\Models\Activity;
+use Academic\Activity;
 
 class ActivityBuilder implements Builder {
 

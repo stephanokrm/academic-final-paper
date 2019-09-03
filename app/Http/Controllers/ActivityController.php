@@ -3,7 +3,6 @@
 namespace Academic\Http\Controllers;
 
 use Academic\Http\Requests\ActivityRequest;
-use Academic\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Academic\Services\ActivityService;
 
