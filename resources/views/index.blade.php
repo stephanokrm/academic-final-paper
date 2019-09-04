@@ -1,19 +1,31 @@
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-        <meta name="theme-color" content="#03a9f4"> 
-        <title>Academic</title>
-        <base href="/">
-        <link rel="manifest" href="manifest.json">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <!-- Scripts -->
+        <script src="{{ asset('js/bootstrap.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/controllers.js') }}" defer></script>
+        <script src="{{ asset('js/services.js') }}" defer></script>
+
+        <!-- Fonts -->
+        <link rel="dns-prefetch" href="//fonts.gstatic.com">
+        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
         <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-        <link type="text/css" rel="stylesheet" href="bower_components/angular-material/angular-material.min.css"/>
-        <link type="text/css" rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
-        <link type="text/css" rel="stylesheet" href="css/app.css"/>
-        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-        <link type="text/css" rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css"/>
-        <link type="text/css" rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.min.css"/>
+
+        <!-- Styles -->
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+        <meta name="theme-color" content="#03a9f4">
+        <base href="/academic-final-paper/public">
+        <link rel="manifest" href="{{ asset('manifest.json') }}">
     </head>
     <body ng-app="academic" ng-cloak layout="column">
     <md-toolbar class="md-primary md-whiteframe-2dp" ng-show="authenticated">
@@ -44,16 +56,18 @@
                 <md-tooltip md-direction="down">Turmas</md-tooltip>
             </md-button>
             <md-menu hide-xs class="md-menu-profile">
-                <img alt="Foto" ng-src="{{user.google.profile_image}}" class="md-avatar md-toolbar-avatar" ng-click="$mdOpenMenu($event)"/>
+                <img alt="Foto" ng-src="@{{ user.google.profile_image }}" class="md-avatar md-toolbar-avatar"
+                     ng-click="$mdOpenMenu($event)"/>
                 <md-menu-content width="4" ng-controller="navController">
                     <md-menu-item>
                         <md-button>
-                            <img alt="Foto" ng-src="{{user.google.profile_image}}" class="md-avatar md-toolbar-menu-avatar" ng-click="$mdOpenMenu($event)"/>
-                            {{user.name}}
+                            <img alt="Foto" ng-src="@{{  user.google.profile_image }}"
+                                 class="md-avatar md-toolbar-menu-avatar" ng-click="$mdOpenMenu($event)"/>
+                            @{{ user.name }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item ng-hide="google_authenticated">
-                        <md-button ng-href="{{googleUrl}}">
+                        <md-button ng-href="@{{  googleUrl }}">
                             Entrar com Google
                         </md-button>
                     </md-menu-item>
@@ -77,13 +91,13 @@
     <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4" ng-cloak>
         <md-list ng-controller="navController">
             <md-list-item class="md-2-line">
-                <img ng-src="{{user.google.profile_image}}" class="md-avatar" />
+                <img ng-src="@{{  user.google.profile_image }}" class="md-avatar"/>
                 <div class="md-list-item-text">
-                    <h3>{{user.name}}</h3>
-                    <p>{{user.google.email}}</p>
+                    <h3>@{{ user.name }}</h3>
+                    <p>@{{ user.google.email }}</p>
                 </div>
             </md-list-item>
-            <md-list-item ng-show="google_not_authenticated" ng-href="{{googleUrl}}">
+            <md-list-item ng-show="google_not_authenticated" ng-href="@{{ googleUrl }}">
                 <md-icon class='material-icons'>voicemail</md-icon>
                 <p>Entrar com Google</p>
             </md-list-item>
@@ -116,25 +130,5 @@
             </md-list-item>
         </md-list>
     </md-sidenav>
-    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-    <script type="text/javascript" src="bower_components/lodash/dist/lodash.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-    <script type="text/javascript" src="bower_components/restangular/dist/restangular.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-aria/angular-aria.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-material/angular-material.min.js"></script>
-    <script type='text/javascript' src='bower_components/angular-loading-bar/build/loading-bar.min.js'></script>
-    <script type="text/javascript" src="bower_components/angular-input-masks/angular-input-masks-standalone.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
-    <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
-    <script type="text/javascript" src="bower_components/fullcalendar/dist/lang-all.js"></script>
-    <script type="text/javascript" src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/controllers.js"></script>
-    <script type="text/javascript" src="js/services.js"></script>
 </body>
 </html>

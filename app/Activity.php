@@ -3,29 +3,57 @@
 namespace Academic;
 
 use Illuminate\Database\Eloquent\Model;
-use Session;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Session;
 
-class Activity extends Model {
-
+/**
+ * Class Activity
+ * @package Academic
+ */
+class Activity extends Model
+{
+    /**
+     * @var array
+     */
     protected $fillable = ['weight', 'total_score'];
+
+    /**
+     * @var array
+     */
     protected $with = ['students'];
 
-    public function event() {
-        return $this->belongsTo('Academic\Models\Event');
+    /**
+     * @return BelongsTo
+     */
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
     }
 
-    public function team() {
-        return $this->belongsTo('Academic\Models\Team');
+    /**
+     * @return BelongsTo
+     */
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 
-    public function students() {
-        return $this->belongsToMany('Academic\Models\Student')->withPivot('grade', 'done', 'returned');
+    /**
+     * @return BelongsToMany
+     */
+    public function students(): BelongsToMany
+    {
+        return $this->belongsToMany(Student::class)->withPivot('grade', 'done', 'returned');
     }
 
-    public function scopeByTeam($query, $id) {
+    public function scopeByTeam($query, $id)
+    {
+        /** @var User $user */
         $user = Session::get('user');
+
         $teamId = $user->isTeacher() ? $id : $user->student()->first()->team_id;
+
         return $query->where('team_id', $teamId)->get();
     }
-
 }

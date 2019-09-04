@@ -1,66 +1,66 @@
 angular
     .module('academic')
-    .constant('ROUTE', 'http://localhost:8000/')
+    .constant('ROUTE', 'http://localhost/academic-final-paper/public')
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise('/');
         $stateProvider.state('login', {
             url: '/login',
-            templateUrl: 'views/user/userLogin.html',
+            templateUrl: window.location.pathname + '/views/user/userLogin.html',
             controller: 'LoginController as vm',
             authorize: false,
             authorize_google: false
         }).state('register', {
             url: '/registro',
-            templateUrl: 'views/user/userRegister.html',
+            templateUrl: window.location.pathname + '/views/user/userRegister.html',
             controller: 'RegisterController as vm',
             authorize: true,
             authorize_google: false
         }).state('calendars', {
             url: '/calendarios',
-            templateUrl: 'views/calendar/calendarIndex.html',
+            templateUrl: window.location.pathname + '/views/calendar/calendarIndex.html',
             controller: 'CalendarController as vm',
             authorize: true,
             authorize_google: true
         }).state('home', {
             url: '/',
-            templateUrl: 'views/home.html',
+            templateUrl: window.location.pathname + '/views/home.html',
             controller: 'HomeController as vm',
             authorize: true,
             authorize_google: false
         }).state('activitiesIndex', {
             url: '/turma/:id/atividades',
-            templateUrl: 'views/activity/index.html',
+            templateUrl: window.location.pathname + '/views/activity/index.html',
             controller: 'ActivityIndexController as vm',
             authorize: true,
             authorize_google: true
         }).state('activitiesCreate', {
             url: '/turma/:id/atividades/criar',
-            templateUrl: 'views/activity/create.html',
+            templateUrl: window.location.pathname + '/views/activity/create.html',
             controller: 'ActivityCreateController as vm',
             authorize: true,
             authorize_google: true
         }).state('activitiesEdit', {
             url: '/atividades/:id/editar',
-            templateUrl: 'views/activity/edit.html',
+            templateUrl: window.location.pathname + '/views/activity/edit.html',
             controller: 'ActivityEditController as vm',
             authorize: true,
             authorize_google: true
         }).state('activitiesShow', {
             url: '/atividades/:id/detalhes',
-            templateUrl: 'views/activity/show.html',
+            templateUrl: window.location.pathname + '/views/activity/show.html',
             controller: 'ActivityShowController as vm',
             authorize: true,
             authorize_google: true
         }).state('teamsIndex', {
             url: '/turmas',
-            templateUrl: 'views/team/index.html',
+            templateUrl: window.location.pathname + '/views/team/index.html',
             controller: 'TeamIndexController as vm',
             authorize: true,
             authorize_google: false
         }).state('userGrades', {
             url: '/notas',
-            templateUrl: 'views/user/userGrades.html',
+            templateUrl: window.location.pathname + '/views/user/userGrades.html',
             controller: 'GradesController as vm',
             authorize: true,
             authorize_google: true

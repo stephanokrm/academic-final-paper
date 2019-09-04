@@ -10,29 +10,30 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.js('resources/js/app.js', 'public/js/bootstrap.js');
 
-mix.less(['app.less'], 'public/css/app.css').scripts([
-    'app/app.module.js',
-    'app/app.routes.js',
-    'app/app.others.js',
-    'app/app.laroute.js'
+mix.sass('resources/sass/app.scss', 'public/css').scripts([
+    'resources/js/app/app.module.js',
+    'resources/js/app/app.routes.js',
+    'resources/js/app/app.others.js',
+    'resources/js/app/app.laroute.js'
 ], 'public/js/app.js').scripts([
-    'app/components/user/LoginController.js',
-    'app/components/user/RegisterController.js',
-    'app/components/calendar/CalendarController.js',
-    'app/components/activity/ActivityIndexController.js',
-    'app/components/activity/ActivityCreateController.js',
-    'app/components/activity/ActivityEditController.js',
-    'app/components/activity/ActivityShowController.js',
-    'app/components/activity/GradesController.js',
-    'app/components/team/TeamIndexController.js',
-    'app/shared/NavigationController.js',
-    'app/shared/HomeController.js'
+    'resources/js/app/components/user/LoginController.js',
+    'resources/js/app/components/user/RegisterController.js',
+    'resources/js/app/components/calendar/CalendarController.js',
+    'resources/js/app/components/activity/ActivityIndexController.js',
+    'resources/js/app/components/activity/ActivityCreateController.js',
+    'resources/js/app/components/activity/ActivityEditController.js',
+    'resources/js/app/components/activity/ActivityShowController.js',
+    'resources/js/app/components/activity/GradesController.js',
+    'resources/js/app/components/team/TeamIndexController.js',
+    'resources/js/app/shared/NavigationController.js',
+    'resources/js/app/shared/HomeController.js'
 ], 'public/js/controllers.js').scripts([
-    'app/components/user/UserService.js',
-    'app/components/team/TeamService.js',
-    'app/components/calendar/CalendarService.js',
-    'app/components/google/GoogleService.js',
-    'app/components/event/EventService.js',
-    'app/components/activity/ActivityService.js'
+    'resources/js/app/components/user/UserService.js',
+    'resources/js/app/components/team/TeamService.js',
+    'resources/js/app/components/calendar/CalendarService.js',
+    'resources/js/app/components/google/GoogleService.js',
+    'resources/js/app/components/event/EventService.js',
+    'resources/js/app/components/activity/ActivityService.js'
 ], 'public/js/services.js');
